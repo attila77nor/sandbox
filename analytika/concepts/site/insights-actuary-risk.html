@@ -136,6 +136,22 @@ main.land{position:relative}
 .dl p{margin:0;color:var(--soft);max-width:48ch}
 .back{display:inline-block;margin-top:2rem;font-weight:500;text-decoration:underline;text-underline-offset:.25em;text-decoration-thickness:1px}
 
+/* about: wall labels */
+.walls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,5vw,72px);margin-top:clamp(120px,32vh,320px)}
+.walls+.walls{margin-top:clamp(72px,14vh,140px)}
+.lab{border-top:1px solid var(--ink);padding-top:1.1rem;font-size:.95rem;line-height:1.55;scroll-margin-top:2rem}
+.lab b{display:block;font-weight:600}
+.lab .m{display:block;margin-bottom:.9rem;color:var(--soft)}
+.lab p{margin:0;max-width:34ch}
+.lab .c{display:block;margin-top:1rem;color:var(--soft);font-size:.85rem}
+.lab .roles{margin-top:.2rem}
+.lab .roles a{display:block;padding:.45rem 0;border-bottom:1px solid var(--rule)}
+.lab .roles a:first-child{border-top:1px solid var(--rule)}
+.lab .roles a:hover{color:var(--blue)}
+.lab .roles span{display:block;color:var(--soft);font-size:.85rem}
+.lab address{font-style:normal}
+.exnote{margin:clamp(56px,10vh,110px) 0 0;font-size:.85rem;color:var(--soft)}
+
 /* products: white, fog, mountain, white */
 body.prod{background:var(--paper)}
 .photo-fixed{position:fixed;left:0;right:0;bottom:0;height:90vh;z-index:0;background-size:cover;background-position:center bottom;transform-origin:50% 100%;will-change:transform;-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 34%);mask-image:linear-gradient(to bottom,transparent 0,#000 34%)}
@@ -184,6 +200,8 @@ body.prod{background:var(--paper)}
   .prodsec{grid-template-columns:1fr}
   .clear.first{padding-top:120px}
   .dl{grid-template-columns:1fr}
+  .walls{grid-template-columns:1fr;margin-top:56px;gap:44px}
+  .walls+.walls{margin-top:44px}
   .subrows li a{grid-template-columns:1fr}
   .areas5{grid-template-columns:1fr}
   .area:nth-child(2){border-top:1px solid var(--rule)}
