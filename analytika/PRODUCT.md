@@ -19,10 +19,10 @@ Both groups only browse. They are judging whether Analytika is credible and seni
 ## Product Purpose
 Analytika is a consulting firm for the insurance industry. Four service areas: pricing and analytics, data platforms, actuarial / risk / compliance, and business consulting / project management. Analytika Ventures covers business development and investments, and funds employees' own ideas.
 
-The site lets a visitor judge, by browsing, that Analytika is a firm they want to work with or trust. Nothing is sold on the site: no prices, no funnel, no sales pitch. Success (inferred from the brief, confirm): a candidate wants to talk to a partner, and a client contact concludes Analytika is credible.
+The site lets a visitor judge, by browsing, that Analytika is a firm they want to work with or trust. Nothing is sold on the site: no prices, no funnel, no sales pitch. A Products section may describe what Analytika has built. Success (inferred from the brief, confirm): a candidate wants to talk to a partner, and a client contact concludes Analytika is credible.
 
 ## Positioning
-Taken from the firm's own copy: a unique combination of senior people with deep industry experience and a "doer mindset"; "no-nonsense, no fancy jargon, no fluff"; a place for smart people to develop, deliver great services, create new business and have fun, with a path to partnership.
+Facts from the firm's earlier copy (the wording itself is not reused): a unique combination of senior people with deep industry experience and a "doer mindset"; "no-nonsense, no fancy jargon, no fluff"; a place for smart people to develop, deliver great services, create new business and have fun, with a path to partnership.
 
 The site should demonstrate quality rather than assert it ("show, don't tell"). It should not say "we are the best".
 
@@ -30,14 +30,15 @@ The site should demonstrate quality rather than assert it ("show, don't tell"). 
 Visitors browse; they do not buy. Recruiting also happens in person at events (for example Næringslivsdagene in Trondheim) and the site is checked afterwards. Office: Parkveien 41B, Oslo. The current site is English with a language switcher.
 
 ## Capabilities and Constraints
-- Current pages: Home, About (team and collaboration partners), Services (four areas), Opportunities (open roles, what Analytika offers, social culture, Ventures), Contact. The structure of the new site is open.
+- Complete rebuild, not a redesign. The existing site's text is a source of facts only: do not copy or reuse its wording. All copy is new.
+- Landing page (the user's vision): a photograph or equivalent that fades into an empty, clean field; one very short slogan; the key areas Actuary, Pricing, Data platforms, Consulting and Business development in one quiet horizontal line below. Further down, the sections appear as plain words (People, Work, a third not yet decided, Products); hovering reveals a short teaser and each word links into its section. The words must be real links with the teaser text in the page, open on keyboard focus too, and have an always-visible equivalent on touch screens.
 - Additional pages with SEO / AI-search content are planned so Analytika appears in ChatGPT and Claude answers. Not yet specified. All content must be real text in server-rendered HTML, not inside images or canvas.
-- Undecided: Norwegian version; whether to keep the contact form; which new content pages.
+- Undecided: the third section (Insights, Join and Ventures were proposed); what the Products are; the slogan (a placeholder is used in sketches); the hero image (existing photo, own photography or data-drawn terrain); Norwegian version; whether to keep the contact form; which content pages.
 
 ## Brand Commitments
 - Name: Analytika. Logo: dot-cluster triangle mark plus wordmark, file `analytika/assets/logo/Analytika_Logo.pdf`. Logo colours: navy `#1E3363`, blue `#1B92D0`, deep blue `#036194`. Whether the site palette must derive from them is undecided.
 - Sub-brand: Analytika Ventures (own lockup on the current site).
-- Voice: plain, direct, no jargon, with dry humour (for example "Who knew actuaries had a sense of humor?").
+- Voice: plain, direct, no jargon, with dry humour. New wording only.
 
 ## Evidence on Hand
 - People: 21 team members and 4 collaboration partners, each with a written background (employers named in the bios include Gjensidige, DNB, Codan, Storebrand, If, EY, Accenture). The text lives in the current site's `messages` files and is not yet saved in this repo.
