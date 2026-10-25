@@ -1,0 +1,21 @@
+/* Round 1 overview sheet: concepts/explore/index.html */
+import { write } from './explore-shared.mjs';
+
+const CARDS = [
+  { k: 'oslo', name: 'Oslo-lys', img: 'oslo-day', alt: 'oslo-white-night', thesis: 'The page is lit by the sky over Oslo right now. One picture: the year’s daylight curve for 59.9° N. The four pages sit on the two equinoxes and two solstices.', world: 'Ground follows the real sun elevation, from deep marine at night to pale day. Newsreader and Schibsted Grotesk, small.', risk: 'Weak link between daylight and what the firm does. A visitor at 03:00 sees a dark page, at noon a pale one, and our OS dark-mode setting is ignored.' },
+  { k: 'tabell', name: 'Tabell', img: 'tabell', thesis: 'The page is a printed actuarial table, set the way a statistical yearbook sets one. Scrolling is growing older. The four pages are the contents.', world: 'Paper, navy ink, Source Serif 4 with tabular figures, booktabs rules. One blue row.', risk: 'A wall of numbers can read as a spreadsheet to non-actuaries. The figures are illustrative and must stay labelled.' },
+  { k: 'trekant', name: 'Trekanten', img: 'trekant', thesis: 'The Galton lattice as the firm. Six rows hold exactly 21 dots, one per person in the order they arrived. The seventh row holds the open places. A ball falls through once and lands on one of them.', world: 'Cool white, logo navy and blue only. Spectral light and Hanken Grotesk.', risk: 'Tied to the headcount: the shape changes with every arrival, and the home page says “each dot is one of us”, which must stay literally true.' },
+  { k: 'tetthet', name: 'Tetthet', img: 'tetthet', thesis: 'Black and white only. Vertical lines at the quantiles of a distribution, so the lines crowd where the probability is. Four canvases, four real distributions, one per page.', world: 'Gallery white, flat black, Schibsted Grotesk. No colour at all except the focus ring.', risk: 'Op-art can tire the eye and is the least calm of the four. Needs a reduced-motion path and limits on size.' },
+];
+const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Analytika – round 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500&display=swap">
+<style>:root{--paper:#fff;--ink:#14161B;--soft:#5E6470;--rule:#DADDE3}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:400 14px/1.55 "Schibsted Grotesk",Arial,sans-serif}
+main{max-width:1280px;margin:0 auto;padding:40px 32px 80px}h1{margin:0;font-size:20px;font-weight:500}p.lead{margin:.5rem 0 2.4rem;color:var(--soft);max-width:70ch}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 32px}article{border-top:1px solid var(--rule);padding-top:16px}
+article img{display:block;width:100%;height:auto;border:1px solid var(--rule)}article h2{margin:16px 0 4px;font-size:16px;font-weight:500}article p{margin:.35rem 0;max-width:62ch}article .m{color:var(--soft)}
+a{color:inherit}.links{margin-top:.6rem;display:flex;gap:1.2rem}.links a{text-decoration:underline;text-underline-offset:.25em}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}</style></head><body><main>
+<h1>Round 1: four new directions</h1><p class="lead">Each opens as a home page with a People page behind it. All copy is placeholder; the 21 names are those used in earlier sketches, and the order of arrival is illustrative.</p>
+<div class="grid">${CARDS.map((c) => `<article><a href="${c.k}.html"><img src="img/${c.img}.png" alt="${c.name}, home page" loading="lazy"></a><h2>${c.name}</h2><p>${c.thesis}</p><p class="m">${c.world}</p><p class="m">Risk: ${c.risk}</p><div class="links"><a href="${c.k}.html">Home</a><a href="${c.k}-people.html">People</a></div></article>`).join('')}</div>
+</main></body></html>`;
+write('index.html', html);
