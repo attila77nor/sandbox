@@ -4,8 +4,9 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const dir = new URL('../concepts/explore/', import.meta.url);
-const KEYS = ['oslo', 'oslo-people', 'tabell', 'tabell-people', 'trekant', 'trekant-people', 'tetthet', 'tetthet-people', 'vegg-hvit', 'vegg-marine', 'vegg-zoom'].map((n) => n + '.html');
+const KEYS = ['forside', 'oslo', 'oslo-people', 'tabell', 'tabell-people', 'trekant', 'trekant-people', 'tetthet', 'tetthet-people', 'vegg-hvit', 'vegg-marine', 'vegg-zoom'].map((n) => n + '.html');
 const TABS = [
+  ['Round 3, the landing', [['Forside', 'forside.html']]],
   ['Round 1', [['Oslo-lys', 'oslo.html'], ['Tabell', 'tabell.html'], ['Trekanten', 'trekant.html'], ['Tetthet', 'tetthet.html']]],
   ['Round 2, the photograph', [['Hvit', 'vegg-hvit.html'], ['Marine', 'vegg-marine.html'], ['Zoom', 'vegg-zoom.html']]],
 ];
@@ -59,7 +60,7 @@ function mark(k){var t=k.replace('-people','');[].forEach.call(document.querySel
 function go(k,keep){if(!keep)stack.push(k);f.srcdoc=src(k);mark(k);}
 window.addEventListener('message',function(e){if(!e.data)return;if(e.data.go)go(e.data.go);if(e.data.back&&stack.length>1){stack.pop();go(stack[stack.length-1],true);}});
 [].forEach.call(document.querySelectorAll('#bar button'),function(b){b.addEventListener('click',function(){stack=[];go(b.dataset.p);});});
-var h=decodeURIComponent(location.hash.slice(1));go(pages[h]?h:'vegg-hvit.html');
+var h=decodeURIComponent(location.hash.slice(1));go(pages[h]?h:'forside.html');
 </script></body></html>`);
   console.log('wrote preview.html');
 }

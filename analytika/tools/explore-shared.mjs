@@ -21,3 +21,9 @@ export const fonts = (...fams) => `<link rel="preconnect" href="https://fonts.go
 
 /* every sketch page says it is a sketch, in one quiet line at the very bottom */
 export const SKETCH = (txt) => `<p class="sketch">${txt}</p>`;
+
+/* The photograph of five whiteboards (assets/photo/tavler.jpg), 1914 x 822, and the five boards in pixels (x0 y0 x1 y1). */
+export const PHOTO = {
+  src: '../../assets/photo/tavler.jpg', w: 1914, h: 822,
+  boards: [['actuary', 'Actuary', [143, 88, 456, 670]], ['pricing', 'Pricing', [468, 90, 781, 672]], ['data-platforms', 'Data platforms', [794, 90, 1117, 672]], ['consulting', 'Consulting', [1130, 88, 1451, 672]], ['business-development', 'Business development', [1463, 88, 1795, 672]]],
+};
