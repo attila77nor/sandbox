@@ -3,13 +3,20 @@
    The five boards stay clickable (each is an area). */
 import { write, logoDefs, fonts, SKETCH, PHOTO } from './explore-shared.mjs';
 
+const BOARD_IDS = [['actuary', 'Actuary'], ['pricing', 'Pricing'], ['data-platforms', 'Data platforms'], ['consulting', 'Consulting'], ['business-development', 'Business development']];
+/* the three photographs, each with the five boards measured in pixels (x0 y0 x1 y1) */
+const PHOTOS = {
+  tavler: { src: PHOTO.src, w: PHOTO.w, h: PHOTO.h, boards: PHOTO.boards.map(([id, n, r]) => [id, n, r]) },
+  rom: { src: '../../assets/photo/rom-v2-neutral.jpg', w: 1672, h: 941, boards: BOARD_IDS.map(([id, n], i) => [id, n, [[598, 295, 726, 483], [735, 295, 856, 483], [866, 295, 992, 483], [1003, 295, 1120, 483], [1131, 295, 1257, 483]][i]]) },
+  kontor: { src: '../../assets/photo/kontor-v3-neutral.jpg', w: 1672, h: 941, boards: BOARD_IDS.map(([id, n], i) => [id, n, [[143, 199, 411, 561], [421, 201, 693, 561], [703, 199, 978, 561], [987, 198, 1260, 561], [1270, 198, 1559, 563]][i]]) },
+};
 const ROWS = [['People', '../site/people.html'], ['Insights', '../site/insights.html'], ['Products', '../site/products.html'], ['About us', '../site/about.html']];
 const NAV = [...ROWS, ['Join us', '../site/about.html#join'], ['Contact', '../site/about.html#contact']];
 const ARROW = '<svg class="arr" viewBox="0 0 76 12" aria-hidden="true" focusable="false"><path d="M0 6h74M69 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-const CSS = `
-:root{--ink:#14161B;--mute:#575C67;--rule:rgba(20,22,27,.09);--acc:#036194;--gut:clamp(20px,3.6vw,56px);--sans:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;--dim:.68;
-  --lg-ink:#fff;--lg-word:#fff;--lg-blue:#fff;--lg-deep:#fff}
+const css = (c) => `
+:root{--ink:#14161B;--mute:#575C67;--rule:rgba(20,22,27,.09);--acc:#036194;--gut:clamp(20px,3.6vw,56px);--sans:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;--dim:${c.dim};
+  ${c.ink === 'dark' ? '--lg-ink:#1E3363;--lg-word:#1E3363;--lg-blue:#1B92D0;--lg-deep:#036194' : '--lg-ink:#fff;--lg-word:#fff;--lg-blue:#fff;--lg-deep:#fff'}}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:#fff;color:var(--ink);font:400 14px/1.55 var(--sans);overflow-x:hidden}
@@ -38,7 +45,7 @@ body.past .board{pointer-events:none}
 .top nav .gap{margin-left:clamp(0px,1.4vw,18px)}
 .hero{position:relative;z-index:2;height:100vh;height:100svh;min-height:480px;pointer-events:none}
 .hero h1,.cue,.areasline{opacity:calc(1 - var(--s,0) * 2)}
-.hero h1{position:absolute;left:var(--gut);bottom:clamp(36px,9vh,96px);margin:0;font:600 clamp(40px,5.4vw,80px)/1 var(--sans);letter-spacing:-.035em;color:#fff;pointer-events:auto}
+.hero h1{position:absolute;${c.titleSide === 'right' ? 'right' : 'left'}:var(--gut);bottom:clamp(36px,9vh,96px);margin:0;font:600 clamp(40px,5.4vw,80px)/1 var(--sans);letter-spacing:-.035em;color:#fff;pointer-events:auto}
 .areasline{display:none}
 .cue{position:absolute;right:var(--gut);bottom:clamp(40px,9.5vh,100px);width:20px;color:#fff;opacity:.8;pointer-events:auto}
 .cue svg{display:block;width:20px;height:44px}
@@ -62,22 +69,22 @@ body.past .board{pointer-events:none}
   .hero h1{bottom:clamp(70px,14vh,120px)}.cue{display:none}}
 `;
 
-const html = `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Analytika – forside (sketch)</title>${fonts('Hanken+Grotesk:wght@400;500;600')}<style>${CSS}</style></head><body>${logoDefs}
-<div class="photo" aria-hidden="true"><img id="ph" src="${PHOTO.src}" alt=""></div>
-<div class="boards" id="boards">${PHOTO.boards.map(([id, name]) => `<a class="board" data-id="${id}" href="../site/insights.html#${id}" aria-label="${name}"><span class="lab">${name}</span></a>`).join('')}</div>
-<header class="top"><a href="forside.html" aria-label="Analytika, home"><svg class="mark" aria-hidden="true"><use href="#lg-mark"/></svg></a><nav>${NAV.map(([w, h], i) => `<a${i === 4 ? ' class="gap"' : ''} href="${h}">${w}</a>`).join('')}</nav></header>
+const page = (c, ph = PHOTOS[c.photo]) => `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Analytika – forside, ${c.photo} (sketch)</title>${fonts('Hanken+Grotesk:wght@400;500;600')}<style>${css(c)}</style></head><body>${logoDefs}
+<div class="photo" aria-hidden="true"><img id="ph" src="${ph.src}" alt=""></div>
+<div class="boards" id="boards">${ph.boards.map(([id, name]) => `<a class="board" data-id="${id}" href="../site/insights.html#${id}" aria-label="${name}"><span class="lab">${name}</span></a>`).join('')}</div>
+<header class="top"><a href="${c.file}" aria-label="Analytika, home"><svg class="mark" aria-hidden="true"><use href="#lg-mark"/></svg></a>${c.menu ? `<nav>${NAV.map(([w, h], i) => `<a${i === 4 ? ' class="gap"' : ''} href="${h}">${w}</a>`).join('')}</nav>` : ''}</header>
 <main>
 <section class="hero" aria-label="Analytika"><h1>Analytika</h1>
-<p class="areasline" aria-label="Areas">${PHOTO.boards.map(([id, name]) => `<a href="../site/insights.html#${id}">${name}</a>`).join('')}</p>
-<a class="cue" href="#pages" aria-label="Scroll to the pages"><svg viewBox="0 0 20 44" aria-hidden="true"><path d="M10 0v40M3 33l7 8 7-8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></section>
+<p class="areasline" aria-label="Areas">${ph.boards.map(([id, name]) => `<a href="../site/insights.html#${id}">${name}</a>`).join('')}</p>
+${c.cue ? `<a class="cue" href="#pages" aria-label="Scroll to the pages"><svg viewBox="0 0 20 44" aria-hidden="true"><path d="M10 0v40M3 33l7 8 7-8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>` : ''}</section>
 <div class="dissolve" aria-hidden="true"></div>
 <nav class="rows" id="pages" aria-label="Pages">${ROWS.map(([w, h], i) => `<a class="row" href="${h}"><span class="n">0${i + 1}</span><span class="w">${w}</span>${i === 3 ? '<svg class="lm" aria-hidden="true"><use href="#lg-mark"/></svg>' : ''}${ARROW}</a>`).join('')}</nav>
 </main>
 <div class="foot"><span>Analytika AS · Parkveien 41B, 0258 Oslo</span><span><a href="../site/about.html#join">Join us</a> &nbsp; <a href="../site/about.html#contact">Contact</a></span></div>
-${SKETCH('Sketch, round 3 · the photograph covers the screen and is dimmed evenly so the title reads; the five boards are still links (point at one). Rows are a first guess; every page behind them is still to be designed.')}
+${SKETCH(c.note)}
 <script>(function(){
-var IW=${PHOTO.w},IH=${PHOTO.h},R=${JSON.stringify(Object.fromEntries(PHOTO.boards.map(([id, , r]) => [id, r])))},ph=document.getElementById('ph'),box=ph.parentNode,bs=[].slice.call(document.querySelectorAll('.board'));
+var IW=${ph.w},IH=${ph.h},R=${JSON.stringify(Object.fromEntries(ph.boards.map(([id, , r]) => [id, r])))},ph=document.getElementById('ph'),box=ph.parentNode,bs=[].slice.call(document.querySelectorAll('.board'));
 function lay(){var vw=box.clientWidth,vh=box.clientHeight,s=Math.max(vw/IW,vh/IH),ox=(vw-IW*s)*.5,oy=(vh-IH*s)*.45;
   bs.forEach(function(b){var r=R[b.dataset.id],x0=ox+r[0]*s,y0=oy+r[1]*s,x1=ox+r[2]*s,y1=oy+r[3]*s;
     b.style.left=x0+'px';b.style.top=y0+'px';b.style.width=(x1-x0)+'px';b.style.height=(y1-y0)+'px';b.classList.toggle('in',y0<44);});}
@@ -85,4 +92,7 @@ lay();addEventListener('resize',lay);ph.addEventListener('load',lay);
 function sc(){document.body.classList.toggle('past',scrollY>innerHeight*.35);document.documentElement.style.setProperty('--s',Math.min(1,scrollY/innerHeight).toFixed(3));}sc();addEventListener('scroll',sc,{passive:true});
 })();</script>
 </body></html>`;
-write('forside.html', html);
+const NOTE = 'Rows are a first guess; every page behind them is still to be designed. Point at a board to see its area.';
+write('forside.html', page({ file: 'forside.html', photo: 'tavler', dim: 0.68, ink: 'light', titleSide: 'left', menu: true, cue: true, note: 'Sketch, round 3 · the first whiteboard photograph, dimmed evenly so the title reads. ' + NOTE }));
+write('forside-rom.html', page({ file: 'forside-rom.html', photo: 'rom', dim: 1, ink: 'dark', titleSide: 'right', menu: false, cue: false, note: 'Sketch, round 3 · the room photograph, not dimmed: the title sits on the calm parquet at the bottom right and the mark is dark on the bright window. ' + NOTE }));
+write('forside-kontor.html', page({ file: 'forside-kontor.html', photo: 'kontor', dim: 0.68, ink: 'light', titleSide: 'left', menu: false, cue: false, note: 'Sketch, round 3 · the office photograph. Papers and chairs reach pure white everywhere, so it has to be dimmed evenly for the title to read. ' + NOTE }));

@@ -4,13 +4,14 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const dir = new URL('../concepts/explore/', import.meta.url);
-const KEYS = ['forside', 'oslo', 'oslo-people', 'tabell', 'tabell-people', 'trekant', 'trekant-people', 'tetthet', 'tetthet-people', 'vegg-hvit', 'vegg-marine', 'vegg-zoom'].map((n) => n + '.html');
+const KEYS = ['forside', 'forside-rom', 'forside-kontor', 'oslo', 'oslo-people', 'tabell', 'tabell-people', 'trekant', 'trekant-people', 'tetthet', 'tetthet-people', 'vegg-hvit', 'vegg-marine', 'vegg-zoom'].map((n) => n + '.html');
 const TABS = [
-  ['Round 3, the landing', [['Forside', 'forside.html']]],
+  ['Round 3, the landing', [['Forside, tavler', 'forside.html'], ['Forside, rom', 'forside-rom.html'], ['Forside, kontor', 'forside-kontor.html']]],
   ['Round 1', [['Oslo-lys', 'oslo.html'], ['Tabell', 'tabell.html'], ['Trekanten', 'trekant.html'], ['Tetthet', 'tetthet.html']]],
   ['Round 2, the photograph', [['Hvit', 'vegg-hvit.html'], ['Marine', 'vegg-marine.html'], ['Zoom', 'vegg-zoom.html']]],
 ];
-const PHOTO = 'data:image/jpeg;base64,' + readFileSync(new URL('../assets/photo/tavler.jpg', import.meta.url)).toString('base64');
+const PHOTOS = {};
+const photo = (name) => (PHOTOS[name] ||= 'data:image/jpeg;base64,' + readFileSync(new URL('../assets/photo/' + name, import.meta.url)).toString('base64'));
 const AREA = { actuary: 'Actuary', pricing: 'Pricing', 'data-platforms': 'Data platforms', consulting: 'Consulting', 'business-development': 'Business development' };
 const SUB = { risk: 'Risk actuary', compliance: 'Compliance', reserving: 'Reserving', 'life-pension': 'Life and pension' };
 
@@ -35,7 +36,7 @@ const pages = {};
 for (const k of KEYS) {
   let s = readFileSync(new URL(k, dir), 'utf8');
   s = s.replace(/(<a\b[^>]*?\shref=")([^"]*)(")/g, (_, a, h, c) => a + fix(h) + c);
-  s = s.split('../../assets/photo/tavler.jpg').join('__PHOTO__');
+  s = s.replace(/\.\.\/\.\.\/assets\/photo\/([\w.-]+)/g, (_, n) => (photo(n), '__PH:' + n + '__'));
   pages[k] = s.replace('</body>', CLICK + '</body>');
 }
 const json = JSON.stringify(pages).replace(/<\//g, '<\\/');
@@ -53,9 +54,9 @@ function write() {
 iframe{flex:1;border:0;width:100%;display:block;background:#fff}</style></head>
 <body><div id="bar">${bar}</div><iframe id="f" title="Analytika exploration preview"></iframe>
 <script>
-var pages=${json},PHOTO=${JSON.stringify(PHOTO)},stack=[],f=document.getElementById('f');
+var pages=${json},PHOTOS=${JSON.stringify(PHOTOS)},stack=[],f=document.getElementById('f');
 function stand(name){return '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{height:100%;margin:0}body{display:grid;place-items:center;background:#F3F3F1;color:#14161B;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}div{text-align:center;padding:24px}b{display:block;font-size:20px;font-weight:500;margin-bottom:.4rem}p{margin:0 0 1.4rem;color:#5C6270}button{font:inherit;padding:.55rem 1.1rem;border:1px solid #BFC4CE;border-radius:4px;background:#fff;cursor:pointer}button:hover{border-color:#14161B}</style></head><body><div><b>'+name.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</b><p>Not designed in this sketch yet.</p><button type="button" onclick="parent.postMessage({back:1},\\'*\\')">Back</button></div></body></html>';}
-function src(k){return k.indexOf('ph:')===0?stand(k.slice(3)):(pages[k]||stand(k)).split('__PHOTO__').join(PHOTO);}
+function src(k){return k.indexOf('ph:')===0?stand(k.slice(3)):(pages[k]||stand(k)).replace(/__PH:([A-Za-z0-9_.-]+)__/g,function(m,n){return PHOTOS[n];});}
 function mark(k){var t=k.replace('-people','');[].forEach.call(document.querySelectorAll('#bar button'),function(b){if(b.dataset.p===t)b.setAttribute('aria-current','page');else if(k.indexOf('ph:')!==0)b.removeAttribute('aria-current');});}
 function go(k,keep){if(!keep)stack.push(k);f.srcdoc=src(k);mark(k);}
 window.addEventListener('message',function(e){if(!e.data)return;if(e.data.go)go(e.data.go);if(e.data.back&&stack.length>1){stack.pop();go(stack[stack.length-1],true);}});
