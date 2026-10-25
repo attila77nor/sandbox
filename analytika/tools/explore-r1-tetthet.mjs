@@ -114,7 +114,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 const head = (title) => `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>${fonts('Schibsted+Grotesk:wght@400;500')}<style>${CSS}</style></head><body>${logoDefs}`;
-const nav = (cur) => `<nav>${[['People', 'people'], ['Insights', 'insights'], ['Products', 'products'], ['About us', 'about']].map(([w, k]) => `<a href="${k}.html"${k === cur ? ' aria-current="page"' : ''}>${w}</a>`).join('')}<a class="gap" href="about.html#join">Join us</a><a href="about.html#contact">Contact</a></nav>`;
+const nav = (cur) => `<nav>${[['People', 'people'], ['Insights', 'insights'], ['Products', 'products'], ['About us', 'about']].map(([w, k]) => `<a href="${k === 'people' ? 'tetthet-people' : k}.html"${k === cur ? ' aria-current="page"' : ''}>${w}</a>`).join('')}<a class="gap" href="about.html#join">Join us</a><a href="about.html#contact">Contact</a></nav>`;
 
 /* pointer: the field pans a little and the lines lean further; everything eases, nothing loops */
 const JS = `<script>(function(){
@@ -142,7 +142,7 @@ const home = `${head('Analytika – Tetthet (sketch)')}
 <p class="areas">${AREA_NAMES.map((a) => `<a href="insights.html">${a}</a>`).join('')}</p></div>
 <div class="hero" role="img" aria-label="Vertical lines placed at the quantiles of a normal distribution: they crowd in the middle and thin out towards the edges">${cv('normal', 220, 'big wide', 0.3, 0.002)}${cv('normal', 70, 'big narrow', 0.3, 0.0075)}</div>
 <p class="cap"><span>Normal distribution. Each line sits at a quantile, so the lines crowd where the probability is.</span><span>Move the pointer.</span></p>
-<section class="four" aria-label="Pages">${CANVASES.map((c) => `<a href="${c.key}.html">${cv(c.kind, c.n, '')}<span class="t"><b>${c.page}</b><span>${c.cap}</span></span></a>`).join('')}</section>
+<section class="four" aria-label="Pages">${CANVASES.map((c) => `<a href="${c.key === 'people' ? 'tetthet-people' : c.key}.html">${cv(c.kind, c.n, '')}<span class="t"><b>${c.page}</b><span>${c.cap}</span></span></a>`).join('')}</section>
 </main>
 <div class="foot" style="margin-top:clamp(40px,8vh,90px)"><span>Analytika AS · Parkveien 41B, 0258 Oslo</span><span><a href="about.html#join">Join us</a> &nbsp; <a href="about.html#contact">Contact</a></span></div>
 ${SKETCH('Sketch, round 1 · black and white only, so a black-and-white photograph can sit beside it. Slogan and areas are placeholders.')}

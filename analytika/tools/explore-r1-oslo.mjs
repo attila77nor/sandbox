@@ -26,7 +26,7 @@ const tw = []; for (let N = 1; N <= 365; N += 2) tw.push([xPct(N), yPct(lightLen
 const twPath = P(tw);
 const band = P(pts) + 'L' + tw.slice().reverse().map(([x, y]) => `${(x * 10).toFixed(1)} ${(y * 3).toFixed(1)}`).join('L') + 'Z';
 const KEYS = [
-  { w: 'People', href: 'people.html', N: doy(3, 20), date: '20 March', cls: 'br' },
+  { w: 'People', href: 'oslo-people.html', N: doy(3, 20), date: '20 March', cls: 'br' },
   { w: 'Insights', href: 'insights.html', N: doy(6, 21), date: '21 June', cls: 'c' },
   { w: 'Products', href: 'products.html', N: doy(9, 22), date: '22 September', cls: 'bl' },
   { w: 'About us', href: 'about.html', N: doy(12, 21), date: '21 December', cls: 'c2' },
@@ -144,7 +144,7 @@ const head = (title) => `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>${fonts('Newsreader:opsz,wght@6..72,300;6..72,400', 'Schibsted+Grotesk:wght@400;500')}${SKY}<style>${CSS}</style></head><body>${logoDefs}`;
 
-const nav = (cur) => `<nav>${[['People', 'people'], ['Insights', 'insights'], ['Products', 'products'], ['About us', 'about']].map(([w, k]) => `<a href="${k}.html"${k === cur ? ' aria-current="page"' : ''}>${w}</a>`).join('')}<a class="gap" href="about.html#join">Join us</a><a href="about.html#contact">Contact</a></nav>`;
+const nav = (cur) => `<nav>${[['People', 'people'], ['Insights', 'insights'], ['Products', 'products'], ['About us', 'about']].map(([w, k]) => `<a href="${k === 'people' ? 'oslo-people' : k}.html"${k === cur ? ' aria-current="page"' : ''}>${w}</a>`).join('')}<a class="gap" href="about.html#join">Join us</a><a href="about.html#contact">Contact</a></nav>`;
 
 const home = `${head('Analytika – Oslo-lys (sketch)')}
 <div class="home">

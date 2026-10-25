@@ -64,7 +64,7 @@ const head = (title) => `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>${fonts('Source+Serif+4:ital,opsz,wght@0,8..60,300..600;1,8..60,300..600')}<style>${CSS}</style></head><body>${logoDefs}`;
 
-const contents = (cur) => `<nav aria-label="Contents"><ul class="contents">${[['People', 'people'], ['Insights', 'insights'], ['Products', 'products'], ['About us', 'about']].map(([w, k]) => `<li><a href="${k}.html"${k === cur ? ' aria-current="page"' : ''}>${w}</a></li>`).join('')}<li class="sm"><a href="about.html#join">Join us</a></li><li class="sm"><a href="about.html#contact">Contact</a></li></ul></nav>`;
+const contents = (cur) => `<nav aria-label="Contents"><ul class="contents">${[['People', 'people'], ['Insights', 'insights'], ['Products', 'products'], ['About us', 'about']].map(([w, k]) => `<li><a href="${k === 'people' ? 'tabell-people' : k}.html"${k === cur ? ' aria-current="page"' : ''}>${w}</a></li>`).join('')}<li class="sm"><a href="about.html#join">Join us</a></li><li class="sm"><a href="about.html#contact">Contact</a></li></ul></nav>`;
 
 const home = `${head('Analytika – Tabell (sketch)')}
 <div class="wrap">

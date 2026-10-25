@@ -12,7 +12,7 @@ function tri({ dx, dy, r, pad, names = false }) {
     const x = X(k, j).toFixed(1), y = Y(k).toFixed(1);
     if (k <= 5) {
       const n = PEOPLE[i];
-      g += `<a href="people.html" class="p" data-i="${i}" aria-label="${n}"><circle cx="${x}" cy="${y}" r="${r}"/><circle class="hit" cx="${x}" cy="${y}" r="${r + 9}"/><text class="nm" x="${(+x + r + 9).toFixed(1)}" y="${(+y + 4).toFixed(1)}">${n}</text></a>`;
+      g += `<a href="trekant-people.html" class="p" data-i="${i}" aria-label="${n}"><circle cx="${x}" cy="${y}" r="${r}"/><circle class="hit" cx="${x}" cy="${y}" r="${r + 9}"/><text class="nm" x="${(+x + r + 9).toFixed(1)}" y="${(+y + 4).toFixed(1)}">${n}</text></a>`;
       i++;
     } else if (k === 6 && j >= 2 && j <= 4) {
       g += `<a href="about.html#join" class="o" data-o="${j}" aria-label="Open place"><circle cx="${x}" cy="${y}" r="${r}"/><circle class="hit" cx="${x}" cy="${y}" r="${r + 9}"/><text class="nm" x="${(+x + r + 9).toFixed(1)}" y="${(+y + 4).toFixed(1)}">Open</text></a>`;
@@ -82,7 +82,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 const head = (title) => `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${title}</title>${fonts('Spectral:wght@300;400', 'Hanken+Grotesk:wght@400;500')}<style>${CSS}</style></head><body>${logoDefs}`;
-const nav = (cur) => `<nav>${[['People', 'people'], ['Insights', 'insights'], ['Products', 'products'], ['About us', 'about']].map(([w, k]) => `<a href="${k}.html"${k === cur ? ' aria-current="page"' : ''}>${w}</a>`).join('')}<a class="gap" href="about.html#join">Join us</a><a href="about.html#contact">Contact</a></nav>`;
+const nav = (cur) => `<nav>${[['People', 'people'], ['Insights', 'insights'], ['Products', 'products'], ['About us', 'about']].map(([w, k]) => `<a href="${k === 'people' ? 'trekant-people' : k}.html"${k === cur ? ' aria-current="page"' : ''}>${w}</a>`).join('')}<a class="gap" href="about.html#join">Join us</a><a href="about.html#contact">Contact</a></nav>`;
 
 /* the single ball: R L R L R L from the apex lands on the middle open place */
 const DROP = `<script>(function(){

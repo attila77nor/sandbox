@@ -77,14 +77,14 @@ const marineCss = `
 .wall{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 34%,#000 80%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 34%,#000 80%,transparent 100%)}
 .wall img{filter:url(#duo)}
 .board:hover,.board:focus-visible{box-shadow:0 0 0 100vmax rgba(15,27,61,.62);outline:1.5px solid var(--acc)}
-${pair((id) => `body:has(#${id}:target) .board[data-id="${id}"]{box-shadow:0 0 0 100vmax rgba(15,27,61,.62);outline:1.5px solid var(--acc)}`)}
+${pair((id) => `body:has(#${id}:target) .board[data-id="${id}"],body[data-sel="${id}"] .board[data-id="${id}"]{box-shadow:0 0 0 100vmax rgba(15,27,61,.62);outline:1.5px solid var(--acc)}`)}
 .labs{position:relative;height:34px;margin-top:-2.2vw}
 .labs li{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}
 .labs a{display:block;padding:.35rem .5rem;font-size:13px;letter-spacing:.02em;color:var(--mute);transition:color .2s}
 .labs a:hover{color:var(--fg)}
-${pair((id) => `body:has(#${id}:target) .labs a[data-id="${id}"]{color:var(--fg);text-decoration:underline;text-underline-offset:.45em;text-decoration-thickness:1px}`)}
+${pair((id) => `body:has(#${id}:target) .labs a[data-id="${id}"],body[data-sel="${id}"] .labs a[data-id="${id}"]{color:var(--fg);text-decoration:underline;text-underline-offset:.45em;text-decoration-thickness:1px}`)}
 .drawer{display:none;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(20px,5vw,90px);margin:clamp(34px,7vh,70px) var(--gut) 0;padding-top:1.1rem;border-top:1px solid var(--rule);scroll-margin-top:24px}
-.drawer:target{display:grid;animation:open .6s cubic-bezier(.22,.8,.3,1)}
+.drawer:target,.drawer.on{display:grid;animation:open .6s cubic-bezier(.22,.8,.3,1)}
 @keyframes open{from{opacity:0;transform:translateY(10px)}}
 .drawer h2{margin:0;font:300 clamp(22px,2vw,28px)/1.15 var(--serif);letter-spacing:-.01em}
 .drawer p{margin:.6rem 0 0;color:var(--mute);max-width:40ch}
@@ -111,6 +111,8 @@ ${A.map((a) => `<section class="drawer" id="${a.id}" aria-label="${a.name}"><div
 ${mlist((a) => `../site/insights.html#${a.id}`)}
 <nav class="fields" aria-label="Pages"><a href="../site/people.html">People<i aria-hidden="true">→</i></a><a href="../site/insights.html">Insights<i aria-hidden="true">→</i></a><a href="../site/products.html">Products<i aria-hidden="true">→</i></a><a href="../site/about.html">About us<i aria-hidden="true">→</i></a></nav>
 </main>
+<script>(function(){var d=[].slice.call(document.querySelectorAll('.drawer'));function sel(id){d.forEach(function(x){x.classList.toggle('on',x.id===id)});document.body.setAttribute('data-sel',id);var t=document.getElementById(id);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});}
+[].forEach.call(document.querySelectorAll('.board,.labs a'),function(a){a.addEventListener('click',function(e){e.preventDefault();sel(a.dataset.id);});});})();</script>
 <div class="foot" style="padding-top:18px"><span>Analytika AS · Parkveien 41B, 0258 Oslo</span><span><a href="../site/about.html#join">Join us</a> &nbsp; <a href="../site/about.html#contact">Contact</a></span></div>
 ${SKETCH('Sketch, round 2 · a board opens its sub-areas below the picture (only Actuary has any so far). The four fields carry People, Insights, Products and About us. Photograph is toned to the logo’s marine in the browser.')}
 </body></html>`;
