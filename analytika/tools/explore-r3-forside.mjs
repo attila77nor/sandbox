@@ -8,6 +8,7 @@ const BOARD_IDS = [['actuary', 'Actuary'], ['pricing', 'Pricing'], ['data-platfo
 const PHOTOS = {
   tavler: { src: PHOTO.src, w: PHOTO.w, h: PHOTO.h, boards: PHOTO.boards.map(([id, n, r]) => [id, n, r]) },
   rom: { src: '../../assets/photo/rom-v2-neutral.jpg', w: 1672, h: 941, boards: BOARD_IDS.map(([id, n], i) => [id, n, [[598, 295, 726, 483], [735, 295, 856, 483], [866, 295, 992, 483], [1003, 295, 1120, 483], [1131, 295, 1257, 483]][i]]) },
+  ekte: { src: '../../assets/photo/ekte-kontor-v4-neutral.jpg', w: 1672, h: 941, boards: BOARD_IDS.map(([id, n], i) => [id, n, [[567, 380, 654, 469], [661, 380, 749, 469], [756, 380, 844, 469], [851, 380, 939, 469], [945, 380, 1028, 469]][i]]) },
   kontor: { src: '../../assets/photo/kontor-v3-neutral.jpg', w: 1672, h: 941, boards: BOARD_IDS.map(([id, n], i) => [id, n, [[143, 199, 411, 561], [421, 201, 693, 561], [703, 199, 978, 561], [987, 198, 1260, 561], [1270, 198, 1559, 563]][i]]) },
 };
 const ROWS = [['People', '../site/people.html'], ['Insights', '../site/insights.html'], ['Products', '../site/products.html'], ['About us', '../site/about.html']];
@@ -65,7 +66,7 @@ body.past .board{pointer-events:none}
 .foot a:hover{color:var(--ink)}
 .sketch{position:relative;z-index:2;margin:0;padding:6px var(--gut) 16px;background:#E1E2E5;font-size:12px;color:#5C616C}
 @media (max-width:760px){.foot{padding:24px 20px 12px}.top nav a:nth-child(-n+4){display:none}.top nav .gap{margin-left:0}
-  .areasline{display:flex;flex-wrap:wrap;gap:.2rem 1.1rem;position:absolute;left:var(--gut);right:var(--gut);bottom:clamp(22px,5vh,44px);font-size:12.5px;letter-spacing:.04em;color:rgba(255,255,255,.85);pointer-events:auto}
+  .areasline{display:flex;flex-wrap:wrap;gap:.2rem 1.1rem;position:absolute;left:var(--gut);right:var(--gut);bottom:clamp(22px,5vh,44px);font-size:12.5px;letter-spacing:.04em;color:rgba(255,255,255,.9);text-shadow:0 1px 10px rgba(0,0,0,.55);pointer-events:auto}
   .hero h1{bottom:clamp(70px,14vh,120px)}.cue{display:none}}
 `;
 
@@ -95,4 +96,5 @@ function sc(){document.body.classList.toggle('past',scrollY>innerHeight*.35);doc
 const NOTE = 'Rows are a first guess; every page behind them is still to be designed. Point at a board to see its area.';
 write('forside.html', page({ file: 'forside.html', photo: 'tavler', dim: 0.68, ink: 'light', titleSide: 'left', menu: true, cue: true, note: 'Sketch, round 3 · the first whiteboard photograph, dimmed evenly so the title reads. ' + NOTE }));
 write('forside-rom.html', page({ file: 'forside-rom.html', photo: 'rom', dim: 1, ink: 'dark', titleSide: 'right', menu: false, cue: false, note: 'Sketch, round 3 · the room photograph, not dimmed: the title sits on the calm parquet at the bottom right and the mark is dark on the bright window. ' + NOTE }));
+write('forside-ekte.html', page({ file: 'forside-ekte.html', photo: 'ekte', dim: 1, ink: 'light', titleSide: 'left', menu: false, cue: false, note: 'Sketch, round 3 · the office photograph tidied by ChatGPT, not dimmed: the title sits bottom left on the dark desk (10.7:1) and the mark is white. ' + NOTE }));
 write('forside-kontor.html', page({ file: 'forside-kontor.html', photo: 'kontor', dim: 0.68, ink: 'light', titleSide: 'left', menu: false, cue: false, note: 'Sketch, round 3 · the office photograph. Papers and chairs reach pure white everywhere, so it has to be dimmed evenly for the title to read. ' + NOTE }));

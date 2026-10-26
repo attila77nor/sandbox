@@ -14,6 +14,7 @@ const { spawnSync } = require('child_process');
   const out = path.join(root, 'concepts/thumbs');
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'thumbs-'));
   fs.mkdirSync(out, { recursive: true });
+  const only = process.env.ONLY ? new Set(process.env.ONLY.split(',')) : null; // e.g. ONLY=forside-ekte,photo-ekte-kontor-v4-neutral
   const jobs = []; // [src, dst, width, quality]
   const concepts = {};
   const b = await chromium.launch(); const errs = [];
@@ -24,7 +25,7 @@ const { spawnSync } = require('child_process');
     return [ctx, p];
   };
   for (const it of [...ITEMS, ...HISTORY]) {
-    if (it.same) continue;
+    if (it.same || (only && !only.has(it.id))) continue;
     const [ctx, p] = await open(it.file, it.thumbSuffix || '');
     await p.waitForTimeout(it.waitMs || 1600);
     const png = path.join(tmp, it.id + '.png');
@@ -32,7 +33,7 @@ const { spawnSync } = require('child_process');
     jobs.push([png, path.join(out, it.id + '.jpg'), 520, 72]);
     await ctx.close();
   }
-  for (const ex of EXPAND) {
+  for (const ex of only ? [] : EXPAND) {
     const [ctx, p] = await open(ex.file);
     await p.waitForTimeout(1500);
     const blocks = p.locator('section.concept');
@@ -58,9 +59,9 @@ const { spawnSync } = require('child_process');
     await ctx.close();
   }
   await b.close();
-  fs.writeFileSync(path.join(out, 'concepts.json'), JSON.stringify(concepts, null, 1));
-  for (const ph of PHOTOS) jobs.push([path.join(root, ph.file), path.join(out, 'photo-' + ph.id + '.jpg'), 520, 74]);
-  for (const g of INSPIRATION) {
+  if (!only) fs.writeFileSync(path.join(out, 'concepts.json'), JSON.stringify(concepts, null, 1));
+  for (const ph of PHOTOS) if (!only || only.has('photo-' + ph.id)) jobs.push([path.join(root, ph.file), path.join(out, 'photo-' + ph.id + '.jpg'), 520, 74]);
+  for (const g of only ? [] : INSPIRATION) {
     const files = fs.readdirSync(path.join(root, 'inspiration', g.dir)).filter((f) => /\.(png|webp|jpe?g)$/i.test(f)).sort();
     files.forEach((f) => jobs.push([path.join(root, 'inspiration', g.dir, f), path.join(out, 'inspo-' + g.dir + '-' + f.replace(/\.[^.]+$/, '') + '.jpg'), 340, 68]));
   }
