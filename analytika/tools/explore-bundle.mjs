@@ -4,9 +4,9 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const dir = new URL('../concepts/explore/', import.meta.url);
-const KEYS = ['forside', 'forside-rom', 'forside-ekte', 'forside-kontor', 'oslo', 'oslo-people', 'tabell', 'tabell-people', 'trekant', 'trekant-people', 'tetthet', 'tetthet-people', 'vegg-hvit', 'vegg-marine', 'vegg-zoom'].map((n) => n + '.html');
+const KEYS = ['forside', 'forside-rom', 'forside-ekte', 'forside-ekte-naer', 'forside-kontor', 'oslo', 'oslo-people', 'tabell', 'tabell-people', 'trekant', 'trekant-people', 'tetthet', 'tetthet-people', 'vegg-hvit', 'vegg-marine', 'vegg-zoom'].map((n) => n + '.html');
 const TABS = [
-  ['Round 3, the landing', [['Forside, rom (valgt)', 'forside-rom.html'], ['Forside, ekte kontor (ny)', 'forside-ekte.html'], ['Forside, tavler', 'forside.html'], ['Forside, kontor', 'forside-kontor.html']]],
+  ['Round 3, the landing', [['Forside, rom (valgt)', 'forside-rom.html'], ['Forside, ekte kontor (ny)', 'forside-ekte.html'], ['… 1,3× nærmere (utsnitt)', 'forside-ekte-naer.html'], ['Forside, tavler', 'forside.html'], ['Forside, kontor', 'forside-kontor.html']]],
   ['Round 1', [['Oslo-lys', 'oslo.html'], ['Tabell', 'tabell.html'], ['Trekanten', 'trekant.html'], ['Tetthet', 'tetthet.html']]],
   ['Round 2, the photograph', [['Hvit', 'vegg-hvit.html'], ['Marine', 'vegg-marine.html'], ['Zoom', 'vegg-zoom.html']]],
 ];

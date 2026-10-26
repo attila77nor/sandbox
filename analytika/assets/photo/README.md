@@ -11,6 +11,7 @@ Alle bildene er laget i ChatGPT og levert av Atle. Tone og korn er lagt på her,
 | `kontor-v3-neutral.jpg` | Samme bilde, nøytral og med korn: `photo-neutral.py --grain 2.2 --lift 0.95`. |
 | `ekte-kontor-v4-chatgpt.webp` | **Ny kandidat.** Kontoret deres, 1672 × 941. Atle ba ChatGPT rydde det opp; strukturene er ifølge Atle de samme som i virkeligheten. Promptene til oppryddingen er ikke lagret. De fem tavlene har de samme fem tegningene som det genererte rommet, så de er trolig lagt til av ChatGPT. Det er ikke bekreftet om tavlene henger der i virkeligheten, og bildet er uansett en bearbeidet fremstilling, ikke et dokumentarfoto. Svakt varm tone (rød minus blå = 8,5). |
 | `ekte-kontor-v4-neutral.jpg` | Samme bilde, nøytral gråtone, lettet og med lett korn: `photo-neutral.py --grain 2.2 --lift 0.85`. Tavlene er målt til 567–1028 px i bredden og 380–469 i høyden. |
+| `ekte-kontor-v4-neutral-utsnitt.jpg` | Simulering: `ekte-kontor-v4-neutral.jpg` beskåret 1,3× rundt tavlene (utsnitt 154,138, 1286 × 724). Viser hva «kom litt nærmere» gjør, uten ny generering. Tavlene fyller 40 % av bredden (mot 31 %), klikkflaten er 108 px, tittelen nede til venstre er fortsatt lesbar (10,5:1), og de to maleriene faller stort sett utenfor. |
 | `rom-v1-chatgpt.webp` | Rommet, første forsøk, 1672 × 941. Fra den nye prompten (A under). Gylden tone. |
 | `rom-v2-chatgpt.webp` | Rommet, andre forsøk, 1672 × 941: flere ting på bordet, flere planter, lampe, jakke over en stol. Antatt fra justeringsprompten C. Gylden tone (rød minus blå = 12,6 mot 0,5 i det første tavlebildet). |
 | `rom-v2-neutral.jpg` | **Valgt.** `rom-v2-chatgpt.webp` med det varme skjæret fjernet, litt mer klarhet og lett korn: `photo-neutral.py --grain 2.2`. Kornet er målt til samme nivå som det første tavlebildet (ca. 2,2 på en flat flate). |
@@ -61,6 +62,33 @@ Keep the lighting and the film grain. Output a wide 16:9 landscape image, highes
 ```
 
 Skilleveggen ble ikke med i `rom-v2`.
+
+### E. Kontoret: fjern maleriene og gjør det mer levende (foreslått, ikke kjørt ennå)
+
+Gjøres med samme kamera, før noen «kom nærmere».
+
+```
+Use the attached image as the reference. Keep exactly the same room, structure, camera position, windows, ceiling mouldings, the beam, the low shelving divider, the dining table with chairs, and the five whiteboards on the far wall (same size, same positions, same five drawings). Keep the black-and-white film look and the soft window light.
+
+Change only these things:
+1. Remove the two framed artworks: the large dark painting on the left wall and the small picture of a tree house on the right wall. Leave those two walls plain.
+2. Make the room look lived-in and a little messy, like a real working office where people are happy, not a designer showroom. No people. Add small, believable signs of daily work, spread unevenly:
+- on the desks in the foreground and middle: open laptops with stickers, a second monitor with a keyboard, loose printed papers and notebooks with handwriting, a coffee mug in more than one place, a water bottle or thermos, headphones, charging cables, a plate with half a cinnamon bun and a fork
+- on and around the chairs: a jacket over one chair, a wool hat and scarf on another, a backpack on the floor beside a chair, a bicycle helmet on a desk
+- on the shelving divider: books stacked sideways and leaning, folders, a half-empty mug, a small plant that is slightly overgrown
+- on the whiteboards: faint ghosts of erased drawings, a few smudges, a marker tray with several markers and an eraser, and a couple of sticky notes beside the boards; make the marker lines look hand-drawn and slightly uneven, not like vector graphics
+- on the dining table at the back: a laptop, some papers and two mugs, not set neatly
+- a few more plants, some a bit droopy or overgrown, and a pile of cardboard boxes or a recycling bag near the door
+3. Keep the lowest fifth of the frame, left half, dark, calm and free of objects.
+
+Do not add any text, logos or signs. Output a wide 16:9 image, highest quality, no border, no vignette.
+```
+
+### F. Kontoret: kom nærmere (foreslått; trengs bare hvis utsnittet ikke holder)
+
+```
+Use the attached image as the reference. Move the camera forward by about 30%, as if walking a few steps towards the far wall, keeping the same viewing direction and eye height. It stays the same room with the same objects and the same black-and-white film look, just seen from closer. The five whiteboards should end up spanning about 40% of the image width. Keep the dark desk in the bottom-left foreground and keep that corner calm and free of objects. Do not add or remove anything. Output a wide 16:9 image, highest quality, no border, no vignette.
+```
 
 ### D. Nøytral gråtone (ble gjort lokalt i stedet)
 
