@@ -11,12 +11,22 @@ const PHOTOS = {
   ekte: { src: '../../assets/photo/ekte-kontor-v4-neutral.jpg', w: 1672, h: 941, boards: BOARD_IDS.map(([id, n], i) => [id, n, [[567, 380, 654, 469], [661, 380, 749, 469], [756, 380, 844, 469], [851, 380, 939, 469], [945, 380, 1028, 469]][i]]) },
   /* the same photograph cropped 1.3x closer around the boards (origin 154,138): a test of 'come a bit closer' without asking ChatGPT */
   ekte13: { src: '../../assets/photo/ekte-kontor-v4-neutral-utsnitt.jpg', w: 1286, h: 724, boards: BOARD_IDS.map(([id, n], i) => [id, n, [[413, 242, 500, 331], [507, 242, 595, 331], [602, 242, 690, 331], [697, 242, 785, 331], [791, 242, 874, 331]][i]]) },
+  /* the lived-in version (v5): the camera did not move, so the boards sit exactly where they did in v4 */
+  liv: { src: '../../assets/photo/ekte-kontor-v5-neutral.jpg', w: 1672, h: 941, boards: BOARD_IDS.map(([id, n], i) => [id, n, [[567, 380, 654, 469], [661, 380, 749, 469], [756, 380, 844, 469], [851, 380, 939, 469], [945, 380, 1028, 469]][i]]) },
   kontor: { src: '../../assets/photo/kontor-v3-neutral.jpg', w: 1672, h: 941, boards: BOARD_IDS.map(([id, n], i) => [id, n, [[143, 199, 411, 561], [421, 201, 693, 561], [703, 199, 978, 561], [987, 198, 1260, 561], [1270, 198, 1559, 563]][i]]) },
 };
 const ROWS = [['People', '../site/people.html'], ['Insights', '../site/insights.html'], ['Products', '../site/products.html'], ['About us', '../site/about.html']];
 const NAV = [...ROWS, ['Join us', '../site/about.html#join'], ['Contact', '../site/about.html#contact']];
 const ARROW = '<svg class="arr" viewBox="0 0 76 12" aria-hidden="true" focusable="false"><path d="M0 6h74M69 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
+const TITLE_CSS = {
+  /* huge and centred, a soft dark glow behind the letters so they read on whatever is under them */
+  center: '.hero h1{left:50%;top:50%;bottom:auto;right:auto;transform:translate(-50%,-50%);font-size:clamp(56px,13vw,210px);letter-spacing:-.045em;text-align:center;white-space:nowrap;text-shadow:0 2px 44px rgba(0,0,0,.55),0 0 4px rgba(0,0,0,.22)}',
+  /* the same, but the letters are the photograph inverted: white on dark parts, dark on bright parts */
+  'center-diff': '.hero{z-index:auto}.hero h1{z-index:2;left:50%;top:50%;bottom:auto;right:auto;transform:translate(-50%,-50%);font-size:clamp(56px,13vw,210px);letter-spacing:-.045em;text-align:center;white-space:nowrap;mix-blend-mode:difference}',
+  /* a sign on the far wall above the boards; position and size come from the photograph's own coordinates */
+  wall: '.hero h1{left:0;top:0;bottom:auto;right:auto;transform:translate(-50%,-50%);white-space:nowrap;letter-spacing:-.04em;text-shadow:0 2px 30px rgba(0,0,0,.5),0 0 3px rgba(0,0,0,.2)}',
+};
 const css = (c) => `
 :root{--ink:#14161B;--mute:#575C67;--rule:rgba(20,22,27,.09);--acc:#036194;--gut:clamp(20px,3.6vw,56px);--sans:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;--dim:${c.dim};
   ${c.ink === 'dark' ? '--lg-ink:#1E3363;--lg-word:#1E3363;--lg-blue:#1B92D0;--lg-deep:#036194' : '--lg-ink:#fff;--lg-word:#fff;--lg-blue:#fff;--lg-deep:#fff'}}
@@ -49,6 +59,7 @@ body.past .board{pointer-events:none}
 .hero{position:relative;z-index:2;height:100vh;height:100svh;min-height:480px;pointer-events:none}
 .hero h1,.cue,.areasline{opacity:calc(1 - var(--s,0) * 2)}
 .hero h1{position:absolute;${c.titleSide === 'right' ? 'right' : 'left'}:var(--gut);bottom:clamp(36px,9vh,96px);margin:0;font:600 clamp(40px,5.4vw,80px)/1 var(--sans);letter-spacing:-.035em;color:#fff;pointer-events:auto}
+${TITLE_CSS[c.titleMode] || ''}
 .areasline{display:none}
 .cue{position:absolute;right:var(--gut);bottom:clamp(40px,9.5vh,100px);width:20px;color:#fff;opacity:.8;pointer-events:auto}
 .cue svg{display:block;width:20px;height:44px}
@@ -88,10 +99,13 @@ ${c.cue ? `<a class="cue" href="#pages" aria-label="Scroll to the pages"><svg vi
 ${SKETCH(c.note)}
 <script>(function(){
 var IW=${ph.w},IH=${ph.h},R=${JSON.stringify(Object.fromEntries(ph.boards.map(([id, , r]) => [id, r])))},ph=document.getElementById('ph'),box=ph.parentNode,bs=[].slice.call(document.querySelectorAll('.board'));
-function lay(){var vw=box.clientWidth,vh=box.clientHeight,s=Math.max(vw/IW,vh/IH),ox=(vw-IW*s)*.5,oy=(vh-IH*s)*.45;
+${c.zoom ? `var Z=${c.zoom},FX=${c.focus[0]},FY=${c.focus[1]},TX=${c.target[0]},TY=${c.target[1]},h1=document.querySelector('.hero h1');
+function lay(){var vw=box.clientWidth,vh=box.clientHeight,z=vw<760?1:Z,s=Math.max(vw/IW,vh/IH)*z,ox=vw*TX-FX*s,oy=vh*TY-FY*s;ox=Math.min(0,Math.max(vw-IW*s,ox));oy=Math.min(0,Math.max(vh-IH*s,oy));
+  ph.style.cssText='max-width:none;object-fit:fill;position:absolute;left:'+ox+'px;top:'+oy+'px;width:'+(IW*s)+'px;height:'+(IH*s)+'px';
+  ${c.titleMode === 'wall' ? `h1.style.left=(ox+${c.wall.x}*s)+'px';h1.style.top=(oy+${c.wall.y}*s)+'px';h1.style.fontSize=Math.max(34,${c.wall.h}*s*.6)+'px';` : ''}` : `function lay(){var vw=box.clientWidth,vh=box.clientHeight,s=Math.max(vw/IW,vh/IH),ox=(vw-IW*s)*.5,oy=vh*.45-IH*s*.45;`}
   bs.forEach(function(b){var r=R[b.dataset.id],x0=ox+r[0]*s,y0=oy+r[1]*s,x1=ox+r[2]*s,y1=oy+r[3]*s;
     b.style.left=x0+'px';b.style.top=y0+'px';b.style.width=(x1-x0)+'px';b.style.height=(y1-y0)+'px';b.classList.toggle('in',y0<44);});}
-lay();addEventListener('resize',lay);ph.addEventListener('load',lay);
+lay();addEventListener('resize',lay);ph.addEventListener('load',lay);${c.zoom ? "addEventListener('message',function(e){if(e.data&&e.data.zoom){Z=+e.data.zoom;lay();}});" : ''}
 function sc(){document.body.classList.toggle('past',scrollY>innerHeight*.35);document.documentElement.style.setProperty('--s',Math.min(1,scrollY/innerHeight).toFixed(3));}sc();addEventListener('scroll',sc,{passive:true});
 })();</script>
 </body></html>`;
@@ -100,4 +114,11 @@ write('forside.html', page({ file: 'forside.html', photo: 'tavler', dim: 0.68, i
 write('forside-rom.html', page({ file: 'forside-rom.html', photo: 'rom', dim: 1, ink: 'dark', titleSide: 'right', menu: false, cue: false, note: 'Sketch, round 3 · the room photograph, not dimmed: the title sits on the calm parquet at the bottom right and the mark is dark on the bright window. ' + NOTE }));
 write('forside-ekte.html', page({ file: 'forside-ekte.html', photo: 'ekte', dim: 1, ink: 'light', titleSide: 'left', menu: false, cue: false, note: 'Sketch, round 3 · the office photograph tidied by ChatGPT, not dimmed: the title sits bottom left on the dark desk (10.7:1) and the mark is white. ' + NOTE }));
 write('forside-ekte-naer.html', page({ file: 'forside-ekte-naer.html', photo: 'ekte13', dim: 1, ink: 'light', titleSide: 'left', menu: false, cue: false, note: 'Sketch, round 3 · the office photograph cropped 1.3x closer (a simulation: the boards span 40% of the width and the hotspots are 108 px). The paintings on the walls fall mostly outside the frame. ' + NOTE }));
+/* round 4: the lived-in office (v5). Zoom 1.5 puts the boards at about 46% of the width; the zoom buttons in preview.html change it live. */
+const LIV = { photo: 'liv', dim: 1, ink: 'light', menu: false, cue: false, zoom: 1.5, focus: [797, 425], target: [0.5, 0.40], wall: { x: 780, y: 318, h: 118 } };
+const LNOTE = 'Rows are a first guess; every page behind them is still to be designed. Point at a board to see its area.';
+write('forside-liv-skilt.html', page({ ...LIV, file: 'forside-liv-skilt.html', titleMode: 'wall', note: 'Sketch, round 4 · the title as a sign on the far wall above the boards, white with a soft dark glow. ' + LNOTE }));
+write('forside-liv-senter.html', page({ ...LIV, file: 'forside-liv-senter.html', titleMode: 'center', note: 'Sketch, round 4 · the title huge and centred, white with a soft dark glow. ' + LNOTE }));
+write('forside-liv-diff.html', page({ ...LIV, file: 'forside-liv-diff.html', titleMode: 'center-diff', note: 'Sketch, round 4 · the title huge and centred as the photograph inverted: white over dark, dark over bright. ' + LNOTE }));
+write('forside-liv-venstre.html', page({ ...LIV, file: 'forside-liv-venstre.html', zoom: 1, focus: [836, 470], target: [0.5, 0.5], titleMode: 'left', note: 'Sketch, round 4 · as before: white title bottom left, no zoom. The dark sweater on the chair still gives it a calm place. ' + LNOTE }));
 write('forside-kontor.html', page({ file: 'forside-kontor.html', photo: 'kontor', dim: 0.68, ink: 'light', titleSide: 'left', menu: false, cue: false, note: 'Sketch, round 3 · the office photograph. Papers and chairs reach pure white everywhere, so it has to be dimmed evenly for the title to read. ' + NOTE }));

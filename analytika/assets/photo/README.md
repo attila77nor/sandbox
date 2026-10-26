@@ -12,6 +12,8 @@ Alle bildene er laget i ChatGPT og levert av Atle. Tone og korn er lagt på her,
 | `ekte-kontor-v4-chatgpt.webp` | **Ny kandidat.** Kontoret deres, 1672 × 941. Atle ba ChatGPT rydde det opp; strukturene er ifølge Atle de samme som i virkeligheten. Promptene til oppryddingen er ikke lagret. De fem tavlene har de samme fem tegningene som det genererte rommet, så de er trolig lagt til av ChatGPT. Det er ikke bekreftet om tavlene henger der i virkeligheten, og bildet er uansett en bearbeidet fremstilling, ikke et dokumentarfoto. Svakt varm tone (rød minus blå = 8,5). |
 | `ekte-kontor-v4-neutral.jpg` | Samme bilde, nøytral gråtone, lettet og med lett korn: `photo-neutral.py --grain 2.2 --lift 0.85`. Tavlene er målt til 567–1028 px i bredden og 380–469 i høyden. |
 | `ekte-kontor-v4-neutral-utsnitt.jpg` | Simulering: `ekte-kontor-v4-neutral.jpg` beskåret 1,3× rundt tavlene (utsnitt 154,138, 1286 × 724). Viser hva «kom litt nærmere» gjør, uten ny generering. Tavlene fyller 40 % av bredden (mot 31 %), klikkflaten er 108 px, tittelen nede til venstre er fortsatt lesbar (10,5:1), og de to maleriene faller stort sett utenfor. |
+| `ekte-kontor-v5-chatgpt.png` | **Ny kandidat.** Kontoret, levende versjon, 1672 × 941. Fra prompt E under (Atle fjernet punkt 3, «hold nederste femtedel til venstre mørk», før han kjørte den). De to maleriene er borte, og bildet har rot og tegn på arbeid: åpne laptoper med klistremerker, en skillingsbolle, hjelm, ryggsekk, jakke og genser over stoler, flere planter og lapper ved tavlene. Kameraet er det samme som i v4, så de fem tavlene sitter på nøyaktig samme sted. PNG-en er originalen. |
+| `ekte-kontor-v5-neutral.jpg` | Samme bilde, nøytral og lettet med lett korn: `photo-neutral.py --grain 2.2 --lift 0.82`. Brukes av `forside-liv-*`. |
 | `rom-v1-chatgpt.webp` | Rommet, første forsøk, 1672 × 941. Fra den nye prompten (A under). Gylden tone. |
 | `rom-v2-chatgpt.webp` | Rommet, andre forsøk, 1672 × 941: flere ting på bordet, flere planter, lampe, jakke over en stol. Antatt fra justeringsprompten C. Gylden tone (rød minus blå = 12,6 mot 0,5 i det første tavlebildet). |
 | `rom-v2-neutral.jpg` | **Valgt.** `rom-v2-chatgpt.webp` med det varme skjæret fjernet, litt mer klarhet og lett korn: `photo-neutral.py --grain 2.2`. Kornet er målt til samme nivå som det første tavlebildet (ca. 2,2 på en flat flate). |
@@ -63,7 +65,7 @@ Keep the lighting and the film grain. Output a wide 16:9 landscape image, highes
 
 Skilleveggen ble ikke med i `rom-v2`.
 
-### E. Kontoret: fjern maleriene og gjør det mer levende (foreslått, ikke kjørt ennå)
+### E. Kontoret: fjern maleriene og gjør det mer levende (kjørt, ga `ekte-kontor-v5`; punkt 3 ble fjernet)
 
 Gjøres med samme kamera, før noen «kom nærmere».
 

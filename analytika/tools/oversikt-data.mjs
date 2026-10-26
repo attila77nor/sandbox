@@ -19,6 +19,7 @@ export const SECTIONS = [
 
 /* sub-headings, in the order they appear; `page` adds an "open the whole page" button */
 export const SUBS = {
+  r4: { title: 'Runde 4: det levende kontoret', note: 'Nytt bilde fra ChatGPT (rotete, uten malerier) og fire måter å sette tittelen på. Zoom-knappene i visningen flytter bildet nærmere tavlene.' },
   r3: { title: 'Runde 3: forsiden med bildet over hele skjermen', note: 'Samme oppbygning med tre ulike bilder.' },
   r2: { title: 'Runde 2: de fem tavlene som områder', note: 'Minimal topp, gradient ned i bildet, klikkbare tavler.' },
   r1: { title: 'Runde 1: fire nye retninger', note: 'Hentet fra Analytika selv: Oslo, matematikken, folkene.' },
@@ -44,6 +45,10 @@ const S = (name, extra = {}) => ({ group: 'site', file: `concepts/site/${name}.h
 
 export const ITEMS = [
   /* ---------------------------------------------------------------- forsider, nyeste først */
+  { section: 'forsider', sub: 'r4', status: 'alternativ', zoom: true, title: 'Tittelen som skilt over tavlene', text: 'Tittelen står på veggen over tavlene, hvit med myk mørk glød. Eneste plassering som holder med ordentlig kontrast uten å dimme bildet (4,6:1 mot det som ligger under).', round: 'Runde 4', ...E('forside-liv-skilt') },
+  { section: 'forsider', sub: 'r4', status: 'alternativ', zoom: true, title: 'Stor tittel i senter', text: 'Stor hvit tittel midt på skjermen. Faller sammen med tavlene (hvitt mot hvitt, 1,9:1) og skjuler dem.', round: 'Runde 4', ...E('forside-liv-senter') },
+  { section: 'forsider', sub: 'r4', status: 'alternativ', zoom: true, title: 'Stor tittel, invertert mot bildet', text: 'Samme størrelse, men bokstavene er bildet invertert. Mørke over lyse flater, lyse over mørke. Uleselig der veggen er mellomgrå.', round: 'Runde 4', ...E('forside-liv-diff') },
+  { section: 'forsider', sub: 'r4', status: 'alternativ', zoom: true, title: 'Tittelen nede til venstre, uten zoom', text: 'Som før: hvit tittel nede til venstre, der genseren på stolen gir en rolig mørk flate. Tavlene er små.', round: 'Runde 4', ...E('forside-liv-venstre') },
   { section: 'forsider', sub: 'r3', status: 'valgt', title: 'Forside med rommet', text: 'Rommet fyller hele skjermen uten ramme. «Analytika» nede til høyre. Scroll tones bildet til hvitt, og fire grå rader tar over. De fem tavlene er klikkbare.', round: 'Runde 3', ...E('forside-rom') },
   { section: 'forsider', sub: 'r3', status: 'alternativ', title: 'Forside med det virkelige kontoret', text: 'Kontoret deres, ryddet av ChatGPT, over hele skjermen. Tavlene fyller bare 28–37 % av bredden, og den hvite tittelen står nede til venstre. Ny kandidat.', round: 'Runde 3', ...E('forside-ekte') },
   { section: 'forsider', sub: 'r3', status: 'alternativ', title: 'Forside med kontoret, 1,3× nærmere', text: 'Samme bilde beskåret 1,3× rundt tavlene (en simulering, ingen ny generering). Tavlene fyller 40 % av bredden, klikkflaten er 108 px, og de to maleriene faller stort sett utenfor.', round: 'Runde 3', ...E('forside-ekte-naer') },
@@ -106,6 +111,8 @@ export const PHOTOS = [
   { id: 'rom-v2-neutral-korn', file: 'assets/photo/rom-v2-neutral-korn.jpg', title: 'Rommet, tydeligere korn', text: 'Samme bilde med mer korn.', status: 'alternativ' },
   { id: 'rom-v2-chatgpt', file: 'assets/photo/rom-v2-chatgpt.webp', title: 'Rommet, slik ChatGPT leverte det', text: 'Gylden tone.', status: 'tidligere' },
   { id: 'rom-v1-chatgpt', file: 'assets/photo/rom-v1-chatgpt.webp', title: 'Rommet, første forsøk', text: 'Færre ting på bordet og ingen skillevegg.', status: 'tidligere' },
+  { id: 'ekte-kontor-v5-neutral', file: 'assets/photo/ekte-kontor-v5-neutral.jpg', title: 'Kontoret, levende versjon, nøytral og med korn', text: 'Nytt: maleriene fjernet, rot og tegn på arbeid. Kameraet er det samme, så tavlene sitter likt.', status: 'alternativ', full: true },
+  { id: 'ekte-kontor-v5-chatgpt', file: 'assets/photo/ekte-kontor-v5-chatgpt.png', title: 'Kontoret, levende versjon, slik ChatGPT leverte det', text: 'Lagret som PNG.', status: 'tidligere' },
   { id: 'ekte-kontor-v4-neutral', file: 'assets/photo/ekte-kontor-v4-neutral.jpg', title: 'Det virkelige kontoret, nøytral og med korn', text: 'Ny kandidat. Kontoret deres ryddet av ChatGPT; tone og korn lagt på her.', status: 'alternativ', full: true },
   { id: 'ekte-kontor-v4-chatgpt', file: 'assets/photo/ekte-kontor-v4-chatgpt.webp', title: 'Det virkelige kontoret, slik ChatGPT leverte det', text: 'Svakt varm tone.', status: 'tidligere' },
   { id: 'tavler', file: 'assets/photo/tavler.jpg', title: 'Det første tavlebildet', text: 'Tavlene fyller 86 % av bredden.', status: 'alternativ', full: true },

@@ -31,6 +31,7 @@ body.past .board{pointer-events:none}
 .hero{position:relative;z-index:2;height:100vh;height:100svh;min-height:480px;pointer-events:none}
 .hero h1,.cue,.areasline{opacity:calc(1 - var(--s,0) * 2)}
 .hero h1{position:absolute;left:var(--gut);bottom:clamp(36px,9vh,96px);margin:0;font:600 clamp(40px,5.4vw,80px)/1 var(--sans);letter-spacing:-.035em;color:#fff;pointer-events:auto}
+
 .areasline{display:none}
 .cue{position:absolute;right:var(--gut);bottom:clamp(40px,9.5vh,100px);width:20px;color:#fff;opacity:.8;pointer-events:auto}
 .cue svg{display:block;width:20px;height:44px}
@@ -70,7 +71,7 @@ body.past .board{pointer-events:none}
 <p class="sketch">Sketch, round 3 · the office photograph. Papers and chairs reach pure white everywhere, so it has to be dimmed evenly for the title to read. Rows are a first guess; every page behind them is still to be designed. Point at a board to see its area.</p>
 <script>(function(){
 var IW=1672,IH=941,R={"actuary":[143,199,411,561],"pricing":[421,201,693,561],"data-platforms":[703,199,978,561],"consulting":[987,198,1260,561],"business-development":[1270,198,1559,563]},ph=document.getElementById('ph'),box=ph.parentNode,bs=[].slice.call(document.querySelectorAll('.board'));
-function lay(){var vw=box.clientWidth,vh=box.clientHeight,s=Math.max(vw/IW,vh/IH),ox=(vw-IW*s)*.5,oy=(vh-IH*s)*.45;
+function lay(){var vw=box.clientWidth,vh=box.clientHeight,s=Math.max(vw/IW,vh/IH),ox=(vw-IW*s)*.5,oy=vh*.45-IH*s*.45;
   bs.forEach(function(b){var r=R[b.dataset.id],x0=ox+r[0]*s,y0=oy+r[1]*s,x1=ox+r[2]*s,y1=oy+r[3]*s;
     b.style.left=x0+'px';b.style.top=y0+'px';b.style.width=(x1-x0)+'px';b.style.height=(y1-y0)+'px';b.classList.toggle('in',y0<44);});}
 lay();addEventListener('resize',lay);ph.addEventListener('load',lay);
