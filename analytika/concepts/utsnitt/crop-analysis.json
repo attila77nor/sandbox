@@ -1,0 +1,1184 @@
+{
+ "photo": "../assets/photo/ekte-kontor-v5-neutral.jpg",
+ "size": [
+  1672,
+  941
+ ],
+ "criteria": [
+  "tavler_størrelse",
+  "forgrunn_plassering",
+  "forgrunn_størrelse",
+  "avstand_tavle_forgrunn",
+  "oppløsning",
+  "tittel_over_tavlene",
+  "tittel_fri_plass",
+  "kanter",
+  "liv"
+ ],
+ "weights": [
+  0.2,
+  0.18,
+  0.1,
+  0.1,
+  0.14,
+  0.1,
+  0.06,
+  0.04,
+  0.08
+ ],
+ "archetypes": {
+  "arbeidsbordet (nede til venstre)": {
+   "candidates": 2291,
+   "crops": [
+    {
+     "score": 0.858,
+     "zoom": 1.2,
+     "focus": [
+      667,
+      542
+     ],
+     "rect16x10": [
+      40,
+      150,
+      1255,
+      784
+     ],
+     "board_span_pct": 36.7,
+     "screen_px_per_photo_px_1440": 1.15,
+     "criteria": {
+      "tavler_størrelse": 1.0,
+      "forgrunn_plassering": 0.91,
+      "forgrunn_størrelse": 1.0,
+      "avstand_tavle_forgrunn": 1.0,
+      "oppløsning": 1.0,
+      "tittel_over_tavlene": 0.34,
+      "tittel_fri_plass": 1.0,
+      "kanter": 0.77,
+      "liv": 0.36
+     },
+     "wins_pct": 100,
+     "top3_pct": 100,
+     "other_shapes": {
+      "4:3": 0.82,
+      "16:9": 0.85,
+      "21:9": 0.73
+     }
+    },
+    {
+     "score": 0.71,
+     "zoom": 1.1,
+     "focus": [
+      904,
+      427
+     ],
+     "rect16x10": [
+      220,
+      0,
+      1369,
+      855
+     ],
+     "board_span_pct": 33.7,
+     "screen_px_per_photo_px_1440": 1.05,
+     "criteria": {
+      "tavler_størrelse": 1.0,
+      "forgrunn_plassering": 0.2,
+      "forgrunn_størrelse": 1.0,
+      "avstand_tavle_forgrunn": 1.0,
+      "oppløsning": 1.0,
+      "tittel_over_tavlene": 0.38,
+      "tittel_fri_plass": 0.87,
+      "kanter": 0.72,
+      "liv": 0.19
+     },
+     "wins_pct": 0,
+     "top3_pct": 0,
+     "other_shapes": {
+      "4:3": null,
+      "16:9": 0.73,
+      "21:9": 0.655
+     }
+    },
+    {
+     "score": 0.674,
+     "zoom": 1.7,
+     "focus": [
+      612,
+      576
+     ],
+     "rect16x10": [
+      169,
+      299,
+      886,
+      554
+     ],
+     "board_span_pct": 52.1,
+     "screen_px_per_photo_px_1440": 1.63,
+     "criteria": {
+      "tavler_størrelse": 0.57,
+      "forgrunn_plassering": 0.72,
+      "forgrunn_størrelse": 0.86,
+      "avstand_tavle_forgrunn": 1.0,
+      "oppløsning": 0.63,
+      "tittel_over_tavlene": 0.34,
+      "tittel_fri_plass": 1.0,
+      "kanter": 0.76,
+      "liv": 0.4
+     },
+     "wins_pct": 0,
+     "top3_pct": 0,
+     "other_shapes": {
+      "4:3": null,
+      "16:9": 0.786,
+      "21:9": 0.81
+     }
+    }
+   ],
+   "zoom_curve": [
+    {
+     "zoom": 1.0,
+     "valid": 17,
+     "best": 0.821,
+     "focus": [
+      752,
+      470
+     ],
+     "board_span_pct": 30.6,
+     "weakest": "liv"
+    },
+    {
+     "zoom": 1.1,
+     "valid": 252,
+     "best": 0.837,
+     "focus": [
+      684,
+      507
+     ],
+     "board_span_pct": 33.7,
+     "weakest": "liv"
+    },
+    {
+     "zoom": 1.2,
+     "valid": 425,
+     "best": 0.858,
+     "focus": [
+      667,
+      542
+     ],
+     "board_span_pct": 36.7,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 1.3,
+     "valid": 440,
+     "best": 0.854,
+     "focus": [
+      649,
+      571
+     ],
+     "board_span_pct": 39.8,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 1.4,
+     "valid": 438,
+     "best": 0.855,
+     "focus": [
+      627,
+      596
+     ],
+     "board_span_pct": 42.9,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 1.5,
+     "valid": 343,
+     "best": 0.843,
+     "focus": [
+      591,
+      593
+     ],
+     "board_span_pct": 45.9,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 1.6,
+     "valid": 226,
+     "best": 0.767,
+     "focus": [
+      590,
+      584
+     ],
+     "board_span_pct": 49.0,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 1.7,
+     "valid": 109,
+     "best": 0.674,
+     "focus": [
+      612,
+      576
+     ],
+     "board_span_pct": 52.1,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 1.8,
+     "valid": 35,
+     "best": 0.56,
+     "focus": [
+      638,
+      561
+     ],
+     "board_span_pct": 55.1,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 1.9,
+     "valid": 6,
+     "best": 0.463,
+     "focus": [
+      656,
+      597
+     ],
+     "board_span_pct": 58.2,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 2.0,
+     "valid": 0
+    },
+    {
+     "zoom": 2.1,
+     "valid": 0
+    },
+    {
+     "zoom": 2.2,
+     "valid": 0
+    },
+    {
+     "zoom": 2.3,
+     "valid": 0
+    },
+    {
+     "zoom": 2.4,
+     "valid": 0
+    },
+    {
+     "zoom": 2.5,
+     "valid": 0
+    },
+    {
+     "zoom": 2.6,
+     "valid": 0
+    }
+   ]
+  },
+  "pulten med skjerm og hjelm (til høyre)": {
+   "candidates": 486,
+   "crops": [
+    {
+     "score": 0.675,
+     "zoom": 1.3,
+     "focus": [
+      1089,
+      521
+     ],
+     "rect16x10": [
+      510,
+      159,
+      1158,
+      724
+     ],
+     "board_span_pct": 39.8,
+     "screen_px_per_photo_px_1440": 1.24,
+     "criteria": {
+      "tavler_størrelse": 1.0,
+      "forgrunn_plassering": 0.49,
+      "forgrunn_størrelse": 1.0,
+      "avstand_tavle_forgrunn": 0.15,
+      "oppløsning": 1.0,
+      "tittel_over_tavlene": 0.32,
+      "tittel_fri_plass": 0.96,
+      "kanter": 0.31,
+      "liv": 0.36
+     },
+     "wins_pct": 100,
+     "top3_pct": 100,
+     "other_shapes": {
+      "4:3": null,
+      "16:9": 0.672,
+      "21:9": 0.59
+     }
+    },
+    {
+     "score": 0.627,
+     "zoom": 1.0,
+     "focus": [
+      862,
+      470
+     ],
+     "rect16x10": [
+      109,
+      0,
+      1506,
+      941
+     ],
+     "board_span_pct": 30.6,
+     "screen_px_per_photo_px_1440": 0.96,
+     "criteria": {
+      "tavler_størrelse": 1.0,
+      "forgrunn_plassering": 0.21,
+      "forgrunn_størrelse": 0.95,
+      "avstand_tavle_forgrunn": 0.08,
+      "oppløsning": 1.0,
+      "tittel_over_tavlene": 0.45,
+      "tittel_fri_plass": 1.0,
+      "kanter": 0.59,
+      "liv": 0.22
+     },
+     "wins_pct": 0,
+     "top3_pct": 1,
+     "other_shapes": {
+      "4:3": null,
+      "16:9": 0.605,
+      "21:9": 0.567
+     }
+    }
+   ],
+   "zoom_curve": [
+    {
+     "zoom": 1.0,
+     "valid": 10,
+     "best": 0.658,
+     "focus": [
+      912,
+      470
+     ],
+     "board_span_pct": 30.6,
+     "weakest": "avstand_tavle_forgrunn"
+    },
+    {
+     "zoom": 1.1,
+     "valid": 90,
+     "best": 0.66,
+     "focus": [
+      984,
+      497
+     ],
+     "board_span_pct": 33.7,
+     "weakest": "avstand_tavle_forgrunn"
+    },
+    {
+     "zoom": 1.2,
+     "valid": 144,
+     "best": 0.671,
+     "focus": [
+      1037,
+      542
+     ],
+     "board_span_pct": 36.7,
+     "weakest": "avstand_tavle_forgrunn"
+    },
+    {
+     "zoom": 1.3,
+     "valid": 191,
+     "best": 0.675,
+     "focus": [
+      1089,
+      521
+     ],
+     "board_span_pct": 39.8,
+     "weakest": "avstand_tavle_forgrunn"
+    },
+    {
+     "zoom": 1.4,
+     "valid": 51,
+     "best": 0.652,
+     "focus": [
+      1067,
+      546
+     ],
+     "board_span_pct": 42.9,
+     "weakest": "avstand_tavle_forgrunn"
+    },
+    {
+     "zoom": 1.5,
+     "valid": 0
+    },
+    {
+     "zoom": 1.6,
+     "valid": 0
+    },
+    {
+     "zoom": 1.7,
+     "valid": 0
+    },
+    {
+     "zoom": 1.8,
+     "valid": 0
+    },
+    {
+     "zoom": 1.9,
+     "valid": 0
+    },
+    {
+     "zoom": 2.0,
+     "valid": 0
+    },
+    {
+     "zoom": 2.1,
+     "valid": 0
+    },
+    {
+     "zoom": 2.2,
+     "valid": 0
+    },
+    {
+     "zoom": 2.3,
+     "valid": 0
+    },
+    {
+     "zoom": 2.4,
+     "valid": 0
+    },
+    {
+     "zoom": 2.5,
+     "valid": 0
+    },
+    {
+     "zoom": 2.6,
+     "valid": 0
+    }
+   ]
+  },
+  "spisebordet (midtgrunn)": {
+   "candidates": 9489,
+   "crops": [
+    {
+     "score": 0.798,
+     "zoom": 1.4,
+     "focus": [
+      787,
+      496
+     ],
+     "rect16x10": [
+      249,
+      160,
+      1075,
+      672
+     ],
+     "board_span_pct": 42.9,
+     "screen_px_per_photo_px_1440": 1.34,
+     "criteria": {
+      "tavler_størrelse": 1.0,
+      "forgrunn_plassering": 0.99,
+      "forgrunn_størrelse": 1.0,
+      "avstand_tavle_forgrunn": 0.26,
+      "oppløsning": 1.0,
+      "tittel_over_tavlene": 0.31,
+      "tittel_fri_plass": 1.0,
+      "kanter": 0.85,
+      "liv": 0.36
+     },
+     "wins_pct": 100,
+     "top3_pct": 100,
+     "other_shapes": {
+      "4:3": 0.661,
+      "16:9": 0.788,
+      "21:9": 0.728
+     }
+    },
+    {
+     "score": 0.746,
+     "zoom": 1.4,
+     "focus": [
+      1067,
+      466
+     ],
+     "rect16x10": [
+      529,
+      130,
+      1075,
+      672
+     ],
+     "board_span_pct": 42.9,
+     "screen_px_per_photo_px_1440": 1.34,
+     "criteria": {
+      "tavler_størrelse": 1.0,
+      "forgrunn_plassering": 0.8,
+      "forgrunn_størrelse": 1.0,
+      "avstand_tavle_forgrunn": 0.26,
+      "oppløsning": 1.0,
+      "tittel_over_tavlene": 0.31,
+      "tittel_fri_plass": 1.0,
+      "kanter": 0.76,
+      "liv": 0.19
+     },
+     "wins_pct": 0,
+     "top3_pct": 0,
+     "other_shapes": {
+      "4:3": null,
+      "16:9": 0.739,
+      "21:9": 0.656
+     }
+    },
+    {
+     "score": 0.719,
+     "zoom": 1.0,
+     "focus": [
+      752,
+      470
+     ],
+     "rect16x10": [
+      0,
+      0,
+      1506,
+      941
+     ],
+     "board_span_pct": 30.6,
+     "screen_px_per_photo_px_1440": 0.96,
+     "criteria": {
+      "tavler_størrelse": 1.0,
+      "forgrunn_plassering": 0.98,
+      "forgrunn_størrelse": 0.4,
+      "avstand_tavle_forgrunn": 0.14,
+      "oppløsning": 1.0,
+      "tittel_over_tavlene": 0.45,
+      "tittel_fri_plass": 1.0,
+      "kanter": 0.66,
+      "liv": 0.22
+     },
+     "wins_pct": 0,
+     "top3_pct": 0,
+     "other_shapes": {
+      "4:3": 0.736,
+      "16:9": 0.64,
+      "21:9": 0.635
+     }
+    },
+    {
+     "score": 0.679,
+     "zoom": 1.5,
+     "focus": [
+      911,
+      623
+     ],
+     "rect16x10": [
+      409,
+      309,
+      1004,
+      627
+     ],
+     "board_span_pct": 45.9,
+     "screen_px_per_photo_px_1440": 1.43,
+     "criteria": {
+      "tavler_størrelse": 1.0,
+      "forgrunn_plassering": 0.52,
+      "forgrunn_størrelse": 1.0,
+      "avstand_tavle_forgrunn": 0.29,
+      "oppløsning": 0.89,
+      "tittel_over_tavlene": 0.0,
+      "tittel_fri_plass": 1.0,
+      "kanter": 0.56,
+      "liv": 0.63
+     },
+     "wins_pct": 0,
+     "top3_pct": 0,
+     "other_shapes": {
+      "4:3": 0.505,
+      "16:9": 0.686,
+      "21:9": 0.65
+     }
+    }
+   ],
+   "zoom_curve": [
+    {
+     "zoom": 1.0,
+     "valid": 17,
+     "best": 0.719,
+     "focus": [
+      752,
+      470
+     ],
+     "board_span_pct": 30.6,
+     "weakest": "avstand_tavle_forgrunn"
+    },
+    {
+     "zoom": 1.1,
+     "valid": 279,
+     "best": 0.73,
+     "focus": [
+      734,
+      427
+     ],
+     "board_span_pct": 33.7,
+     "weakest": "avstand_tavle_forgrunn"
+    },
+    {
+     "zoom": 1.2,
+     "valid": 672,
+     "best": 0.755,
+     "focus": [
+      797,
+      462
+     ],
+     "board_span_pct": 36.7,
+     "weakest": "avstand_tavle_forgrunn"
+    },
+    {
+     "zoom": 1.3,
+     "valid": 1144,
+     "best": 0.778,
+     "focus": [
+      779,
+      511
+     ],
+     "board_span_pct": 39.8,
+     "weakest": "avstand_tavle_forgrunn"
+    },
+    {
+     "zoom": 1.4,
+     "valid": 1455,
+     "best": 0.798,
+     "focus": [
+      787,
+      496
+     ],
+     "board_span_pct": 42.9,
+     "weakest": "avstand_tavle_forgrunn"
+    },
+    {
+     "zoom": 1.5,
+     "valid": 1378,
+     "best": 0.787,
+     "focus": [
+      821,
+      483
+     ],
+     "board_span_pct": 45.9,
+     "weakest": "avstand_tavle_forgrunn"
+    },
+    {
+     "zoom": 1.6,
+     "valid": 1162,
+     "best": 0.734,
+     "focus": [
+      830,
+      504
+     ],
+     "board_span_pct": 49.0,
+     "weakest": "avstand_tavle_forgrunn"
+    },
+    {
+     "zoom": 1.7,
+     "valid": 909,
+     "best": 0.678,
+     "focus": [
+      842,
+      506
+     ],
+     "board_span_pct": 52.1,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 1.8,
+     "valid": 689,
+     "best": 0.613,
+     "focus": [
+      858,
+      531
+     ],
+     "board_span_pct": 55.1,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 1.9,
+     "valid": 544,
+     "best": 0.557,
+     "focus": [
+      866,
+      537
+     ],
+     "board_span_pct": 58.2,
+     "weakest": "tavler_størrelse"
+    },
+    {
+     "zoom": 2.0,
+     "valid": 413,
+     "best": 0.517,
+     "focus": [
+      856,
+      545
+     ],
+     "board_span_pct": 61.2,
+     "weakest": "tavler_størrelse"
+    },
+    {
+     "zoom": 2.1,
+     "valid": 288,
+     "best": 0.497,
+     "focus": [
+      888,
+      514
+     ],
+     "board_span_pct": 64.3,
+     "weakest": "tavler_størrelse"
+    },
+    {
+     "zoom": 2.2,
+     "valid": 208,
+     "best": 0.491,
+     "focus": [
+      872,
+      523
+     ],
+     "board_span_pct": 67.4,
+     "weakest": "tavler_størrelse"
+    },
+    {
+     "zoom": 2.3,
+     "valid": 142,
+     "best": 0.488,
+     "focus": [
+      867,
+      524
+     ],
+     "board_span_pct": 70.4,
+     "weakest": "tavler_størrelse"
+    },
+    {
+     "zoom": 2.4,
+     "valid": 95,
+     "best": 0.477,
+     "focus": [
+      853,
+      516
+     ],
+     "board_span_pct": 73.5,
+     "weakest": "tavler_størrelse"
+    },
+    {
+     "zoom": 2.5,
+     "valid": 58,
+     "best": 0.424,
+     "focus": [
+      831,
+      508
+     ],
+     "board_span_pct": 76.5,
+     "weakest": "tavler_størrelse"
+    },
+    {
+     "zoom": 2.6,
+     "valid": 36,
+     "best": 0.407,
+     "focus": [
+      839,
+      530
+     ],
+     "board_span_pct": 79.6,
+     "weakest": "tavler_størrelse"
+    }
+   ]
+  },
+  "ingen forgrunn (bare tavlene)": {
+   "candidates": 13377,
+   "crops": [
+    {
+     "score": 0.806,
+     "zoom": 1.4,
+     "focus": [
+      787,
+      596
+     ],
+     "rect16x10": [
+      249,
+      260,
+      1075,
+      672
+     ],
+     "board_span_pct": 42.9,
+     "screen_px_per_photo_px_1440": 1.34,
+     "criteria": {
+      "tavler_størrelse": 1.0,
+      "forgrunn_plassering": 0.0,
+      "forgrunn_størrelse": 0.0,
+      "avstand_tavle_forgrunn": 0.0,
+      "oppløsning": 1.0,
+      "tittel_over_tavlene": 0.31,
+      "tittel_fri_plass": 1.0,
+      "kanter": 0.7,
+      "liv": 0.5
+     },
+     "wins_pct": 76,
+     "top3_pct": 100,
+     "other_shapes": {
+      "4:3": 0.591,
+      "16:9": 0.788,
+      "21:9": 0.763
+     }
+    },
+    {
+     "score": 0.794,
+     "zoom": 1.0,
+     "focus": [
+      842,
+      470
+     ],
+     "rect16x10": [
+      89,
+      0,
+      1506,
+      941
+     ],
+     "board_span_pct": 30.6,
+     "screen_px_per_photo_px_1440": 0.96,
+     "criteria": {
+      "tavler_størrelse": 1.0,
+      "forgrunn_plassering": 0.0,
+      "forgrunn_størrelse": 0.0,
+      "avstand_tavle_forgrunn": 0.0,
+      "oppløsning": 1.0,
+      "tittel_over_tavlene": 0.45,
+      "tittel_fri_plass": 1.0,
+      "kanter": 0.73,
+      "liv": 0.22
+     },
+     "wins_pct": 24,
+     "top3_pct": 42,
+     "other_shapes": {
+      "4:3": 0.791,
+      "16:9": 0.712,
+      "21:9": 0.65
+     }
+    },
+    {
+     "score": 0.786,
+     "zoom": 1.4,
+     "focus": [
+      917,
+      456
+     ],
+     "rect16x10": [
+      379,
+      120,
+      1075,
+      672
+     ],
+     "board_span_pct": 42.9,
+     "screen_px_per_photo_px_1440": 1.34,
+     "criteria": {
+      "tavler_størrelse": 1.0,
+      "forgrunn_plassering": 0.0,
+      "forgrunn_størrelse": 0.0,
+      "avstand_tavle_forgrunn": 0.0,
+      "oppløsning": 1.0,
+      "tittel_over_tavlene": 0.31,
+      "tittel_fri_plass": 1.0,
+      "kanter": 0.88,
+      "liv": 0.26
+     },
+     "wins_pct": 0,
+     "top3_pct": 2,
+     "other_shapes": {
+      "4:3": 0.589,
+      "16:9": 0.756,
+      "21:9": 0.703
+     }
+    },
+    {
+     "score": 0.779,
+     "zoom": 1.4,
+     "focus": [
+      557,
+      496
+     ],
+     "rect16x10": [
+      19,
+      160,
+      1075,
+      672
+     ],
+     "board_span_pct": 42.9,
+     "screen_px_per_photo_px_1440": 1.34,
+     "criteria": {
+      "tavler_størrelse": 1.0,
+      "forgrunn_plassering": 0.0,
+      "forgrunn_størrelse": 0.0,
+      "avstand_tavle_forgrunn": 0.0,
+      "oppløsning": 1.0,
+      "tittel_over_tavlene": 0.31,
+      "tittel_fri_plass": 1.0,
+      "kanter": 0.77,
+      "liv": 0.26
+     },
+     "wins_pct": 0,
+     "top3_pct": 0,
+     "other_shapes": {
+      "4:3": null,
+      "16:9": 0.766,
+      "21:9": 0.744
+     }
+    }
+   ],
+   "zoom_curve": [
+    {
+     "zoom": 1.0,
+     "valid": 17,
+     "best": 0.794,
+     "focus": [
+      842,
+      470
+     ],
+     "board_span_pct": 30.6,
+     "weakest": "liv"
+    },
+    {
+     "zoom": 1.1,
+     "valid": 279,
+     "best": 0.783,
+     "focus": [
+      684,
+      497
+     ],
+     "board_span_pct": 33.7,
+     "weakest": "liv"
+    },
+    {
+     "zoom": 1.2,
+     "valid": 672,
+     "best": 0.8,
+     "focus": [
+      797,
+      542
+     ],
+     "board_span_pct": 36.7,
+     "weakest": "liv"
+    },
+    {
+     "zoom": 1.3,
+     "valid": 1144,
+     "best": 0.805,
+     "focus": [
+      739,
+      571
+     ],
+     "board_span_pct": 39.8,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 1.4,
+     "valid": 1458,
+     "best": 0.806,
+     "focus": [
+      787,
+      596
+     ],
+     "board_span_pct": 42.9,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 1.5,
+     "valid": 1536,
+     "best": 0.793,
+     "focus": [
+      811,
+      593
+     ],
+     "board_span_pct": 45.9,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 1.6,
+     "valid": 1470,
+     "best": 0.692,
+     "focus": [
+      860,
+      584
+     ],
+     "board_span_pct": 49.0,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 1.7,
+     "valid": 1330,
+     "best": 0.597,
+     "focus": [
+      842,
+      576
+     ],
+     "board_span_pct": 52.1,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 1.8,
+     "valid": 1155,
+     "best": 0.5,
+     "focus": [
+      898,
+      541
+     ],
+     "board_span_pct": 55.1,
+     "weakest": "tittel_over_tavlene"
+    },
+    {
+     "zoom": 1.9,
+     "valid": 1044,
+     "best": 0.403,
+     "focus": [
+      926,
+      547
+     ],
+     "board_span_pct": 58.2,
+     "weakest": "tavler_størrelse"
+    },
+    {
+     "zoom": 2.0,
+     "valid": 850,
+     "best": 0.339,
+     "focus": [
+      916,
+      545
+     ],
+     "board_span_pct": 61.2,
+     "weakest": "tavler_størrelse"
+    },
+    {
+     "zoom": 2.1,
+     "valid": 672,
+     "best": 0.291,
+     "focus": [
+      898,
+      504
+     ],
+     "board_span_pct": 64.3,
+     "weakest": "tavler_størrelse"
+    },
+    {
+     "zoom": 2.2,
+     "valid": 540,
+     "best": 0.268,
+     "focus": [
+      742,
+      523
+     ],
+     "board_span_pct": 67.4,
+     "weakest": "tavler_størrelse"
+    },
+    {
+     "zoom": 2.3,
+     "valid": 420,
+     "best": 0.275,
+     "focus": [
+      727,
+      524
+     ],
+     "board_span_pct": 70.4,
+     "weakest": "tavler_størrelse"
+    },
+    {
+     "zoom": 2.4,
+     "valid": 324,
+     "best": 0.274,
+     "focus": [
+      793,
+      516
+     ],
+     "board_span_pct": 73.5,
+     "weakest": "tavler_størrelse"
+    },
+    {
+     "zoom": 2.5,
+     "valid": 250,
+     "best": 0.254,
+     "focus": [
+      781,
+      508
+     ],
+     "board_span_pct": 76.5,
+     "weakest": "tavler_størrelse"
+    },
+    {
+     "zoom": 2.6,
+     "valid": 216,
+     "best": 0.265,
+     "focus": [
+      819,
+      500
+     ],
+     "board_span_pct": 79.6,
+     "weakest": "tavler_størrelse"
+    }
+   ]
+  }
+ },
+ "blur": [
+  {
+   "sigma": 0,
+   "gap_contrast_kept": 1.0,
+   "identified": 5,
+   "identity_margin": 0.46
+  },
+  {
+   "sigma": 1,
+   "gap_contrast_kept": 1.0,
+   "identified": 5,
+   "identity_margin": 0.55
+  },
+  {
+   "sigma": 1.5,
+   "gap_contrast_kept": 1.0,
+   "identified": 5,
+   "identity_margin": 0.57
+  },
+  {
+   "sigma": 2,
+   "gap_contrast_kept": 1.0,
+   "identified": 5,
+   "identity_margin": 0.55
+  },
+  {
+   "sigma": 3,
+   "gap_contrast_kept": 0.97,
+   "identified": 5,
+   "identity_margin": 0.49
+  },
+  {
+   "sigma": 4,
+   "gap_contrast_kept": 0.85,
+   "identified": 5,
+   "identity_margin": 0.44
+  },
+  {
+   "sigma": 5,
+   "gap_contrast_kept": 0.74,
+   "identified": 5,
+   "identity_margin": 0.39
+  },
+  {
+   "sigma": 6,
+   "gap_contrast_kept": 0.63,
+   "identified": 5,
+   "identity_margin": 0.34
+  },
+  {
+   "sigma": 8,
+   "gap_contrast_kept": 0.46,
+   "identified": 3,
+   "identity_margin": 0.26
+  },
+  {
+   "sigma": 10,
+   "gap_contrast_kept": 0.36,
+   "identified": 3,
+   "identity_margin": 0.21
+  },
+  {
+   "sigma": 14,
+   "gap_contrast_kept": 0.22,
+   "identified": 2,
+   "identity_margin": 0.15
+  }
+ ]
+}

@@ -19,6 +19,7 @@ export const SECTIONS = [
 
 /* sub-headings, in the order they appear; `page` adds an "open the whole page" button */
 export const SUBS = {
+  r5: { title: 'Runde 5: utsnittsanalysen', note: 'Fire utsnitt valgt ut av analysen (concepts/utsnitt/README.md), med simulert dybdeskarphet. Knappene i visningen endrer zoom og uskarphet. Pek på en tavle, så kommer den i fokus.' },
   r4: { title: 'Runde 4: det levende kontoret', note: 'Nytt bilde fra ChatGPT (rotete, uten malerier) og fire måter å sette tittelen på. Zoom-knappene i visningen flytter bildet nærmere tavlene.' },
   r3: { title: 'Runde 3: forsiden med bildet over hele skjermen', note: 'Samme oppbygning med tre ulike bilder.' },
   r2: { title: 'Runde 2: de fem tavlene som områder', note: 'Minimal topp, gradient ned i bildet, klikkbare tavler.' },
@@ -45,6 +46,10 @@ const S = (name, extra = {}) => ({ group: 'site', file: `concepts/site/${name}.h
 
 export const ITEMS = [
   /* ---------------------------------------------------------------- forsider, nyeste først */
+  { section: 'forsider', sub: 'r5', status: 'alternativ', zoom: true, blur: true, title: 'Arbeidsbord 1,2×, tavlene myke bak', text: 'Analysens vinner. Arbeidsbordet skarpt nede til venstre, tavlene 37 % av bredden og myke bak, tittelen som skilt over dem.', round: 'Runde 5', ...E('forside-utsnitt-arbeidsbord') },
+  { section: 'forsider', sub: 'r5', status: 'alternativ', zoom: true, blur: true, title: 'Arbeidsbord 1,7×, det nærmeste som går', text: 'Nærmest mulig med både bordet og alle fem tavler i bildet. Tavlene er 52 % av bredden, og bildet er strukket 1,6×.', round: 'Runde 5', ...E('forside-utsnitt-naer') },
+  { section: 'forsider', sub: 'r5', status: 'alternativ', zoom: true, blur: true, title: 'Spisebordet 1,4× i fokus', text: 'Spisebordet og stolene skarpt rett under tavlene. Høyest score totalt, og mest rom i bildet.', round: 'Runde 5', ...E('forside-utsnitt-spisebord') },
+  { section: 'forsider', sub: 'r5', status: 'alternativ', zoom: true, blur: true, title: 'Pulten til høyre 1,3× i fokus', text: 'Pult med skjerm, hjelm og genser skarp til høyre, tavlene myke langt til venstre. Mest filmatisk, men tavlene havner i venstre tredjedel.', round: 'Runde 5', ...E('forside-utsnitt-pult') },
   { section: 'forsider', sub: 'r4', status: 'alternativ', zoom: true, title: 'Tittelen som skilt over tavlene', text: 'Tittelen står på veggen over tavlene, hvit med myk mørk glød. Eneste plassering som holder med ordentlig kontrast uten å dimme bildet (4,6:1 mot det som ligger under).', round: 'Runde 4', ...E('forside-liv-skilt') },
   { section: 'forsider', sub: 'r4', status: 'alternativ', zoom: true, title: 'Stor tittel i senter', text: 'Stor hvit tittel midt på skjermen. Faller sammen med tavlene (hvitt mot hvitt, 1,9:1) og skjuler dem.', round: 'Runde 4', ...E('forside-liv-senter') },
   { section: 'forsider', sub: 'r4', status: 'alternativ', zoom: true, title: 'Stor tittel, invertert mot bildet', text: 'Samme størrelse, men bokstavene er bildet invertert. Mørke over lyse flater, lyse over mørke. Uleselig der veggen er mellomgrå.', round: 'Runde 4', ...E('forside-liv-diff') },
@@ -107,6 +112,11 @@ export const HISTORY = PAGES.flatMap(([name, section, sub, label]) => [
 
 /* photographs: `full` = embedded at full size so the card can open it */
 export const PHOTOS = [
+  { id: 'utsnitt-fire-forsider', file: 'concepts/utsnitt/utsnitt-fire-forsider.jpg', title: 'Utsnittsanalysen: de fire sidene', text: 'Arbeidsbord 1,2× og 1,7×, spisebord 1,4× og pult 1,3×, ved 1440 × 900.', status: 'alternativ', full: true },
+  { id: 'utsnitt-oversikt', file: 'concepts/utsnitt/utsnitt-oversikt.jpg', title: 'Utsnittsanalysen: vinnerne tegnet inn', text: 'De beste utsnittene for hver forgrunn, med score og hvor ofte de vant da vektene ble rystet.', status: 'alternativ', full: true },
+  { id: 'utsnitt-uskarphet', file: 'concepts/utsnitt/utsnitt-uskarphet.jpg', title: 'Hvor mye uskarphet tåler tavlene?', text: 'Sigma 0, 2,5, 4,5, 7 og 10. Fem tegninger kan kjennes igjen til ca. 4,5; ved 7 er det fem hvite felt.', status: 'alternativ', full: true },
+  { id: 'utsnitt-score-kart', file: 'concepts/utsnitt/utsnitt-score-kart.jpg', title: 'Utsnittsanalysen: scorekart for arbeidsbordet', text: 'Hvor midtpunktet kan ligge ved 1,2–2,2× (lyst = høy score). Ved 2,0× finnes ingen gyldige utsnitt.', status: 'alternativ', full: true },
+  { id: 'ekte-kontor-v5-dof-s1-middels', file: 'assets/photo/ekte-kontor-v5-dof-s1-middels.jpg', title: 'Kontoret med simulert dybdeskarphet (arbeidsbordet)', text: 'Arbeidsbordet skarpt, tavlene sigma 4,5 myke. En simulering til å vurdere utsnitt, ikke et endelig bilde.', status: 'alternativ', full: true },
   { id: 'rom-v2-neutral', file: 'assets/photo/rom-v2-neutral.jpg', title: 'Rommet, nøytral gråtone, lett korn', text: 'Valgt. Generert i ChatGPT, tone og korn lagt på her.', status: 'valgt', full: true },
   { id: 'rom-v2-neutral-korn', file: 'assets/photo/rom-v2-neutral-korn.jpg', title: 'Rommet, tydeligere korn', text: 'Samme bilde med mer korn.', status: 'alternativ' },
   { id: 'rom-v2-chatgpt', file: 'assets/photo/rom-v2-chatgpt.webp', title: 'Rommet, slik ChatGPT leverte det', text: 'Gylden tone.', status: 'tidligere' },
@@ -129,6 +139,7 @@ export const INSPIRATION = [
 
 /* documents: shown as text (or the logo as a picture) */
 export const DOCS = [
+  { id: 'utsnitt-readme', title: 'Utsnittsanalysen', text: 'Metode, kriterier, resultat og begrensninger: hvilket utsnitt er best når noe skal være i fokus og tavlene myke bak.', file: 'concepts/utsnitt/README.md', kind: 'md' },
   { id: 'product', title: 'Designkonteksten', text: 'PRODUCT.md: brukere, formål, valg som er tatt (forsiden med rommet) og det som er åpent.', file: 'PRODUCT.md', kind: 'md' },
   { id: 'photo-readme', title: 'Bildene: opphav og prompter', text: 'Hva hvert bilde er, hvordan det er behandlet, og promptene til ChatGPT.', file: 'assets/photo/README.md', kind: 'md' },
   { id: 'logo', title: 'Logoen', text: 'Prikktriangelet og ordmerket. Marine #1E3363, blå #1B92D0, dyp blå #036194.', file: 'assets/logo/logo.svg', kind: 'svg' },

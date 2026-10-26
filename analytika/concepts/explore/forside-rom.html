@@ -18,6 +18,8 @@ ul,ol{margin:0;padding:0;list-style:none}
 .board{position:absolute;display:block;pointer-events:auto;outline:0;transition:box-shadow .4s}
 .board .lab{position:absolute;left:50%;bottom:calc(100% + 10px);transform:translateX(-50%);white-space:nowrap;font-size:12.5px;letter-spacing:.06em;color:#fff;opacity:0;transition:opacity .3s;pointer-events:none}
 .board.in .lab{bottom:auto;top:10px;color:var(--ink)}
+.board .sh{position:absolute;inset:0;background:var(--sharp) no-repeat;filter:contrast(1.04);opacity:0;transition:opacity .6s ease;pointer-events:none}
+.board:hover .sh,.board:focus-visible .sh{opacity:1}
 .board:hover,.board:focus-visible{box-shadow:0 0 0 100vmax rgba(8,10,14,.42)}
 .board:hover .lab,.board:focus-visible .lab{opacity:1}
 body.past .board{pointer-events:none}
@@ -71,9 +73,11 @@ body.past .board{pointer-events:none}
 <p class="sketch">Sketch, round 3 · the room photograph, not dimmed: the title sits on the calm parquet at the bottom right and the mark is dark on the bright window. Rows are a first guess; every page behind them is still to be designed. Point at a board to see its area.</p>
 <script>(function(){
 var IW=1672,IH=941,R={"actuary":[598,295,726,483],"pricing":[735,295,856,483],"data-platforms":[866,295,992,483],"consulting":[1003,295,1120,483],"business-development":[1131,295,1257,483]},ph=document.getElementById('ph'),box=ph.parentNode,bs=[].slice.call(document.querySelectorAll('.board'));
+
 function lay(){var vw=box.clientWidth,vh=box.clientHeight,s=Math.max(vw/IW,vh/IH),ox=(vw-IW*s)*.5,oy=vh*.45-IH*s*.45;
   bs.forEach(function(b){var r=R[b.dataset.id],x0=ox+r[0]*s,y0=oy+r[1]*s,x1=ox+r[2]*s,y1=oy+r[3]*s;
-    b.style.left=x0+'px';b.style.top=y0+'px';b.style.width=(x1-x0)+'px';b.style.height=(y1-y0)+'px';b.classList.toggle('in',y0<44);});}
+    b.style.left=x0+'px';b.style.top=y0+'px';b.style.width=(x1-x0)+'px';b.style.height=(y1-y0)+'px';b.classList.toggle('in',y0<44);
+    var sh=b.querySelector('.sh');if(sh){sh.style.backgroundSize=(IW*s)+'px '+(IH*s)+'px';sh.style.backgroundPosition=(ox-x0)+'px '+(oy-y0)+'px';}});}
 lay();addEventListener('resize',lay);ph.addEventListener('load',lay);
 function sc(){document.body.classList.toggle('past',scrollY>innerHeight*.35);document.documentElement.style.setProperty('--s',Math.min(1,scrollY/innerHeight).toFixed(3));}sc();addEventListener('scroll',sc,{passive:true});
 })();</script>

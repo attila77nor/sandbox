@@ -18,6 +18,8 @@ ul,ol{margin:0;padding:0;list-style:none}
 .board{position:absolute;display:block;pointer-events:auto;outline:0;transition:box-shadow .4s}
 .board .lab{position:absolute;left:50%;bottom:calc(100% + 10px);transform:translateX(-50%);white-space:nowrap;font-size:12.5px;letter-spacing:.06em;color:#fff;opacity:0;transition:opacity .3s;pointer-events:none}
 .board.in .lab{bottom:auto;top:10px;color:var(--ink)}
+.board .sh{position:absolute;inset:0;background:var(--sharp) no-repeat;filter:contrast(1.04);opacity:0;transition:opacity .6s ease;pointer-events:none}
+.board:hover .sh,.board:focus-visible .sh{opacity:1}
 .board:hover,.board:focus-visible{box-shadow:0 0 0 100vmax rgba(8,10,14,.42)}
 .board:hover .lab,.board:focus-visible .lab{opacity:1}
 body.past .board{pointer-events:none}
@@ -71,13 +73,18 @@ body.past .board{pointer-events:none}
 <p class="sketch">Sketch, round 4 · as before: white title bottom left, no zoom. The dark sweater on the chair still gives it a calm place. Rows are a first guess; every page behind them is still to be designed. Point at a board to see its area.</p>
 <script>(function(){
 var IW=1672,IH=941,R={"actuary":[567,380,654,469],"pricing":[661,380,749,469],"data-platforms":[756,380,844,469],"consulting":[851,380,939,469],"business-development":[945,380,1028,469]},ph=document.getElementById('ph'),box=ph.parentNode,bs=[].slice.call(document.querySelectorAll('.board'));
-var Z=1,FX=836,FY=470,TX=0.5,TY=0.5,h1=document.querySelector('.hero h1');
-function lay(){var vw=box.clientWidth,vh=box.clientHeight,z=vw<760?1:Z,s=Math.max(vw/IW,vh/IH)*z,ox=vw*TX-FX*s,oy=vh*TY-FY*s;ox=Math.min(0,Math.max(vw-IW*s,ox));oy=Math.min(0,Math.max(vh-IH*s,oy));
+
+var Z=1,ZDEF=Z,FX=836,FY=470,TX=0.5,TY=0.5,KP=[543,356,1052,493],h1=document.querySelector('.hero h1');
+/* the zoom is lowered on screens where it would push the boards (or the sign over them) out of view: wider than 16:9, or narrower than 4:3 */
+function lay(){var vw=box.clientWidth,vh=box.clientHeight,s0=Math.max(vw/IW,vh/IH),z=vw<760?1:Z,fx=vw<760?(KP[0]+KP[2])/2:FX;
+  if(z>1){var q=[vw*TX/(fx-KP[0]),vw*(1-TX)/(KP[2]-fx),vh*TY/(FY-KP[1]),vh*(1-TY)/(KP[3]-FY)].filter(function(v){return v>0&&isFinite(v);}).map(function(v){return v/s0;});z=Math.max(1,Math.min.apply(null,[z].concat(q)));}
+  var s=s0*z,ox=vw*TX-fx*s,oy=vh*TY-FY*s;ox=Math.min(0,Math.max(vw-IW*s,ox));oy=Math.min(0,Math.max(vh-IH*s,oy));
   ph.style.cssText='max-width:none;object-fit:fill;position:absolute;left:'+ox+'px;top:'+oy+'px;width:'+(IW*s)+'px;height:'+(IH*s)+'px';
   
   bs.forEach(function(b){var r=R[b.dataset.id],x0=ox+r[0]*s,y0=oy+r[1]*s,x1=ox+r[2]*s,y1=oy+r[3]*s;
-    b.style.left=x0+'px';b.style.top=y0+'px';b.style.width=(x1-x0)+'px';b.style.height=(y1-y0)+'px';b.classList.toggle('in',y0<44);});}
-lay();addEventListener('resize',lay);ph.addEventListener('load',lay);addEventListener('message',function(e){if(e.data&&e.data.zoom){Z=+e.data.zoom;lay();}});
+    b.style.left=x0+'px';b.style.top=y0+'px';b.style.width=(x1-x0)+'px';b.style.height=(y1-y0)+'px';b.classList.toggle('in',y0<44);
+    var sh=b.querySelector('.sh');if(sh){sh.style.backgroundSize=(IW*s)+'px '+(IH*s)+'px';sh.style.backgroundPosition=(ox-x0)+'px '+(oy-y0)+'px';}});}
+lay();addEventListener('resize',lay);ph.addEventListener('load',lay);addEventListener('message',function(e){if(!e.data)return;if(e.data.zoom){Z=e.data.zoom==='own'?ZDEF:+e.data.zoom;lay();}});
 function sc(){document.body.classList.toggle('past',scrollY>innerHeight*.35);document.documentElement.style.setProperty('--s',Math.min(1,scrollY/innerHeight).toFixed(3));}sc();addEventListener('scroll',sc,{passive:true});
 })();</script>
 </body></html>

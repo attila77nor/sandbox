@@ -14,6 +14,7 @@ Alle bildene er laget i ChatGPT og levert av Atle. Tone og korn er lagt på her,
 | `ekte-kontor-v4-neutral-utsnitt.jpg` | Simulering: `ekte-kontor-v4-neutral.jpg` beskåret 1,3× rundt tavlene (utsnitt 154,138, 1286 × 724). Viser hva «kom litt nærmere» gjør, uten ny generering. Tavlene fyller 40 % av bredden (mot 31 %), klikkflaten er 108 px, tittelen nede til venstre er fortsatt lesbar (10,5:1), og de to maleriene faller stort sett utenfor. |
 | `ekte-kontor-v5-chatgpt.png` | **Ny kandidat.** Kontoret, levende versjon, 1672 × 941. Fra prompt E under (Atle fjernet punkt 3, «hold nederste femtedel til venstre mørk», før han kjørte den). De to maleriene er borte, og bildet har rot og tegn på arbeid: åpne laptoper med klistremerker, en skillingsbolle, hjelm, ryggsekk, jakke og genser over stoler, flere planter og lapper ved tavlene. Kameraet er det samme som i v4, så de fem tavlene sitter på nøyaktig samme sted. PNG-en er originalen. |
 | `ekte-kontor-v5-neutral.jpg` | Samme bilde, nøytral og lettet med lett korn: `photo-neutral.py --grain 2.2 --lift 0.82`. Brukes av `forside-liv-*`. |
+| `ekte-kontor-v5-dof-{s1,s2,s3}-{lett,middels,sterk}.jpg` | Simulert dybdeskarphet på `ekte-kontor-v5-neutral.jpg`, laget med `tools/photo-dof.py`: ett sted skarpt (s1 arbeidsbordet, s2 pulten til høyre, s3 spisebordet), resten mykere, og tavlene på sigma 2,5 / 4,5 / 7 bildepiksler. Kornet er lagt på igjen i de uskarpe delene. Det er en skarphetsrampe, ikke et dybdekart, så bruk dem til å vurdere utsnitt (se `concepts/utsnitt/README.md`), ikke som endelig bilde. |
 | `rom-v1-chatgpt.webp` | Rommet, første forsøk, 1672 × 941. Fra den nye prompten (A under). Gylden tone. |
 | `rom-v2-chatgpt.webp` | Rommet, andre forsøk, 1672 × 941: flere ting på bordet, flere planter, lampe, jakke over en stol. Antatt fra justeringsprompten C. Gylden tone (rød minus blå = 12,6 mot 0,5 i det første tavlebildet). |
 | `rom-v2-neutral.jpg` | **Valgt.** `rom-v2-chatgpt.webp` med det varme skjæret fjernet, litt mer klarhet og lett korn: `photo-neutral.py --grain 2.2`. Kornet er målt til samme nivå som det første tavlebildet (ca. 2,2 på en flat flate). |
@@ -90,6 +91,18 @@ Do not add any text, logos or signs. Output a wide 16:9 image, highest quality, 
 
 ```
 Use the attached image as the reference. Move the camera forward by about 30%, as if walking a few steps towards the far wall, keeping the same viewing direction and eye height. It stays the same room with the same objects and the same black-and-white film look, just seen from closer. The five whiteboards should end up spanning about 40% of the image width. Keep the dark desk in the bottom-left foreground and keep that corner calm and free of objects. Do not add or remove anything. Output a wide 16:9 image, highest quality, no border, no vignette.
+```
+
+### G. Kontoret: ekte nærbilde med grunn skarphetsdybde (foreslått; trengs hvis utsnittsanalysen peker mot «nær»)
+
+Utsnittene stopper på ca. 1,5× fordi bildet er 1672 px bredt, og uskarpheten i `ekte-kontor-v5-dof-*` er simulert. Hvis nærbildet velges, må det lages ekte. Sjekk at de fem tegningene er de samme etterpå, for ChatGPT tegner dem på nytt.
+
+```
+Use the attached image as the reference. Same room, same objects, same black-and-white film look and soft window light. Photograph it again as a real close-up with a shallow depth of field, as if shot on an 85mm lens at f/2, standing at the left-hand work desk, low over its surface and looking diagonally across the room towards the far wall.
+
+In sharp focus in the lower left foreground: the open laptop with stickers, the mug, the steel thermos, the headphones, the notebook with handwriting and the plate with half a cinnamon bun. Far behind, softly out of focus but still recognisable: the five whiteboards in a row on the far wall, in the same order with the same five drawings (a grid with a curve, a scatter with a fitted curve, boxes joined in a ring, a branching tree, a three-by-three grid of boxes), in the upper right of the frame and spanning about 40% of the image width. The dining table, chairs and tall windows are soft too. Keep a calm, plain band of wall above the boards, free of objects.
+
+No people, no text, no logos, no border, no vignette. Output a wide 16:9 image, highest quality, as large as you can.
 ```
 
 ### D. Nøytral gråtone (ble gjort lokalt i stedet)
