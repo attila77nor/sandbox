@@ -115,3 +115,13 @@ export const INSPIRATION = [
   { title: 'Referanser, runde 2', dir: '3-referanser-runde-2' },
   { title: 'Referanser, runde 3', dir: '4-referanser-runde-3' },
 ];
+
+/* documents: shown as text (or the logo as a picture) */
+export const DOCS = [
+  { id: 'product', title: 'Designkonteksten', text: 'PRODUCT.md: brukere, formål, valg som er tatt (forsiden med rommet) og det som er åpent.', file: 'PRODUCT.md', kind: 'md' },
+  { id: 'photo-readme', title: 'Bildene: opphav og prompter', text: 'Hva hvert bilde er, hvordan det er behandlet, og promptene til ChatGPT.', file: 'assets/photo/README.md', kind: 'md' },
+  { id: 'logo', title: 'Logoen', text: 'Prikktriangelet og ordmerket. Marine #1E3363, blå #1B92D0, dyp blå #036194.', file: 'assets/logo/logo.svg', kind: 'svg' },
+  { id: 'bildebrief', title: 'Bildebrief: biblioteket med fem tavler', text: 'Den første bildebriefen, til biblioteksideen.', file: 'concepts/bildebrief-bibliotek.md', kind: 'md' },
+  { id: 'inspo-readme', title: 'Inspirasjon: hva som er samlet', text: 'README for inspirasjonsmappen.', file: 'inspiration/README.md', kind: 'md' },
+  { id: 'tools-readme', title: 'Verktøyene', text: 'Hvordan sidene og oversikten bygges, og i hvilken rekkefølge.', file: 'tools/README.md', kind: 'md' },
+];

@@ -4,7 +4,7 @@
    Rebuild after the explore-* scripts, and run oversikt-thumbs.cjs first if a page has changed. */
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { basename } from 'node:path';
-import { SECTIONS, SUBS, ITEMS, HISTORY, EXPAND, PHOTOS, INSPIRATION } from './oversikt-data.mjs';
+import { SECTIONS, SUBS, ITEMS, HISTORY, EXPAND, PHOTOS, INSPIRATION, DOCS } from './oversikt-data.mjs';
 
 const concepts = JSON.parse(readFileSync(new URL('concepts/thumbs/concepts.json', new URL('../', import.meta.url))));
 /* every sketch inside the multi-sketch files becomes an item of its own */
@@ -94,6 +94,15 @@ const inspo = INSPIRATION.map((g) => {
   return `<div class="ig"><h3>${esc(g.title)}${g.note ? `<span>${esc(g.note)}</span>` : ''}</h3><div class="thumbs">${files.map((f) => `<img src="${b64('concepts/thumbs/inspo-' + g.dir + '-' + f.replace(/\.[^.]+$/, '') + '.jpg')}" alt="${esc(f)}" title="${esc(f)}">`).join('')}</div></div>`;
 }).join('');
 
+const docMap = {};
+const docCards = DOCS.map((d) => {
+  const content = d.kind === 'svg' ? 'data:image/svg+xml;base64,' + readFileSync(new URL(d.file, root)).toString('base64') : read(d.file);
+  docMap[d.id] = { kind: d.kind, content };
+  const n = order.push({ k: 'doc:' + d.id, t: d.title, s: '', r: '', sec: 'dokumenter', nav: true, sc: null }) - 1;
+  const face = d.kind === 'svg' ? `<span class="face logo"><img src="${content}" alt=""></span>` : `<span class="face"><span>${esc(d.file)}</span></span>`;
+  return `<button type="button" class="card doc" data-n="${n}">${face}<span class="t">${esc(d.title)}</span><span class="x">${esc(d.text)}</span></button>`;
+}).join('');
+
 const today = new Date().toLocaleDateString('nb-NO', { day: 'numeric', month: 'long', year: 'numeric' });
 const CSS = `
 :root{--ink:#14161B;--mute:#5C616C;--rule:#DCDEE3;--bg:#fff;--gut:clamp(20px,3.6vw,56px)}
@@ -135,6 +144,9 @@ button.card:hover img{border-color:var(--ink)}
 .card .s[data-s="valgt"]{color:var(--ink);font-weight:600}
 .card .s[data-f="1"]{color:var(--ink)}
 .card .s[data-s="avvist"]{text-decoration:line-through;text-decoration-color:#9AA0AB}
+.card .face{display:grid;place-items:center;width:100%;aspect-ratio:1440/900;border:1px solid var(--rule);background:#F6F6F4;color:var(--mute);font-size:12.5px;text-align:center;padding:12px}
+.card .face.logo{background:#fff;padding:18%}.card .face.logo img{border:0;aspect-ratio:auto;width:100%;height:auto;max-height:100%;object-fit:contain}
+button.card.doc:hover .face{border-color:var(--ink)}
 .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .thumbs img{display:block;width:100%;height:110px;object-fit:cover;border:1px solid var(--rule)}
 .ig{margin:0 0 30px}
@@ -161,7 +173,7 @@ const html = `<!doctype html>
 <div id="home">
 <header class="top"><h1>Analytika, oversikt over det vi har laget</h1>
 <p class="lede">Klikk et kort for å åpne siden her i filen. Alt ligger i denne ene filen, og lenkene inne i sidene virker. ${total} sider og skisser, fra de første utkastene til i dag. Oppdatert ${today}.</p>
-<nav class="chips" aria-label="Hopp til">${[...SECTIONS.filter((s) => ITEMS.some((i) => i.section === s.id)), { id: 'bilder', title: 'Bilder' }, { id: 'inspirasjon', title: 'Inspirasjon' }].map((s) => `<a href="#${s.id}">${s.title}</a>`).join('')}</nav></header>
+<nav class="chips" aria-label="Hopp til">${[...SECTIONS.filter((s) => ITEMS.some((i) => i.section === s.id)), { id: 'bilder', title: 'Bilder' }, { id: 'dokumenter', title: 'Dokumenter' }, { id: 'inspirasjon', title: 'Inspirasjon' }].map((s) => `<a href="#${s.id}">${s.title}</a>`).join('')}</nav></header>
 <div class="now">
 <div><h2>Valgt</h2><p>Forsiden med rommet: bildet over hele skjermen, «Analytika» nede til høyre, scroll tones bildet til hvitt, og fire grå rader bærer sidene. De fem tavlene er de fem fagområdene, og hver er en lenke.</p></div>
 <div><h2>Ikke tegnet i ny stil ennå</h2><ul><li>People</li><li>Insights</li><li>Products</li><li>About us</li></ul><p style="margin-top:.4rem">Radene på forsiden åpner plassholdere. De eldre sidene finnes i mørk stil.</p></div>
@@ -169,6 +181,7 @@ const html = `<!doctype html>
 </div>
 ${sectionHtml}
 <section id="bilder"><h2>Bilder<span>${PHOTOS.length} bilder</span></h2><div class="grid">${photoCards}</div></section>
+<section id="dokumenter"><h2>Dokumenter<span>${DOCS.length} filer</span></h2><div class="grid">${docCards}</div></section>
 <section id="inspirasjon"><h2>Inspirasjon<span>fra mappen inspiration/</span></h2>${inspo}</section>
 <div class="files"><p><b>Denne siden</b> analytika/oversikt.html, bygget av tools/oversikt.mjs</p><p><b>Klikkbar prototype av forsiden</b> analytika/concepts/explore/preview.html</p><p><b>Bilder</b> analytika/assets/photo/ og analytika/inspiration/</p><p><b>Designkontekst</b> analytika/PRODUCT.md</p></div>
 </div>
@@ -177,8 +190,10 @@ ${sectionHtml}
 var pages=${JSON.stringify(pages).replace(/<\//g, '<\\/')},alias=${JSON.stringify(alias)},P=${JSON.stringify(photoFull)},order=${JSON.stringify(order)};
 var home=document.getElementById('home'),viewer=document.getElementById('viewer'),frame=document.getElementById('frame'),stack=[],homeY=0,pos=-1;
 function stand(n){return '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{height:100%;margin:0}body{display:grid;place-items:center;background:#F3F3F1;color:#14161B;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}div{text-align:center;padding:24px}b{display:block;font-size:20px;font-weight:500;margin-bottom:.4rem}p{margin:0 0 1.4rem;color:#5C6270}button{font:inherit;padding:.55rem 1.1rem;border:1px solid #BFC4CE;border-radius:4px;background:#fff;cursor:pointer}button:hover{border-color:#14161B}</style></head><body><div><b>'+n.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</b><p>Not designed in this sketch yet.</p><button type="button" onclick="parent.postMessage({back:1},\\'*\\')">Back</button></div></body></html>';}
+var D=${JSON.stringify(docMap).replace(/<\//g, '<\\/')};
+function docPage(n){var d=D[n];if(!d)return stand(n);if(d.kind==='svg')return '<!doctype html><html><body style="margin:0;height:100vh;display:grid;place-items:center;background:#fff"><img src="'+d.content+'" style="width:min(70vw,900px);height:auto"></body></html>';var t=d.content.replace(/&/g,'&amp;').replace(/</g,'&lt;');return '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#FAFAF8;color:#14161B;font:15px/1.6 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}main{max-width:84ch;margin:0 auto;padding:32px 24px 80px}pre{margin:0;white-space:pre-wrap;word-wrap:break-word;font:inherit}</style></head><body><main><pre>'+t+'</pre></main></body></html>';}
 function photoPage(n){return '<!doctype html><html><body style="margin:0;height:100vh;display:grid;place-items:center;background:#111"><img src="'+(P[n]||'')+'" style="max-width:100%;max-height:100vh;display:block"></body></html>';}
-function src(f){if(f.indexOf('ph:')===0)return stand(f.slice(3));if(f.indexOf('photo:')===0)return photoPage(f.slice(6));f=alias[f]||f;var s=pages[f];return s?s.replace(/__PH:([A-Za-z0-9_.-]+)__/g,function(m,n){return P[n]||'';}):stand(f);}
+function src(f){if(f.indexOf('ph:')===0)return stand(f.slice(3));if(f.indexOf('photo:')===0)return photoPage(f.slice(6));if(f.indexOf('doc:')===0)return docPage(f.slice(4));f=alias[f]||f;var s=pages[f];return s?s.replace(/__PH:([A-Za-z0-9_.-]+)__/g,function(m,n){return P[n]||'';}):stand(f);}
 var tok=0;
 function load(k,sc){var f=k,h='';if(k.indexOf('ph:')!==0&&k.indexOf('#')>0){f=k.slice(0,k.indexOf('#'));h=k.slice(k.indexOf('#')+1);}
   var t=++tok;
