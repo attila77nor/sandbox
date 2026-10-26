@@ -1,0 +1,198 @@
+{
+ "concepts/photo-concepts.html": [
+  {
+   "i": 0,
+   "title": "Galton-brettet",
+   "text": "Kulene faller tilfeldig, men haugen under blir alltid en klokkekurve. Det er forsikring i ett bilde, og samtidig samme språk som de matematiske symbolene på Insights.",
+   "fav": false
+  },
+  {
+   "i": 1,
+   "title": "Lys på fjorden",
+   "text": "Varme prikker på kaldt, mørkt vann. Det norske er med, det samme er prikkene fra logoen, og det er rom for overskriften over horisonten.",
+   "fav": false
+  }
+ ],
+ "concepts/variants.html": [
+  {
+   "i": 0,
+   "title": "A · Natt",
+   "text": "Samme struktur, men mørk: nesten svart marine, fjellet kommer opp av mørket i stedet for av hvitt, og skriften er tyngre og strammere. Mer kino, mindre yogastudio.",
+   "fav": false
+  },
+  {
+   "i": 1,
+   "title": "B · Dyp blå, tung",
+   "text": "Fet og tydelig: hele forsiden i logoens dype blå, fjellbildet i blå duotone, og en stor, tung overskrift. Her er det ingen tvil om at dette er et firma med ryggrad.",
+   "fav": false
+  },
+  {
+   "i": 2,
+   "title": "C · Brun, lag",
+   "text": "Det brune designet: umber og terrakotta, tynn skrift og tynne streker, og fjellbildet i brun tone i en ramme. Seksjonene er fire lag oppå hverandre, som jordlag. Lag er også et aktuarbegrep.",
+   "fav": false
+  },
+  {
+   "i": 3,
+   "title": "D · Fotoserif",
+   "text": "Etter referansen din med «DS»: fullt mørkt foto, stor luftig serif midt på, små luftige versaler i menyen og en tynn omriss-knapp. Det er den mest «eksklusive» av dem.",
+   "fav": false
+  },
+  {
+   "i": 4,
+   "title": "E · Fargeblokker",
+   "text": "Etter «Nightjar»: grå flate, en rolig serif-overskrift og flate fargeblokker. De fire seksjonene er blokker i logoens farger, uten ord utover navnet. Veldig enkelt og tydelig.",
+   "fav": false
+  },
+  {
+   "i": 5,
+   "title": "F · Lys kaskade",
+   "text": "Etter «things agency»: lyseblå flate, kursiv grotesk i små bokstaver og en kaskade av små kort. Kortene viser de fem fagområdene med de matematiske symbolene våre. Lekent og moderne.",
+   "fav": false
+  }
+ ],
+ "concepts/vision.html": [
+  {
+   "i": 0,
+   "title": "A · Forsiden med foto",
+   "text": "Bildet går over i en ren, tom flate. Slagordet står der bildet løses opp, og de fem fagområdene ligger i én rolig linje nederst i første skjermbilde.",
+   "fav": false
+  },
+  {
+   "i": 1,
+   "title": "B · Samme forside med terrengkurver",
+   "text": "Samme struktur, men bildet er høydekurver tegnet fra data, som løses opp i den tomme flaten. Ingen stockfoto og ingenting å kjøpe lisens til.",
+   "fav": false
+  },
+  {
+   "i": 2,
+   "title": "C · Dørene lenger ned",
+   "text": "Fire ord, ingenting annet. Når du holder over ett, åpner en kort tekst seg, og hele raden er en lenke. Her er «People» åpen. I nettleseren kan du holde musen over radene i HTML-filen.",
+   "fav": false
+  },
+  {
+   "i": 3,
+   "title": "D · Mobil",
+   "text": "Mobil har ikke hover, så der står det ene setningen under hvert ord hele tiden. Fagområdene brytes over to linjer i stedet for å bli en lang rad.",
+   "fav": false
+  }
+ ],
+ "concepts/index.html": [
+  {
+   "i": 0,
+   "title": "1 · Policy",
+   "text": "Forsiden er en forsikringsavtale: forsikringsgiver, forsikrede, dekning, unntak og underskrifter. Strukturen viser at dere kan faget, og partnerne står på forsiden som de som skriver under.",
+   "fav": false
+  },
+  {
+   "i": 1,
+   "title": "2 · Dossier",
+   "text": "Rolig og ensfarget i logoens marineblå, bygget rundt ett faglig diagram: et utviklingstriangel, der prikkene er det ingen har observert ennå. Det er samme form som logoen deres. Nærmest det du likte…",
+   "fav": true
+  },
+  {
+   "i": 2,
+   "title": "3 · Paper",
+   "text": "Forsiden er en fagartikkel: tittel, forfattere med tilhørighet til fagområde, sammendrag og nøkkelord. Partnerne står som forfattere, og kunder og ledige stillinger ligger i margen. Aktuarer kjenner…",
+   "fav": false
+  },
+  {
+   "i": 3,
+   "title": "4 · Contour",
+   "text": "Et norsk terrengkart i stedet for stockfoto av fjell. Høydekurvene er tegnet fra data, partnerne er målepunkter du kan åpne, og de fire tjenestene er stedsnavn. Siden ser ut som noe som er målt, ikke…",
+   "fav": false
+  },
+  {
+   "i": 4,
+   "title": "5 · Statements",
+   "text": "Hver påstand får en hel flate: «No fancy jargon. No fluff.» i stort format, tjenestene i ett felt og kundene i et eget. Ingenting forklares, alt står der. Bygger direkte på det du sa om utsagn og…",
+   "fav": false
+  }
+ ],
+ "concepts/people-concepts-2.html": [
+  {
+   "i": 0,
+   "title": "1 · Litteraturlisten",
+   "text": "Alle 21 står som i en litteraturliste i en fagartikkel: etternavn, hvor de kommer fra, og én linje. Alfabetisk, like store og uten rang. Aktuarer kjenner formatet. Når du holder over en linje,…",
+   "fav": false
+  },
+  {
+   "i": 1,
+   "title": "2 · I egne ord",
+   "text": "Hver person skriver én setning selv. Setningene står i stor, rolig skrift og veksler mellom venstre og høyre side, som ordene på forsiden. Navnet står under med et lite portrett. Ingen titler.",
+   "fav": false
+  },
+  {
+   "i": 2,
+   "title": "3 · Ankomstlinjen",
+   "text": "Teamet langs den samme rette linjen som på forsiden, fra da dere startet til i dag. Hver person er en prikk der de kom inn, med navn og portrett når du holder over. Til høyre ender linjen i fire åpne…",
+   "fav": false
+  }
+ ],
+ "concepts/people-concepts.html": [
+  {
+   "i": 0,
+   "title": "1 · Spørsmålene",
+   "text": "Siden er bygget rundt spørsmålene forsikringsselskaper faktisk stiller, og under hvert står de som har svart på det før. Ingen titler og ingen rangering. Spørsmål som overskrifter er også det AI-søk…",
+   "fav": false
+  },
+  {
+   "i": 1,
+   "title": "2 · Prosa",
+   "text": "Alle står i løpende tekst: navn og én setning om hvor de kommer fra. Det leses som et brev, ikke en katalog, og er ren tekst som både søkemotorer og AI forstår. Portrett vises når du holder over et…",
+   "fav": false
+  },
+  {
+   "i": 2,
+   "title": "3 · Kontaktark",
+   "text": "21 like portretter i samme rute, uten navn før du holder over. Det viser at dere er ekte mennesker, og ingen er større enn noen andre.",
+   "fav": false
+  },
+  {
+   "i": 3,
+   "title": "4 · Klyngen",
+   "text": "Teamet som logoen: 21 prikker i et triangel (1+2+3+4+5+6), hver prikk en person, med ulik størrelse som i logoen. Hold over en prikk for navn og bakgrunn. Til høyre ligger en alfabetisk liste, slik…",
+   "fav": true
+  }
+ ],
+ "concepts/about-concepts-2.html": [
+  {
+   "i": 0,
+   "title": "1 · Fortalen",
+   "text": "Hele visjonen er én setning, brutt etter tankene i den, som vers. Setningen får hele siden, og fakta står under en tynn linje som en signatur: sted, år, antall og «alle». En tynn vertikal strek til…",
+   "fav": false
+  },
+  {
+   "i": 1,
+   "title": "2 · Tesene",
+   "text": "Visjonen som fem korte påstander, nummerert fordi de kan siteres («tese 4»). Rolig og lett å lese på ti sekunder, og hver tese kan deles eller siteres alene.",
+   "fav": false
+  },
+  {
+   "i": 2,
+   "title": "3 · Veggteksten",
+   "text": "Teksten settes som skiltene ved et museum: kort tittel, en linje med år og sted (småtterietet), noen få setninger, og en kreditlinje. Tre skilt henger side om side på en ellers tom, rolig vegg. Alle…",
+   "fav": false
+  }
+ ],
+ "concepts/about-concepts.html": [
+  {
+   "i": 0,
+   "title": "1 · Grunnleggingslinjen",
+   "text": "Den samme vertikale linjen som på forsiden, nå som tid: fra da dere startet til i dag, med 90-graders grener til hver milepæl, vekselvis til høyre og venstre. Linjen ender i logoprikkene, med «i…",
+   "fav": false
+  },
+  {
+   "i": 1,
+   "title": "2 · Brevet",
+   "text": "Et kort brev fra alle sammen, i første person, med datoen og navnene under, og en P.S. med kundene. Det er det mest menneskelige «om oss» som finnes, og den bakerste linjen er der beviset står.…",
+   "fav": false
+  },
+  {
+   "i": 2,
+   "title": "3 · Faktaarket",
+   "text": "Alt i ett rolig ark, som en årsrapports nøkkelopplysninger: ett felt per fakta, linje for linje, uten store tall og uten pynt. Det er det mest nøkterne og kan leses på tre sekunder. Fagområdene og…",
+   "fav": false
+  }
+ ]
+}

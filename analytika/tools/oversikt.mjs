@@ -4,7 +4,12 @@
    Rebuild after the explore-* scripts, and run oversikt-thumbs.cjs first if a page has changed. */
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { basename } from 'node:path';
-import { SECTIONS, ITEMS, PHOTOS, INSPIRATION } from './oversikt-data.mjs';
+import { SECTIONS, SUBS, ITEMS, HISTORY, EXPAND, PHOTOS, INSPIRATION } from './oversikt-data.mjs';
+
+const concepts = JSON.parse(readFileSync(new URL('concepts/thumbs/concepts.json', new URL('../', import.meta.url))));
+/* every sketch inside the multi-sketch files becomes an item of its own */
+const CONCEPT_ITEMS = EXPAND.flatMap((ex) => (concepts[ex.file] || []).map((c) => ({ section: ex.section, sub: ex.sub, status: ex.status, fav: c.fav, title: c.title, text: c.text, round: ex.round, group: ex.group, file: ex.file, id: `${ex.id}-${c.i}`, scroll: { sel: 'section.concept', i: c.i } })));
+const ALL = [...ITEMS, ...CONCEPT_ITEMS, ...HISTORY];
 
 const root = new URL('../', import.meta.url);
 const read = (p) => readFileSync(new URL(p, root), 'utf8');
@@ -14,8 +19,8 @@ const STATUS = { valgt: 'Valgt', alternativ: 'Alternativ', tidligere: 'Tidligere
 
 /* ---------- page keys and link rewriting ---------- */
 const keyOf = (it) => `${it.group}/${basename(it.file)}`;
-const sets = { explore: new Set(), site: new Set() };
-for (const it of ITEMS) if (sets[it.group]) sets[it.group].add(basename(it.file));
+const sets = {};
+for (const it of ALL) (sets[it.group] ||= new Set()).add(basename(it.file));
 const AREA = { actuary: 'Actuary', pricing: 'Pricing', 'data-platforms': 'Data platforms', consulting: 'Consulting', 'business-development': 'Business development' };
 const SUB = { risk: 'Risk actuary', compliance: 'Compliance', reserving: 'Reserving', 'life-pension': 'Life and pension' };
 /* links in the explore pages to pages that are not designed yet become stand-ins */
@@ -34,7 +39,7 @@ function standIn(h) {
 function mapHref(h, group) {
   if (!h || h[0] === '#' || /^(https?:|mailto:)/.test(h)) return h;
   if (group === 'explore') return sets.explore.has(h) ? 'explore/' + h : standIn(h);
-  if (group === 'site') { const m = h.match(/^([a-z-]+\.html)(#.*)?$/); return m && sets.site.has(m[1]) ? 'site/' + h : standIn(h); }
+  if (group === 'site' || group.startsWith('hist-')) { const m = h.match(/^([a-z-]+\.html)(#.*)?$/); return m && sets[group].has(m[1]) ? group + '/' + h : standIn(h); }
   if (group === 'taste' || group === 'lib') { const m = h.match(/^\.\.\/site\/(.+)$/); return m ? 'site/' + m[1] : h; }
   return h;
 }
@@ -43,9 +48,10 @@ const OWN_CLICK = /<script>document\.addEventListener\('click',function\(e\)\{va
 
 const pages = {}, alias = {};
 const photoFull = {};
-for (const it of ITEMS) {
+for (const it of ALL) {
   const k = keyOf(it);
-  if (it.same) { alias[k] = keyOf(ITEMS.find((x) => x.id === it.same)); continue; }
+  if (it.same) { alias[k] = keyOf(ALL.find((x) => x.id === it.same)); continue; }
+  if (pages[k]) continue;
   let s = read(it.file);
   s = s.replace(OWN_CLICK, '');
   s = s.replace(/(<a\b[^>]*?\shref=")([^"]*)(")/g, (_, a, h, c) => a + mapHref(h, it.group) + c);
@@ -55,24 +61,33 @@ for (const it of ITEMS) {
 for (const ph of PHOTOS) if (ph.full) photoFull[basename(ph.file)] ||= b64(ph.file);
 
 /* ---------- the overview ---------- */
-const open = (key, title) => `data-k="${esc(key)}" data-t="${esc(title)}"`;
-const card = (it, key, thumb, clickable = true) => {
-  const lab = [it.round, STATUS[it.status]].filter(Boolean).join(' · ');
-  const body = `<img src="${thumb}" alt=""><span class="t">${esc(it.title)}</span><span class="x">${esc(it.text)}</span><span class="s" data-s="${it.status}">${lab}</span>`;
-  return clickable ? `<button type="button" class="card" data-s="${it.status}" ${open(key, it.title)}>${body}</button>` : `<div class="card" data-s="${it.status}">${body}</div>`;
+const STATUS_LABEL = (it) => [it.round, STATUS[it.status], it.fav ? 'fremhevet av Claude den gang' : ''].filter(Boolean).join(' · ');
+const order = []; // what the viewer can open, in order: { k, t, s, r, sec, nav, sc }
+const addOrder = (it, sec, nav = true) => order.push({ k: keyOf(it), t: it.title, s: STATUS[it.status], r: it.round || '', sec, nav, sc: it.scroll || null }) - 1;
+const card = (it, n, thumb) => {
+  const body = `<img src="${thumb}" alt=""><span class="t">${esc(it.title)}</span>${it.text ? `<span class="x">${esc(it.text)}</span>` : ''}<span class="s" data-s="${it.status}" data-f="${it.fav ? 1 : 0}">${STATUS_LABEL(it)}</span>`;
+  return n === null ? `<div class="card" data-s="${it.status}">${body}</div>` : `<button type="button" class="card" data-s="${it.status}" data-n="${n}">${body}</button>`;
 };
-const order = []; // for previous / next inside the viewer: [key, title, status, round, section]
+const subOrder = Object.keys(SUBS);
+let total = 0;
 const sectionHtml = SECTIONS.map((sec) => {
-  const its = ITEMS.filter((i) => i.section === sec.id);
+  const its = ALL.filter((i) => i.section === sec.id);
   if (!its.length) return '';
-  const cards = its.map((it) => { const key = keyOf(it); order.push([key, it.title, STATUS[it.status], it.round || '', sec.id]); return card(it, key, b64('concepts/thumbs/' + (it.same || it.id) + '.jpg')); }).join('');
-  return `<section id="${sec.id}"><h2>${sec.title}<span>${its.length} ${its.length === 1 ? 'side' : 'sider'}</span></h2><div class="grid">${cards}</div></section>`;
+  total += its.length;
+  const subs = subOrder.filter((k) => its.some((i) => i.sub === k)).map((k) => {
+    const mine = its.filter((i) => i.sub === k), meta = SUBS[k];
+    const cards = mine.map((it) => card(it, addOrder(it, sec.id), b64('concepts/thumbs/' + (it.same || it.id) + '.jpg'))).join('');
+    let whole = '';
+    if (meta.page) { const n = addOrder({ group: 'old', file: meta.page, title: meta.title + ' (hele siden)', status: 'tidligere', round: mine[0].round }, sec.id, false); whole = `<button type="button" class="whole" data-n="${n}">Åpne hele siden</button>`; }
+    return `<div class="sub"><div class="subh"><h3>${esc(meta.title)}</h3><p>${esc(meta.note || '')}</p>${whole}</div><div class="grid">${cards}</div></div>`;
+  }).join('');
+  return `<section id="${sec.id}"><h2>${sec.title}<span>${its.length} ${its.length === 1 ? 'side' : 'sider'}</span></h2>${subs}</section>`;
 }).join('');
 
 const photoCards = PHOTOS.map((ph) => {
-  const key = ph.full ? 'photo:' + basename(ph.file) : '';
-  if (ph.full) order.push([key, ph.title, STATUS[ph.status], '', 'bilder']);
-  return card({ ...ph, round: '' }, key, b64('concepts/thumbs/photo-' + ph.id + '.jpg'), !!ph.full);
+  let n = null;
+  if (ph.full) n = order.push({ k: 'photo:' + basename(ph.file), t: ph.title, s: STATUS[ph.status], r: '', sec: 'bilder', nav: true, sc: null }) - 1;
+  return card({ ...ph, round: '' }, n, b64('concepts/thumbs/photo-' + ph.id + '.jpg'));
 }).join('');
 const inspo = INSPIRATION.map((g) => {
   const files = readdirSync(new URL('inspiration/' + g.dir + '/', root)).filter((f) => /\.(png|webp|jpe?g)$/i.test(f)).sort();
@@ -102,16 +117,23 @@ h1{margin:0;font-family:inherit;font-weight:600;font-size:clamp(22px,2.2vw,30px)
 section{margin:clamp(34px,5vw,60px) var(--gut) 0}
 section>h2,.ig h3{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin:0 0 18px;padding-top:12px;border-top:1px solid var(--rule);font-family:inherit;font-weight:600;font-size:18px;line-height:1.2;letter-spacing:-.012em}
 section>h2 span,.ig h3 span{font-weight:400;font-size:12.5px;color:var(--mute);letter-spacing:0}
+.sub{margin:0 0 clamp(28px,4vw,46px)}
+.subh{display:flex;flex-wrap:wrap;align-items:baseline;gap:.2rem 1rem;margin:0 0 14px}
+.subh h3{margin:0;font-family:inherit;font-weight:600;font-size:15px;line-height:1.3}
+.subh p{margin:0;font-size:12.5px;color:var(--mute)}
+.whole{margin-left:auto;background:none;border:0;padding:0;font-size:12.5px;color:var(--mute);text-decoration:underline;text-underline-offset:.3em;cursor:pointer}
+.whole:hover{color:var(--ink)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:30px 22px}
 .card{display:flex;flex-direction:column;align-items:flex-start;background:none;border:0;padding:0;text-align:left;cursor:pointer}
 div.card{cursor:default}
-.card img{display:block;width:100%;aspect-ratio:1440/900;object-fit:cover;border:1px solid var(--rule);transition:border-color .2s,transform .3s}
+.card img{display:block;width:100%;aspect-ratio:1440/900;object-fit:cover;object-position:top;border:1px solid var(--rule);transition:border-color .2s,transform .3s}
 button.card:hover img{border-color:var(--ink)}
 .card[data-s="valgt"] img{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
 .card .t{margin-top:.65rem;font-size:14px;font-weight:500;letter-spacing:-.005em}
 .card .x{margin-top:.12rem;font-size:12.5px;line-height:1.45;color:var(--mute)}
 .card .s{margin-top:.4rem;font-size:12px;color:var(--mute)}
 .card .s[data-s="valgt"]{color:var(--ink);font-weight:600}
+.card .s[data-f="1"]{color:var(--ink)}
 .card .s[data-s="avvist"]{text-decoration:line-through;text-decoration-color:#9AA0AB}
 .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
 .thumbs img{display:block;width:100%;height:110px;object-fit:cover;border:1px solid var(--rule)}
@@ -138,7 +160,7 @@ const html = `<!doctype html>
 <style>${CSS}</style></head><body>
 <div id="home">
 <header class="top"><h1>Analytika, oversikt over det vi har laget</h1>
-<p class="lede">Klikk et kort for å åpne siden her i filen. Alt ligger i denne ene filen, og lenkene inne i sidene virker. Oppdatert ${today}.</p>
+<p class="lede">Klikk et kort for å åpne siden her i filen. Alt ligger i denne ene filen, og lenkene inne i sidene virker. ${total} sider og skisser, fra de første utkastene til i dag. Oppdatert ${today}.</p>
 <nav class="chips" aria-label="Hopp til">${[...SECTIONS.filter((s) => ITEMS.some((i) => i.section === s.id)), { id: 'bilder', title: 'Bilder' }, { id: 'inspirasjon', title: 'Inspirasjon' }].map((s) => `<a href="#${s.id}">${s.title}</a>`).join('')}</nav></header>
 <div class="now">
 <div><h2>Valgt</h2><p>Forsiden med rommet: bildet over hele skjermen, «Analytika» nede til høyre, scroll tones bildet til hvitt, og fire grå rader bærer sidene. De fem tavlene er de fem fagområdene, og hver er en lenke.</p></div>
@@ -157,16 +179,20 @@ var home=document.getElementById('home'),viewer=document.getElementById('viewer'
 function stand(n){return '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>html,body{height:100%;margin:0}body{display:grid;place-items:center;background:#F3F3F1;color:#14161B;font:15px/1.5 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}div{text-align:center;padding:24px}b{display:block;font-size:20px;font-weight:500;margin-bottom:.4rem}p{margin:0 0 1.4rem;color:#5C6270}button{font:inherit;padding:.55rem 1.1rem;border:1px solid #BFC4CE;border-radius:4px;background:#fff;cursor:pointer}button:hover{border-color:#14161B}</style></head><body><div><b>'+n.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</b><p>Not designed in this sketch yet.</p><button type="button" onclick="parent.postMessage({back:1},\\'*\\')">Back</button></div></body></html>';}
 function photoPage(n){return '<!doctype html><html><body style="margin:0;height:100vh;display:grid;place-items:center;background:#111"><img src="'+(P[n]||'')+'" style="max-width:100%;max-height:100vh;display:block"></body></html>';}
 function src(f){if(f.indexOf('ph:')===0)return stand(f.slice(3));if(f.indexOf('photo:')===0)return photoPage(f.slice(6));f=alias[f]||f;var s=pages[f];return s?s.replace(/__PH:([A-Za-z0-9_.-]+)__/g,function(m,n){return P[n]||'';}):stand(f);}
-function load(k){var f=k,h='';if(k.indexOf('ph:')!==0&&k.indexOf('#')>0){f=k.slice(0,k.indexOf('#'));h=k.slice(k.indexOf('#')+1);}
-  frame.onload=function(){if(!h)return;try{frame.contentWindow.postMessage({open:h},'*');var el=frame.contentDocument.getElementById(h);if(el)el.scrollIntoView();}catch(e){}};
-  frame.srcdoc=src(f);}
-function bar(){var o=order[pos];if(!o)return;document.getElementById('vttl').textContent=o[1];document.getElementById('vmeta').textContent=[o[3],o[2]].filter(Boolean).join(' · ');
-  var same=order.filter(function(x){return x[4]===o[4];}),i=same.indexOf(o);document.getElementById('bprev').disabled=i<=0;document.getElementById('bnext').disabled=i>=same.length-1;}
-function openAt(i){pos=i;stack=[order[i][0]];load(order[i][0]);bar();}
-function openKey(k){var i=order.findIndex(function(x){return x[0]===k;});homeY=window.scrollY;home.hidden=true;viewer.hidden=false;openAt(i);}
-function step(d){var o=order[pos],same=order.filter(function(x){return x[4]===o[4];}),j=same.indexOf(o)+d;if(j>=0&&j<same.length)openAt(order.indexOf(same[j]));}
+var tok=0;
+function load(k,sc){var f=k,h='';if(k.indexOf('ph:')!==0&&k.indexOf('#')>0){f=k.slice(0,k.indexOf('#'));h=k.slice(k.indexOf('#')+1);}
+  var t=++tok;
+  frame.onload=function(){if(t!==tok)return;try{var d=frame.contentDocument;if(sc){var e=d.querySelectorAll(sc.sel)[sc.i];if(e)e.scrollIntoView();return;}if(!h)return;frame.contentWindow.postMessage({open:h},'*');var el=d.getElementById(h);if(el)el.scrollIntoView();}catch(x){}};
+  frame.srcdoc=src(f).replace('<head>','<head><meta name="ov-token" content="'+t+'">');
+  if(sc){var tries=0;(function poll(){if(t!==tok)return;try{var d=frame.contentDocument,m=d&&d.querySelector('meta[name="ov-token"]');if(m&&m.content===String(t)){var e=d.querySelectorAll(sc.sel)[sc.i];if(e){e.scrollIntoView();return;}}}catch(x){}if(tries++<120)setTimeout(poll,40);})();}}
+function peers(o){return order.filter(function(x){return x.sec===o.sec&&x.nav;});}
+function bar(){var o=order[pos];if(!o)return;document.getElementById('vttl').textContent=o.t;document.getElementById('vmeta').textContent=[o.r,o.s].filter(Boolean).join(' · ');
+  var same=peers(o),i=same.indexOf(o);document.getElementById('bprev').disabled=!o.nav||i<=0;document.getElementById('bnext').disabled=!o.nav||i>=same.length-1;}
+function openAt(i){pos=i;stack=[order[i].k];load(order[i].k,order[i].sc);bar();}
+function openN(n){homeY=window.scrollY;home.hidden=true;viewer.hidden=false;openAt(n);}
+function step(d){var o=order[pos],same=peers(o),j=same.indexOf(o)+d;if(j>=0&&j<same.length)openAt(order.indexOf(same[j]));}
 function back(){viewer.hidden=true;home.hidden=false;frame.srcdoc='';window.scrollTo(0,homeY);}
-[].forEach.call(document.querySelectorAll('button.card'),function(b){b.addEventListener('click',function(){openKey(b.dataset.k);});});
+[].forEach.call(document.querySelectorAll('button.card,button.whole'),function(b){b.addEventListener('click',function(){openN(+b.dataset.n);});});
 document.getElementById('bhome').addEventListener('click',back);
 document.getElementById('bprev').addEventListener('click',function(){step(-1);});
 document.getElementById('bnext').addEventListener('click',function(){step(1);});
