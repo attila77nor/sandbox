@@ -30,6 +30,12 @@ const logoDefs = `<svg width="0" height="0" style="position:absolute" aria-hidde
 <symbol id="lg-full" viewBox="${fb.x0} ${fb.y0} ${fb.w} ${fb.h}">${mk(parsed)}</symbol>
 <symbol id="lg-mark" viewBox="${mb.x0} ${mb.y0} ${mb.w} ${mb.h}">${mk(markP)}</symbol>
 </defs></svg>`;
+const wb = box(wordP);
+/* the wordmark on its own, as a symbol of its own (the title variants of round 6 use it large) */
+const logoWordDef = `<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="lg-word" viewBox="${wb.x0} ${wb.y0} ${wb.w} ${wb.h}">${mk(wordP)}</symbol></defs></svg>`;
+const WORD_ASPECT = wb.w / wb.h;
+/* each letter's box inside the wordmark, 0-1 on both axes, left to right */
+const WORD_LETTERS = wordP.slice().sort((a, b) => a.minX - b.minX).map((p) => ({ x0: (p.minX - wb.x0) / wb.w, x1: (p.maxX - wb.x0) / wb.w, y0: (p.minY - wb.y0) / wb.h, y1: (p.maxY - wb.y0) / wb.h }));
 console.log('logo aspect full', (fb.w / fb.h).toFixed(3), 'mark', (mb.w / mb.h).toFixed(3), 'paths', parsed.length, 'mark paths', markP.length, 'word paths', wordP.length);
 
 // ---------- contours: marching squares over a synthetic height field ----------
@@ -116,4 +122,4 @@ const contours = `<g class="d-reg" fill="none">${reg}</g><g class="d-idx" fill="
 console.log('contour bytes', contours.length);
 
 
-export { logoDefs, contours };
+export { logoDefs, logoWordDef, WORD_ASPECT, WORD_LETTERS, contours };
