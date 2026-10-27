@@ -117,4 +117,4 @@ Use the attached image as the reference. Convert it to a neutral black-and-white
 
 1. Legg originalen her. Kjør `photo-neutral.py` på den i endelig størrelse (kornet må ligge på det endelige bildet).
 2. Mål de fem tavlene i piksler og oppdater `PHOTOS.rom` i `tools/explore-r3-forside.mjs`.
-3. Kjør `explore-r3-forside.mjs`, `explore-bundle.mjs`, `oversikt-thumbs.cjs` og `oversikt.mjs`.
+3. Kjør `explore-r3-forside.mjs`, `oversikt-thumbs.cjs` og `oversikt.mjs`.

@@ -51,7 +51,7 @@ Arbeidsbordet og tavlene ligger 440 piksler fra hverandre i høyden og 900 i bre
 
 ## De fire sidene
 
-`concepts/explore/forside-utsnitt-*.html`, også som faner i `preview.html` og som rutene i `oversikt.html` («Runde 5»). Bildet er v5 med simulert dybdeskarphet (`tools/photo-dof.py`), og knappene i visningen endrer zoom (sidens egen, 1,0–1,8) og uskarphet (ingen, lett, middels, sterk). Når man peker på en tavle, kommer den i fokus (den skarpe versjonen ligger i et lag over).
+`concepts/explore/forside-utsnitt-*.html`, også som rutene i `oversikt.html` («Runde 5»). Bildet er v5 med simulert dybdeskarphet (`tools/photo-dof.py`), og knappene i visningen endrer zoom (sidens egen, 1,0–1,8) og uskarphet (ingen, lett, middels, sterk). Når man peker på en tavle, kommer den i fokus (den skarpe versjonen ligger i et lag over).
 
 1. **Arbeidsbord 1,2×**: analysens vinner. Arbeidsbordet skarpt nede til venstre, tavlene 37 % av bredden og myke bak.
 2. **Arbeidsbord 1,7×**: det nærmeste som fortsatt rommer både bordet og alle fem tavler. Tavlene er 52 % av bredden, og bildet strekkes 1,6×, så det er litt mykt også i forgrunnen.
