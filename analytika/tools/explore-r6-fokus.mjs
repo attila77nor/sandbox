@@ -27,7 +27,7 @@ const ARROW = '<svg class="arr" viewBox="0 0 76 12" aria-hidden="true" focusable
 const I = WORD_LETTERS[6];   // the letter I of the wordmark: a plain bar, the place the "window" zooms into
 
 const CFG = { IW, IH, Z: 1.2, FX: 667, FY: 542, TX: 0.5, TY: 0.5, wall: { x: 797, y: 322, h: 104 }, R: Object.fromEntries(BOARD_IDS.map(([id], i) => [id, RECTS[i]])), VAR: { ingen: SRC.sharp, lett: SRC.lett, middels: SRC.middels, sterk: SRC.sterk },
-  ASPECT: WORD_ASPECT, I: { cx: (I.x0 + I.x1) / 2, w: I.x1 - I.x0 } };
+  WY: 0.47, ASPECT: WORD_ASPECT, I: { cx: (I.x0 + I.x1) / 2, w: I.x1 - I.x0 } };
 CFG.KP = [Math.min(...RECTS.map((r) => r[0])) - 24, Math.min(RECTS[0][1] - 24, Math.round(CFG.wall.y - 0.38 * CFG.wall.h)), Math.max(...RECTS.map((r) => r[2])) + 24, Math.max(...RECTS.map((r) => r[3])) + 24];
 
 const BASE_CSS = `
@@ -141,6 +141,23 @@ const KINDS = {
 @media (max-width:760px){.small{bottom:clamp(70px,14vh,120px)}}`,
     hero: '<div class="t-stagger"><h1 class="small t-stagger-line">Analytika</h1></div>', top: 'mark',
   },
+  'scroll-window': {
+    /* the word is a window onto the room and stays one: nothing opens by itself. Scrolling pulls the window over the picture
+       (the letters grow around the I) while the white around it fades, until only the picture is left; then the picture fades into the rows. */
+    css: `.curtain{position:fixed;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;display:none}
+.js .curtain{display:block}
+.top{position:fixed}.js .top{opacity:0;visibility:hidden}.js .top .lock-link{opacity:1}
+.dissolve{height:150vh;height:150svh}
+.shade{position:fixed;left:0;right:0;bottom:0;height:34%;z-index:2;background:linear-gradient(to top,rgba(8,10,14,.55),rgba(8,10,14,0));opacity:0;pointer-events:none}
+.areas{position:fixed;left:var(--gut);right:var(--gut);bottom:clamp(22px,4.5vh,46px);z-index:3;pointer-events:none}
+.js .areas{opacity:0}
+.areas .areasline{display:flex;flex-wrap:wrap;justify-content:center;gap:.4rem clamp(18px,2.8vw,40px);position:static;margin:0;font-size:13px;line-height:1.4;letter-spacing:.07em;color:var(--ink);text-shadow:none}
+.areas .areasline a{pointer-events:auto;transition:opacity var(--duration-quick) var(--ease-out)}
+.areas .areasline a:hover,.areas .areasline a:focus-visible{opacity:.55}
+.areas :focus-visible{outline-color:var(--ink)}
+body.off .board{pointer-events:none}`,
+    hero: '<h1 class="sr">Analytika</h1>', top: 'lock', areasOutside: true,
+  },
   mask: {
     css: `.curtain{position:fixed;inset:0;width:100%;height:100%;z-index:20;pointer-events:none;display:none}
 .js .curtain{display:block}`,
@@ -148,13 +165,13 @@ const KINDS = {
   },
 };
 
-const REDUCED = `@media (prefers-reduced-motion:reduce){.t-stagger-line,.t-tt,.top .mark-link,.top .lock-link,.boards::before,.board .sh,.row,.row .arr{transition:none !important}.curtain{display:none !important}}`;
+const REDUCED = (kind) => `@media (prefers-reduced-motion:reduce){.t-stagger-line,.t-tt,.top .mark-link,.top .lock-link,.boards::before,.board .sh,.row,.row .arr,.areasline a{transition:none !important}${kind === 'mask' ? '.curtain{display:none !important}' : ''}}`;
 
 const SCRIPT = String.raw`(function(){
 var C=__CFG__,KIND=C.kind,IW=C.IW,IH=C.IH,Z=C.Z,ph=document.getElementById('ph'),soft=document.getElementById('soft'),box=ph.parentNode.parentNode,
   boardsEl=document.getElementById('boards'),bs=[].slice.call(document.querySelectorAll('.board')),h1=document.querySelector('.hero h1'),
   stagger=document.querySelector('.t-stagger'),topEl=document.querySelector('.top'),lift=document.querySelector('.lift'),veil=document.querySelector('.veil'),fin=document.querySelector('.fin'),
-  gin=document.querySelector('.gin'),gs=document.querySelector('.gs'),giant=document.querySelector('.giant'),cur=document.getElementById('curtain'),hu=document.getElementById('holeuse'),hw=document.getElementById('holeword');
+  areasWrap=document.querySelector('.areas'),areasline=document.querySelector('.areas .areasline'),shade=document.querySelector('.shade'),gin=document.querySelector('.gin'),gs=document.querySelector('.gs'),giant=document.querySelector('.giant'),cur=document.getElementById('curtain'),hu=document.getElementById('holeuse'),hw=document.getElementById('holeword');
 
 /* framing: the photograph is placed from its own coordinates; the zoom is lowered where it would push the boards or the sign out of view */
 function lay(){
@@ -172,8 +189,8 @@ function lay(){
 function fit(){
   if(gs){gs.style.fontSize='100px';var w=gs.getBoundingClientRect().width;if(w)gs.style.fontSize=Math.min(100*giant.clientWidth/w,innerHeight*.5/1.12)+'px';}
   if(hu){var vw=innerWidth,vh=innerHeight,g=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--gut'))||0,pad=Math.min(Math.max(20,vw*.036),56),w2=vw-2*pad,h2=w2/C.ASPECT;
-    cur.setAttribute('viewBox','0 0 '+vw+' '+vh);hu.setAttribute('x',pad);hu.setAttribute('y',(vh-h2)/2);hu.setAttribute('width',w2);hu.setAttribute('height',h2);
-    C.ox=pad+C.I.cx*w2;C.oy=vh/2;C.S=1.25*vw/(C.I.w*w2);}
+    cur.setAttribute('viewBox','0 0 '+vw+' '+vh);hu.setAttribute('x',pad);hu.setAttribute('y',vh*(C.WY||.5)-h2/2);hu.setAttribute('width',w2);hu.setAttribute('height',h2);
+    C.ox=pad+C.I.cx*w2;C.oy=vh*(C.WY||.5);C.S=1.25*vw/(C.I.w*w2);if(applyHook)applyHook();}
 }
 lay();addEventListener('resize',lay);ph.addEventListener('load',lay);soft.addEventListener('load',lay);
 
@@ -195,7 +212,7 @@ bs.forEach(function(b){
 boardsEl.addEventListener('pointerleave',hideTip);
 
 /* GSAP: the arrival, the focus slipping away on scroll, the rows rising in */
-var intro=null,mm=gsap.matchMedia();gsap.registerPlugin(ScrollTrigger);
+var intro=null,applyHook=null,mm=gsap.matchMedia();gsap.registerPlugin(ScrollTrigger);
 function ready(){
   var dec=[ph,soft].map(function(i){return i.decode?i.decode().catch(function(){}):Promise.resolve();});
   var fonts=document.fonts?document.fonts.load('500 100px "Cormorant Garamond"').catch(function(){}).then(function(){return document.fonts.ready;}):0;
@@ -204,6 +221,28 @@ function ready(){
 function rest(){stagger&&stagger.classList.add('is-shown');topEl.classList.add('is-shown');}
 mm.add({calm:'(prefers-reduced-motion: no-preference)',still:'(prefers-reduced-motion: reduce)'},function(ctx){
   var still=ctx.conditions.still;
+  if(KIND==='scroll-window'){
+    /* the window: scrolling grows the letters around the I (in equal steps of scale, so it feels even), the white around them fades, the area names turn white, then the picture fades into the rows */
+    document.body.classList.add('off');fit();var zp={p:0},apply=function(){gsap.set(hw,{scale:Math.pow(C.S,zp.p),svgOrigin:C.ox+' '+C.oy});};applyHook=apply;apply();gsap.set(cur,{opacity:1});
+    var wtl=gsap.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:'.hero',start:'top top',end:function(){return '+='+Math.round(innerHeight*1.9);},scrub:still?true:0.5,invalidateOnRefresh:true,
+      onUpdate:function(self){var t=self.progress*1.9,off=t<0.85||t>1.15;document.body.classList.toggle('off',off);if(off)hideTip();}}});
+    if(!still)wtl.to(zp,{p:1,duration:0.85,ease:'power1.inOut',onUpdate:apply},0);
+    wtl.to(cur,{opacity:0,duration:0.5,ease:'power1.inOut'},0.35)
+       .to(areasline,{opacity:0,duration:0.12},0.2).set(areasline,{color:'#fff',textShadow:'0 1px 10px rgba(0,0,0,.5)'},0.32).to(areasline,{opacity:1,duration:0.14},0.7)
+       .to(shade,{opacity:1,duration:0.2},0.7).to(topEl,{autoAlpha:1,duration:0.2},0.75)
+       .to(ph,{opacity:0,duration:0.6,ease:'power1.inOut'},1.1)
+       .to(veil,{opacity:1,duration:0.6,ease:'power1.inOut'},1.3)
+       .to([topEl,areasline,shade],{opacity:0,duration:0.3},1.3).set(topEl,{visibility:'hidden'},1.6);
+    if(still){gsap.set(fin,{opacity:1});gsap.set(areasWrap,{opacity:1});}
+    var parts0=function(r){return [].slice.call(r.children);};
+    if(!still){gsap.set('.row > *',{opacity:0,y:12,filter:'blur(3px)'});
+      var reveal0=function(rows){var t=gsap.timeline({defaults:{ease:'power3.out',duration:0.5}});rows.forEach(function(r,i){if(r._in)return;r._in=1;t.to(parts0(r),{opacity:1,y:0,filter:'blur(0px)',clearProps:'filter'},i*0.08);});};
+      ScrollTrigger.batch('.row',{start:'top 92%',once:true,onEnter:reveal0,onLeave:reveal0});
+      intro=gsap.timeline({paused:true,defaults:{ease:'power2.inOut'}});
+      intro.to(fin,{opacity:1,duration:1.1},0.1).to(areasWrap,{opacity:1,duration:0.5,ease:'power1.out'},0.6);
+      ready().then(function(){intro.play();});}
+    return;
+  }
   /* scroll, top of the page first so the triggers refresh in page order */
   var tl=gsap.timeline({defaults:{ease:'none'},scrollTrigger:{trigger:'.hero',start:'top top',end:function(){return '+='+Math.round(innerHeight*1.25);},scrub:still?true:0.5,invalidateOnRefresh:true,
     onUpdate:function(self){document.body.classList.toggle('past',self.progress>0.15);}}});
@@ -229,8 +268,8 @@ mm.add({calm:'(prefers-reduced-motion: no-preference)',still:'(prefers-reduced-m
   }
   ready().then(function(){intro.play();});
 });
-function replay(){if(!intro)return;scrollTo(0,0);stagger&&stagger.classList.remove('is-shown');topEl.classList.remove('is-shown');gsap.set(fin,{opacity:0});
-  if(gin)gsap.set(gin,{yPercent:108});if(cur){cur.style.display='block';gsap.set(hw,{scale:1,svgOrigin:C.ox+' '+C.oy});}void document.body.offsetHeight;intro.restart();}
+function replay(){if(!intro)return;scrollTo(0,0);stagger&&stagger.classList.remove('is-shown');topEl.classList.remove('is-shown');gsap.set(fin,{opacity:0});if(areasWrap)gsap.set(areasWrap,{opacity:0});
+  if(gin)gsap.set(gin,{yPercent:108});if(cur&&KIND==='mask'){cur.style.display='block';gsap.set(hw,{scale:1,svgOrigin:C.ox+' '+C.oy});}void document.body.offsetHeight;intro.restart();}
 
 /* messages from the preview bar: zoom, blur strength, replay */
 addEventListener('message',function(e){var d=e.data;if(!d)return;
@@ -249,20 +288,21 @@ const page = (kind, file, note) => {
   const K = KINDS[kind];
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Analytika – forside, fokus, ${kind} (sketch)</title>
-<script>document.documentElement.className='js'</script>${fonts('Hanken+Grotesk:wght@400;500;600')}<style>${BASE_CSS}${K.css}${REDUCED}</style></head><body>${logoDefs}${logoWordDef}
+<script>document.documentElement.className='js'</script>${fonts('Hanken+Grotesk:wght@400;500;600')}<style>${BASE_CSS}${K.css}${REDUCED(kind)}</style></head><body>${logoDefs}${logoWordDef}
 <div class="photo" aria-hidden="true"><img id="soft" src="${SRC.soft}" alt=""><div class="fin"><img id="ph" src="${SRC.middels}" alt=""></div></div>
 <div class="boards" id="boards" style="--sharp:url(${SRC.sharp})">${BOARD_IDS.map(([id, name]) => `<a class="board" data-id="${id}" href="../site/insights.html#${id}" aria-label="${name}"><span class="sh"></span></a>`).join('')}<span class="t-tt" id="tt" role="tooltip" aria-hidden="true" data-show="false"><span class="t-tt-text"></span></span></div>
 <div class="veil" aria-hidden="true"></div>
+${K.areasOutside ? `<div class="shade" aria-hidden="true"></div><div class="areas"><p class="areasline" aria-label="Areas">${BOARD_IDS.map(([id, name]) => `<a href="../site/insights.html#${id}">${name}</a>`).join('')}</p></div>` : ''}
 <header class="top">${topHtml(K.top, file)}</header>
 <main>
 <section class="hero" aria-label="Analytika"><div class="lift">${K.hero}</div>
-<p class="areasline" aria-label="Areas">${BOARD_IDS.map(([id, name]) => `<a href="../site/insights.html#${id}">${name}</a>`).join('')}</p></section>
+${K.areasOutside ? '' : `<p class="areasline" aria-label="Areas">${BOARD_IDS.map(([id, name]) => `<a href="../site/insights.html#${id}">${name}</a>`).join('')}</p>`}</section>
 <div class="dissolve" aria-hidden="true"></div>
 <nav class="rows" id="pages" aria-label="Pages">${ROWS.map(([w, h], i) => `<a class="row" href="${h}"><span class="n">0${i + 1}</span><span class="w">${w}</span>${i === 3 ? '<svg class="lm" aria-hidden="true"><use href="#lg-mark"/></svg>' : ''}${ARROW}</a>`).join('')}</nav>
 </main>
 <div class="foot"><span>Analytika AS · Parkveien 41B, 0258 Oslo</span><span><a href="../site/about.html#join">Join us</a> &nbsp; <a href="../site/about.html#contact">Contact</a></span></div>
 ${SKETCH(note + ' Rows are a first guess; every page behind them is still to be designed.')}
-${kind === 'mask' ? curtain : ''}
+${kind === 'mask' || kind === 'scroll-window' ? curtain : ''}
 <script>${vendor('gsap.min.js')}</script><script>${vendor('ScrollTrigger.min.js')}</script>
 <script>${SCRIPT.replace('__CFG__', JSON.stringify({ ...CFG, kind }))}</script>
 </body></html>`;
@@ -274,6 +314,7 @@ const BUILD = [
   ['forside-tittel-serif', 'giant-serif', 'Sketch, round 6 · a display serif (Cormorant Garamond) across the whole width at the bottom, with a soft shade under it. It rises in from the bottom edge.'],
   ['forside-tittel-logo', 'small-logo', 'Sketch, round 6 · nothing but the logo lockup, small, top left. The picture does the talking.'],
   ['forside-tittel-liten-serif', 'small-serif', 'Sketch, round 6 · a small serif word bottom left, on the dark desk, with the mark top left.'],
+  ['forside-vindu-skroll', 'scroll-window', 'Sketch, round 6 · the word is a window onto the room and stays one. Scrolling pulls the window over the picture while the white around it fades, until only the picture is left; scrolling on fades the picture into the rows. The five area names sit at the bottom throughout.'],
   ['forside-tittel-vindu', 'mask', 'Sketch, round 6 · the word is a window onto the room: a white screen with the logotype cut out, which opens until the picture fills the screen. It then rests as the small lockup, top left.'],
 ];
 for (const [name, kind, note] of BUILD) write(name + '.html', page(kind, name + '.html', note));

@@ -4,9 +4,9 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const dir = new URL('../concepts/explore/', import.meta.url);
-const KEYS = ['forside-fokus', 'forside-tittel-logotype', 'forside-tittel-serif', 'forside-tittel-logo', 'forside-tittel-liten-serif', 'forside-tittel-vindu', 'forside-utsnitt-arbeidsbord', 'forside-utsnitt-naer', 'forside-utsnitt-spisebord', 'forside-utsnitt-pult', 'forside', 'forside-rom', 'forside-ekte', 'forside-ekte-naer', 'forside-liv-skilt', 'forside-liv-senter', 'forside-liv-diff', 'forside-liv-venstre', 'forside-kontor', 'oslo', 'oslo-people', 'tabell', 'tabell-people', 'trekant', 'trekant-people', 'tetthet', 'tetthet-people', 'vegg-hvit', 'vegg-marine', 'vegg-zoom'].map((n) => n + '.html');
+const KEYS = ['forside-fokus', 'forside-vindu-skroll', 'forside-tittel-logotype', 'forside-tittel-serif', 'forside-tittel-logo', 'forside-tittel-liten-serif', 'forside-tittel-vindu', 'forside-utsnitt-arbeidsbord', 'forside-utsnitt-naer', 'forside-utsnitt-spisebord', 'forside-utsnitt-pult', 'forside', 'forside-rom', 'forside-ekte', 'forside-ekte-naer', 'forside-liv-skilt', 'forside-liv-senter', 'forside-liv-diff', 'forside-liv-venstre', 'forside-kontor', 'oslo', 'oslo-people', 'tabell', 'tabell-people', 'trekant', 'trekant-people', 'tetthet', 'tetthet-people', 'vegg-hvit', 'vegg-marine', 'vegg-zoom'].map((n) => n + '.html');
 const TABS = [
-  ['Runde 6, tittelen (nye skills)', [['A Logotype, full bredde', 'forside-tittel-logotype.html'], ['B Serif, full bredde', 'forside-tittel-serif.html'], ['C Logo, øverst til venstre', 'forside-tittel-logo.html'], ['D Liten serif, nede', 'forside-tittel-liten-serif.html'], ['E Ordet som vindu', 'forside-tittel-vindu.html'], ['Tittel over tavlene (avvist)', 'forside-fokus.html']]],
+  ['Runde 6, tittelen (nye skills)', [['A Logotype, full bredde', 'forside-tittel-logotype.html'], ['B Serif, full bredde', 'forside-tittel-serif.html'], ['C Logo, øverst til venstre', 'forside-tittel-logo.html'], ['D Liten serif, nede', 'forside-tittel-liten-serif.html'], ['E Ordet som vindu', 'forside-tittel-vindu.html'], ['F Vinduet følger scroll', 'forside-vindu-skroll.html'], ['Tittel over tavlene (avvist)', 'forside-fokus.html']]],
   ['Runde 5, utsnitt', [['Arbeidsbord 1,2×', 'forside-utsnitt-arbeidsbord.html'], ['Arbeidsbord 1,7× (nærmest)', 'forside-utsnitt-naer.html'], ['Spisebord 1,4×', 'forside-utsnitt-spisebord.html'], ['Pult 1,3×', 'forside-utsnitt-pult.html']]],
   ['Runde 4, levende kontor', [['Tittel som skilt', 'forside-liv-skilt.html'], ['Stor, sentrert', 'forside-liv-senter.html'], ['Stor, invertert', 'forside-liv-diff.html'], ['Nede til venstre', 'forside-liv-venstre.html']]],
   ['Round 3, the landing', [['Forside, rom (valgt)', 'forside-rom.html'], ['Forside, ekte kontor (ny)', 'forside-ekte.html'], ['… 1,3× nærmere (utsnitt)', 'forside-ekte-naer.html'], ['Forside, tavler', 'forside.html'], ['Forside, kontor', 'forside-kontor.html']]],
@@ -73,7 +73,7 @@ window.addEventListener('message',function(e){if(!e.data)return;if(e.data.go)go(
 [].forEach.call(document.querySelectorAll('#bar button.z'),function(b){b.addEventListener('click',function(){zoom=b.dataset.z;press('#bar button.z','z',zoom);sendZoom();});});
 [].forEach.call(document.querySelectorAll('#bar button.rp'),function(b){b.addEventListener('click',function(){try{f.contentWindow.postMessage({replay:1},'*');}catch(e){}});});
 [].forEach.call(document.querySelectorAll('#bar button.bl'),function(b){b.addEventListener('click',function(){blur=b.dataset.b;press('#bar button.bl','b',blur);sendZoom();});});
-var h=decodeURIComponent(location.hash.slice(1));go(pages[h]?h:'forside-tittel-logotype.html');
+var h=decodeURIComponent(location.hash.slice(1));go(pages[h]?h:'forside-vindu-skroll.html');
 </script></body></html>`);
   console.log('wrote preview.html');
 }
