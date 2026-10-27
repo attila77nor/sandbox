@@ -19,6 +19,7 @@ export const SECTIONS = [
 
 /* sub-headings, in the order they appear; `page` adds an "open the whole page" button */
 export const SUBS = {
+  r6: { title: 'Runde 6: forsiden med de nye skillene', note: 'GSAP (timeline, ScrollTrigger), transitions.dev (texts reveal, tooltip, bevegelsestokens) og reglene fra make-interfaces-feel-better. Knappen «Spill av» i visningen viser åpningen på nytt.' },
   r5: { title: 'Runde 5: utsnittsanalysen', note: 'Fire utsnitt valgt ut av analysen (concepts/utsnitt/README.md), med simulert dybdeskarphet. Knappene i visningen endrer zoom og uskarphet. Pek på en tavle, så kommer den i fokus.' },
   r4: { title: 'Runde 4: det levende kontoret', note: 'Nytt bilde fra ChatGPT (rotete, uten malerier) og fire måter å sette tittelen på. Zoom-knappene i visningen flytter bildet nærmere tavlene.' },
   r3: { title: 'Runde 3: forsiden med bildet over hele skjermen', note: 'Samme oppbygning med tre ulike bilder.' },
@@ -46,6 +47,7 @@ const S = (name, extra = {}) => ({ group: 'site', file: `concepts/site/${name}.h
 
 export const ITEMS = [
   /* ---------------------------------------------------------------- forsider, nyeste først */
+  { section: 'forsider', sub: 'r6', status: 'alternativ', zoom: true, blur: true, replay: true, title: 'Fokus: rommet kommer i fokus, så glir det bort', text: 'Rommet åpner uskarpt og fokus lander på arbeidsbordet, tavlene blir myke bak, tittelen stiger inn. Scroll lar fokus gli bort til hvitt. Peker du på en tavle, kommer den i fokus, og én merkelapp følger med fra tavle til tavle.', round: 'Runde 6', ...E('forside-fokus') },
   { section: 'forsider', sub: 'r5', status: 'alternativ', zoom: true, blur: true, title: 'Arbeidsbord 1,2×, tavlene myke bak', text: 'Analysens vinner. Arbeidsbordet skarpt nede til venstre, tavlene 37 % av bredden og myke bak, tittelen som skilt over dem.', round: 'Runde 5', ...E('forside-utsnitt-arbeidsbord') },
   { section: 'forsider', sub: 'r5', status: 'alternativ', zoom: true, blur: true, title: 'Arbeidsbord 1,7×, det nærmeste som går', text: 'Nærmest mulig med både bordet og alle fem tavler i bildet. Tavlene er 52 % av bredden, og bildet er strukket 1,6×.', round: 'Runde 5', ...E('forside-utsnitt-naer') },
   { section: 'forsider', sub: 'r5', status: 'alternativ', zoom: true, blur: true, title: 'Spisebordet 1,4× i fokus', text: 'Spisebordet og stolene skarpt rett under tavlene. Høyest score totalt, og mest rom i bildet.', round: 'Runde 5', ...E('forside-utsnitt-spisebord') },
@@ -112,6 +114,7 @@ export const HISTORY = PAGES.flatMap(([name, section, sub, label]) => [
 
 /* photographs: `full` = embedded at full size so the card can open it */
 export const PHOTOS = [
+  { id: 'ekte-kontor-v5-dof-alle-sterk', file: 'assets/photo/ekte-kontor-v5-dof-alle-sterk.jpg', title: 'Kontoret helt uskarpt (åpningen i Fokus)', text: 'Sigma 10 over hele bildet: rommet før fokus har landet. Brukes som første bilde i åpningen.', status: 'alternativ', full: true },
   { id: 'utsnitt-fire-forsider', file: 'concepts/utsnitt/utsnitt-fire-forsider.jpg', title: 'Utsnittsanalysen: de fire sidene', text: 'Arbeidsbord 1,2× og 1,7×, spisebord 1,4× og pult 1,3×, ved 1440 × 900.', status: 'alternativ', full: true },
   { id: 'utsnitt-oversikt', file: 'concepts/utsnitt/utsnitt-oversikt.jpg', title: 'Utsnittsanalysen: vinnerne tegnet inn', text: 'De beste utsnittene for hver forgrunn, med score og hvor ofte de vant da vektene ble rystet.', status: 'alternativ', full: true },
   { id: 'utsnitt-uskarphet', file: 'concepts/utsnitt/utsnitt-uskarphet.jpg', title: 'Hvor mye uskarphet tåler tavlene?', text: 'Sigma 0, 2,5, 4,5, 7 og 10. Fem tegninger kan kjennes igjen til ca. 4,5; ved 7 er det fem hvite felt.', status: 'alternativ', full: true },

@@ -4,8 +4,9 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 
 const dir = new URL('../concepts/explore/', import.meta.url);
-const KEYS = ['forside-utsnitt-arbeidsbord', 'forside-utsnitt-naer', 'forside-utsnitt-spisebord', 'forside-utsnitt-pult', 'forside', 'forside-rom', 'forside-ekte', 'forside-ekte-naer', 'forside-liv-skilt', 'forside-liv-senter', 'forside-liv-diff', 'forside-liv-venstre', 'forside-kontor', 'oslo', 'oslo-people', 'tabell', 'tabell-people', 'trekant', 'trekant-people', 'tetthet', 'tetthet-people', 'vegg-hvit', 'vegg-marine', 'vegg-zoom'].map((n) => n + '.html');
+const KEYS = ['forside-fokus', 'forside-utsnitt-arbeidsbord', 'forside-utsnitt-naer', 'forside-utsnitt-spisebord', 'forside-utsnitt-pult', 'forside', 'forside-rom', 'forside-ekte', 'forside-ekte-naer', 'forside-liv-skilt', 'forside-liv-senter', 'forside-liv-diff', 'forside-liv-venstre', 'forside-kontor', 'oslo', 'oslo-people', 'tabell', 'tabell-people', 'trekant', 'trekant-people', 'tetthet', 'tetthet-people', 'vegg-hvit', 'vegg-marine', 'vegg-zoom'].map((n) => n + '.html');
 const TABS = [
+  ['Runde 6, nye skills', [['Fokus (GSAP, transitions.dev)', 'forside-fokus.html']]],
   ['Runde 5, utsnitt', [['Arbeidsbord 1,2×', 'forside-utsnitt-arbeidsbord.html'], ['Arbeidsbord 1,7× (nærmest)', 'forside-utsnitt-naer.html'], ['Spisebord 1,4×', 'forside-utsnitt-spisebord.html'], ['Pult 1,3×', 'forside-utsnitt-pult.html']]],
   ['Runde 4, levende kontor', [['Tittel som skilt', 'forside-liv-skilt.html'], ['Stor, sentrert', 'forside-liv-senter.html'], ['Stor, invertert', 'forside-liv-diff.html'], ['Nede til venstre', 'forside-liv-venstre.html']]],
   ['Round 3, the landing', [['Forside, rom (valgt)', 'forside-rom.html'], ['Forside, ekte kontor (ny)', 'forside-ekte.html'], ['… 1,3× nærmere (utsnitt)', 'forside-ekte-naer.html'], ['Forside, tavler', 'forside.html'], ['Forside, kontor', 'forside-kontor.html']]],
@@ -44,6 +45,7 @@ for (const k of KEYS) {
 const json = JSON.stringify(pages).replace(/<\//g, '<\\/');
 
 const zoomBar = '<span class="g">Zoom</span>' + [['own', 'Sidens egen'], ['1.0', '1,0×'], ['1.2', '1,2×'], ['1.4', '1,4×'], ['1.6', '1,6×'], ['1.8', '1,8×']].map(([v, l]) => `<button type="button" class="z" data-z="${v}" aria-pressed="${v === 'own'}">${l}</button>`).join('')
+  + '<button type="button" class="rp" data-act="replay" title="Spill av åpningen på nytt (siden Fokus)">↻ Spill av</button>'
   + '<span class="g">Uskarphet</span>' + [['ingen', 'Ingen'], ['lett', 'Lett'], ['middels', 'Middels'], ['sterk', 'Sterk']].map(([v, l]) => `<button type="button" class="bl" data-b="${v}" aria-pressed="${v === 'middels'}">${l}</button>`).join('');
 const bar = zoomBar + TABS.map(([g, items]) => `<span class="g">${g}</span>${items.map(([n, f]) => `<button type="button" data-p="${f}">${n}</button>`).join('')}`).join('');
 write();
@@ -55,7 +57,7 @@ function write() {
 #bar .g{margin:0 4px 0 14px;color:#8A90A0;font-size:11.5px}#bar .g:first-child{margin-left:0}
 #bar button{appearance:none;background:none;border:0;padding:6px 9px;border-radius:4px;color:#C9CED8;font:inherit;cursor:pointer}
 #bar button:hover{color:#fff;background:#232733}#bar button[aria-current]{color:#fff;background:#2B3140}
-#bar button.z,#bar button.bl{padding:6px 7px}#bar button.z[aria-pressed=true],#bar button.bl[aria-pressed=true]{color:#fff;background:#2B3140}
+#bar button.z,#bar button.bl,#bar button.rp{padding:6px 7px}#bar button.z[aria-pressed=true],#bar button.bl[aria-pressed=true]{color:#fff;background:#2B3140}
 iframe{flex:1;border:0;width:100%;display:block;background:#fff}</style></head>
 <body><div id="bar">${bar}</div><iframe id="f" title="Analytika exploration preview"></iframe>
 <script>
@@ -69,8 +71,9 @@ function go(k,keep){if(!keep)stack.push(k);f.onload=sendZoom;f.srcdoc=src(k);mar
 window.addEventListener('message',function(e){if(!e.data)return;if(e.data.go)go(e.data.go);if(e.data.back&&stack.length>1){stack.pop();go(stack[stack.length-1],true);}});
 [].forEach.call(document.querySelectorAll('#bar button[data-p]'),function(b){b.addEventListener('click',function(){stack=[];zoom=null;blur=null;press('#bar button.z','z','own');press('#bar button.bl','b','middels');go(b.dataset.p);});});
 [].forEach.call(document.querySelectorAll('#bar button.z'),function(b){b.addEventListener('click',function(){zoom=b.dataset.z;press('#bar button.z','z',zoom);sendZoom();});});
+[].forEach.call(document.querySelectorAll('#bar button.rp'),function(b){b.addEventListener('click',function(){try{f.contentWindow.postMessage({replay:1},'*');}catch(e){}});});
 [].forEach.call(document.querySelectorAll('#bar button.bl'),function(b){b.addEventListener('click',function(){blur=b.dataset.b;press('#bar button.bl','b',blur);sendZoom();});});
-var h=decodeURIComponent(location.hash.slice(1));go(pages[h]?h:'forside-utsnitt-arbeidsbord.html');
+var h=decodeURIComponent(location.hash.slice(1));go(pages[h]?h:'forside-fokus.html');
 </script></body></html>`);
   console.log('wrote preview.html');
 }

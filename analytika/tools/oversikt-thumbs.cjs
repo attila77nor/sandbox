@@ -19,7 +19,7 @@ const { spawnSync } = require('child_process');
   const concepts = {};
   const b = await chromium.launch(); const errs = [];
   const open = async (file, suffix = '') => {
-    const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } });
+    const ctx = await b.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: 'reduce' });
     const p = await ctx.newPage(); p.on('pageerror', (e) => errs.push(file + ': ' + e.message));
     await p.goto('file://' + path.join(root, file) + suffix, { waitUntil: 'load' });
     return [ctx, p];

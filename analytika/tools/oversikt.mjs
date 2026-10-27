@@ -63,7 +63,7 @@ for (const ph of PHOTOS) if (ph.full) photoFull[basename(ph.file)] ||= b64(ph.fi
 /* ---------- the overview ---------- */
 const STATUS_LABEL = (it) => [it.round, STATUS[it.status], it.fav ? 'fremhevet av Claude den gang' : ''].filter(Boolean).join(' · ');
 const order = []; // what the viewer can open, in order: { k, t, s, r, sec, nav, sc }
-const addOrder = (it, sec, nav = true) => order.push({ k: keyOf(it), t: it.title, s: STATUS[it.status], r: it.round || '', sec, nav, sc: it.scroll || null, z: it.zoom ? 1 : 0, b: it.blur ? 1 : 0 }) - 1;
+const addOrder = (it, sec, nav = true) => order.push({ k: keyOf(it), t: it.title, s: STATUS[it.status], r: it.round || '', sec, nav, sc: it.scroll || null, z: it.zoom ? 1 : 0, b: it.blur ? 1 : 0, p: it.replay ? 1 : 0 }) - 1;
 const card = (it, n, thumb) => {
   const body = `<img src="${thumb}" alt=""><span class="t">${esc(it.title)}</span>${it.text ? `<span class="x">${esc(it.text)}</span>` : ''}<span class="s" data-s="${it.status}" data-f="${it.fav ? 1 : 0}">${STATUS_LABEL(it)}</span>`;
   return n === null ? `<div class="card" data-s="${it.status}">${body}</div>` : `<button type="button" class="card" data-s="${it.status}" data-n="${n}">${body}</button>`;
@@ -186,7 +186,7 @@ ${sectionHtml}
 <section id="inspirasjon"><h2>Inspirasjon<span>fra mappen inspiration/</span></h2>${inspo}</section>
 <div class="files"><p><b>Denne siden</b> analytika/oversikt.html, bygget av tools/oversikt.mjs</p><p><b>Klikkbar prototype av forsiden</b> analytika/concepts/explore/preview.html</p><p><b>Bilder</b> analytika/assets/photo/ og analytika/inspiration/</p><p><b>Designkontekst</b> analytika/PRODUCT.md</p></div>
 </div>
-<div id="viewer" hidden><div id="vbar"><button type="button" class="home" id="bhome">← Oversikt</button><span class="ttl" id="vttl"></span><span class="meta" id="vmeta"></span><span class="gap"></span><span id="zb" hidden><span class="zl">Zoom</span>${[['own', 'Sidens egen'], ['1.0', '1,0×'], ['1.2', '1,2×'], ['1.4', '1,4×'], ['1.6', '1,6×'], ['1.8', '1,8×']].map(([v, l]) => `<button type="button" class="z" data-z="${v}" aria-pressed="${v === 'own'}">${l}</button>`).join('')}</span><span id="bb" hidden><span class="zl">Uskarphet</span>${[['ingen', 'Ingen'], ['lett', 'Lett'], ['middels', 'Middels'], ['sterk', 'Sterk']].map(([v, l]) => `<button type="button" class="z bl" data-b="${v}" aria-pressed="${v === 'middels'}">${l}</button>`).join('')}</span><button type="button" id="bprev">‹ Forrige</button><button type="button" id="bnext">Neste ›</button></div><iframe id="frame" title="Side"></iframe></div>
+<div id="viewer" hidden><div id="vbar"><button type="button" class="home" id="bhome">← Oversikt</button><span class="ttl" id="vttl"></span><span class="meta" id="vmeta"></span><span class="gap"></span><span id="zb" hidden><span class="zl">Zoom</span>${[['own', 'Sidens egen'], ['1.0', '1,0×'], ['1.2', '1,2×'], ['1.4', '1,4×'], ['1.6', '1,6×'], ['1.8', '1,8×']].map(([v, l]) => `<button type="button" class="z" data-z="${v}" aria-pressed="${v === 'own'}">${l}</button>`).join('')}</span><span id="rb" hidden><button type="button" class="z rp" id="brp" title="Spill av åpningen på nytt">↻ Spill av åpningen</button></span><span id="bb" hidden><span class="zl">Uskarphet</span>${[['ingen', 'Ingen'], ['lett', 'Lett'], ['middels', 'Middels'], ['sterk', 'Sterk']].map(([v, l]) => `<button type="button" class="z bl" data-b="${v}" aria-pressed="${v === 'middels'}">${l}</button>`).join('')}</span><button type="button" id="bprev">‹ Forrige</button><button type="button" id="bnext">Neste ›</button></div><iframe id="frame" title="Side"></iframe></div>
 <script>
 var pages=${JSON.stringify(pages).replace(/<\//g, '<\\/')},alias=${JSON.stringify(alias)},P=${JSON.stringify(photoFull)},order=${JSON.stringify(order)};
 var home=document.getElementById('home'),viewer=document.getElementById('viewer'),frame=document.getElementById('frame'),stack=[],homeY=0,pos=-1;
@@ -203,7 +203,7 @@ function load(k,sc){var f=k,h='';if(k.indexOf('ph:')!==0&&k.indexOf('#')>0){f=k.
   frame.srcdoc=src(f).replace('<head>','<head><meta name="ov-token" content="'+t+'">');
   if(sc){var tries=0;(function poll(){if(t!==tok)return;try{var d=frame.contentDocument,m=d&&d.querySelector('meta[name="ov-token"]');if(m&&m.content===String(t)){var e=d.querySelectorAll(sc.sel)[sc.i];if(e){e.scrollIntoView();return;}}}catch(x){}if(tries++<120)setTimeout(poll,40);})();}}
 function peers(o){return order.filter(function(x){return x.sec===o.sec&&x.nav;});}
-function bar(){var o=order[pos];if(!o)return;document.getElementById('zb').hidden=!o.z;document.getElementById('bb').hidden=!o.b;document.getElementById('vttl').textContent=o.t;document.getElementById('vmeta').textContent=[o.r,o.s].filter(Boolean).join(' · ');
+function bar(){var o=order[pos];if(!o)return;document.getElementById('zb').hidden=!o.z;document.getElementById('bb').hidden=!o.b;document.getElementById('rb').hidden=!o.p;document.getElementById('vttl').textContent=o.t;document.getElementById('vmeta').textContent=[o.r,o.s].filter(Boolean).join(' · ');
   var same=peers(o),i=same.indexOf(o);document.getElementById('bprev').disabled=!o.nav||i<=0;document.getElementById('bnext').disabled=!o.nav||i>=same.length-1;}
 function openAt(i){pos=i;zoomV=null;blurV=null;press('#vbar button.z:not(.bl)','z','own');press('#vbar button.bl','b','middels');stack=[order[i].k];load(order[i].k,order[i].sc);bar();}
 function openN(n){homeY=window.scrollY;home.hidden=true;viewer.hidden=false;openAt(n);}
@@ -213,6 +213,7 @@ function back(){viewer.hidden=true;home.hidden=false;frame.srcdoc='';window.scro
 document.getElementById('bhome').addEventListener('click',back);
 [].forEach.call(document.querySelectorAll('#vbar button.z:not(.bl)'),function(b){b.addEventListener('click',function(){zoomV=b.dataset.z;press('#vbar button.z:not(.bl)','z',zoomV);sendZoom();});});
 [].forEach.call(document.querySelectorAll('#vbar button.bl'),function(b){b.addEventListener('click',function(){blurV=b.dataset.b;press('#vbar button.bl','b',blurV);sendZoom();});});
+document.getElementById('brp').addEventListener('click',function(){try{frame.contentWindow.postMessage({replay:1},'*');}catch(e){}});
 document.getElementById('bprev').addEventListener('click',function(){step(-1);});
 document.getElementById('bnext').addEventListener('click',function(){step(1);});
 window.addEventListener('keydown',function(e){if(e.key==='Escape'&&!viewer.hidden)back();});

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fake a shallow depth of field on the office photograph: one place stays sharp, everything farther away goes soft.
-Needs Pillow and numpy.  Usage: photo-dof.py IN OUT --focus X0,Y0,X1,Y1 --sigma S [--up PX] [--side PX] [--down PX] [--front F] [--grain STD]
+Needs Pillow and numpy.  Usage: photo-dof.py IN OUT (--focus X0,Y0,X1,Y1 | --all) --sigma S [--up PX] [--side PX] [--down PX] [--front F] [--grain STD]
 
 The sharp zone is the box given by --focus.  Blur grows with the distance from that box, reaching SIGMA (in photograph
 pixels) --up pixels above it and --side pixels to the sides, and FRONT x SIGMA below it (things nearer the camera than the
@@ -12,13 +12,14 @@ from PIL import Image, ImageFilter
 
 ap = argparse.ArgumentParser()
 ap.add_argument('src'); ap.add_argument('dst')
-ap.add_argument('--focus', required=True)
+ap.add_argument('--focus', default='0,0,1,1')
 ap.add_argument('--sigma', type=float, required=True)
 ap.add_argument('--up', type=float, default=140); ap.add_argument('--side', type=float, default=240); ap.add_argument('--down', type=float, default=150)
 ap.add_argument('--front', type=float, default=0.45)
 ap.add_argument('--grain', type=float, default=2.2)
 ap.add_argument('--quality', type=int, default=84)
 ap.add_argument('--seed', type=int, default=11)
+ap.add_argument('--all', action='store_true', help='blur the whole picture evenly (a focus that has not landed yet); --focus is then ignored')
 a = ap.parse_args()
 
 im = Image.open(a.src).convert('L'); W, H = im.size; src = np.asarray(im, dtype=np.float32)
@@ -32,6 +33,7 @@ ease = d * d * (3 - 2 * d)
 nearer = np.clip((yy - y1) / a.down, 0, 1); nearer = nearer * nearer * (3 - 2 * nearer)
 amount = a.sigma * ease * (1 - (1 - a.front) * nearer)          # blur radius at every pixel, in photograph px; eases to FRONT x as things get nearer
 
+if a.all: amount = np.full_like(amount, a.sigma)
 ladder = sorted({0.0, a.sigma} | {s_ for s_ in (0.8, 1.5, 2.5, 4.0, 6.0, 9.0, 13.0) if s_ < a.sigma})
 stack = [src if s == 0 else np.asarray(im.filter(ImageFilter.GaussianBlur(s)), dtype=np.float32) for s in ladder]
 pos = np.interp(amount, ladder, np.arange(len(ladder))); lo = np.clip(np.floor(pos).astype(int), 0, len(ladder) - 2); f = pos - lo
