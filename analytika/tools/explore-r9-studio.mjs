@@ -17,6 +17,38 @@ const IDS = ['actuary', 'pricing', 'data-platforms', 'consulting', 'business-dev
 const PAGES = [['People', 'people'], ['Insights', 'insights'], ['Products', 'products'], ['About us', 'about'], ['Contact', 'about.html#contact']];
 const GRID = '<svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M1 1h4v4H1zM7 1h4v4H7zM1 7h4v4H1zM7 7h4v4H7z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>';
 
+
+/* the light: long-exposure streaks fanning out sideways from the middle of the room, as on the reference. Drawn once from a seeded
+   generator, so the page is the same every time; the colours are CSS variables, so the three settings (off, blue, warm) share the shapes. */
+const rng = (a) => () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+const R = rng(20261114);
+const gauss = () => { let u = 0; for (let i = 0; i < 4; i++) u += R(); return (u - 2) / 0.58; };
+const SW = 674, SH = 504, CX = 0.53 * SW, CY = 0.47 * SH;
+let defs = '', fine = [], bold = '', bundles = Array.from({ length: 10 }, () => '');
+const N = 170;
+for (let i = 0; i < N; i++) {
+  const side = R() < 0.46 ? -1 : 1, kind = i < 136 ? 'fine' : i < 160 ? 'mid' : 'bold';
+  const y0 = CY + gauss() * 54 + (side < 0 ? 10 : -8), x0 = CX + side * (R() * 46);
+  const len = kind === 'fine' ? 26 + R() * R() * 230 : kind === 'mid' ? 90 + R() * 170 : 140 + R() * 170, x1 = x0 + side * len;
+  const dy = (y0 - CY) * 0.2 * (len / 200) + (R() - 0.5) * 14, ym = y0 + dy * 0.3 + (R() - 0.5) * 7, y1 = y0 + dy;
+  const c = Math.floor(R() * 6), w = kind === 'fine' ? 0.45 + R() * 0.8 : kind === 'mid' ? 1 + R() * 1 : 2 + R() * 1.4, o = kind === 'fine' ? 0.55 + R() * 0.45 : 0.75 + R() * 0.25;
+  const id = `s${i}`, d = `M${x0.toFixed(1)} ${y0.toFixed(1)}C${(x0 + side * len * 0.35).toFixed(1)} ${ym.toFixed(1)} ${(x0 + side * len * 0.7).toFixed(1)} ${(ym + dy * 0.3).toFixed(1)} ${x1.toFixed(1)} ${y1.toFixed(1)}`;
+  defs += `<linearGradient id="${id}" gradientUnits="userSpaceOnUse" x1="${x0.toFixed(1)}" y1="0" x2="${x1.toFixed(1)}" y2="0"><stop offset="0" style="stop-color:var(--c${c});stop-opacity:${(o * 0.6).toFixed(2)}"/><stop offset=".18" style="stop-color:var(--c${c});stop-opacity:${o.toFixed(2)}"/><stop offset=".55" style="stop-color:var(--c${c});stop-opacity:${(o * 0.55).toFixed(2)}"/><stop offset="1" style="stop-color:var(--c${c});stop-opacity:0"/></linearGradient>`;
+  const path = `<path d="${d}" stroke="url(#${id})" stroke-width="${w.toFixed(2)}" fill="none" stroke-linecap="round"/>`;
+  if (kind === 'bold') bold += path; else fine.push(path);
+  bundles[i % bundles.length] += path;
+}
+let dots = '';
+for (let i = 0; i < 16; i++) { const x = CX + gauss() * 150, y = CY + gauss() * 60, r = 1 + R() * 4.5; dots += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="var(--c${Math.floor(R() * 6)})" opacity="${(0.25 + R() * 0.5).toFixed(2)}"/>`; }
+const light = `<svg class="light" viewBox="0 0 ${SW} ${SH}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+<defs><filter id="lb" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="5"/></filter><filter id="lf" x="-5%" y="-30%" width="110%" height="160%"><feGaussianBlur stdDeviation=".45"/></filter><filter id="lc" x="-60%" y="-120%" width="220%" height="340%"><feGaussianBlur stdDeviation="16"/></filter><filter id="lw" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="22"/></filter>
+<radialGradient id="lg" cx=".5" cy=".5" r=".5"><stop offset="0" style="stop-color:var(--c0);stop-opacity:.5"/><stop offset="1" style="stop-color:var(--c0);stop-opacity:0"/></radialGradient>${defs}</defs>
+<ellipse cx="${CX.toFixed(0)}" cy="${CY.toFixed(0)}" rx="260" ry="110" fill="url(#lg)" filter="url(#lw)"/>
+<ellipse cx="${CX.toFixed(0)}" cy="${CY.toFixed(0)}" rx="80" ry="40" fill="var(--c4)" opacity=".34" filter="url(#lc)"/>
+<g filter="url(#lb)" opacity=".7">${bold}${fine.slice(0, fine.length >> 1).join('')}</g>
+<g>${bundles.map((b, i) => `<g class="bd" style="--i:${i}">${b}</g>`).join('')}</g>
+<g filter="url(#lf)">${dots}</g></svg>`;
+
 const css = `
 @font-face{font-family:"Hanken Grotesk";src:url(${FONT('hanken-grotesk-latin-400-normal.woff2')}) format("woff2");font-weight:400;font-style:normal;font-display:block}
 @font-face{font-family:"Hanken Grotesk";src:url(${FONT('hanken-grotesk-latin-500-normal.woff2')}) format("woff2");font-weight:500;font-style:normal;font-display:block}
@@ -39,6 +71,15 @@ a{color:inherit;text-decoration:none}
 .veil{position:absolute;inset:0;background:rgba(18,24,38,calc(var(--v)*.07));backdrop-filter:blur(calc(var(--v)*1.5px)) brightness(.92);-webkit-backdrop-filter:blur(calc(var(--v)*1.5px)) brightness(.92)}
 .shade{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,9,11,.78) 0%,rgba(8,9,11,.42) 34%,rgba(8,9,11,0) 66%),linear-gradient(to bottom,rgba(8,9,11,.55),rgba(8,9,11,0) 26%)}
 .frame[data-veil="ingen"]{--v:0}.frame[data-veil="lett"]{--v:3}.frame[data-veil="sterk"]{--v:7}
+
+/* the light play: screen-blended over the photograph, under the shade and the type */
+.light{position:absolute;inset:0;width:100%;height:100%;mix-blend-mode:screen;pointer-events:none;transition:opacity .4s ease-out}
+.frame[data-light="av"] .light{opacity:0}
+.frame[data-light="blatt"]{--c0:#9ED4F4;--c1:#46AEEA;--c2:#E0F0FD;--c3:#BBA9F5;--c4:#FFFFFF;--c5:#7DBAF0}
+.frame[data-light="varmt"]{--c0:#FFC27A;--c1:#FF9F43;--c2:#FFE6C2;--c3:#B79CFF;--c4:#FFFFFF;--c5:#7FE0D0}
+.light .bd{animation:drift calc(9s + var(--i)*1.3s) ease-in-out infinite alternate;animation-delay:calc(var(--i)*-1.7s)}
+@keyframes drift{from{transform:translate(-5px,1px);opacity:.78}to{transform:translate(7px,-1px);opacity:1}}
+@media (prefers-reduced-motion:reduce){.light .bd{animation:none}}
 /* the pill at the top */
 .pill{position:absolute;left:32.2%;top:1.7%;width:35.6%;height:5.8%;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 2%;border-radius:.9cqw;background:rgba(15,16,19,.78);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 0 0 1px rgba(255,255,255,.07);z-index:3}
 .pill .mk{display:block;width:1.6cqw;aspect-ratio:1.07;--lg-ink:#fff;--lg-word:#fff;--lg-blue:#fff;--lg-deep:#fff}
@@ -74,8 +115,8 @@ h1 span{display:block}
 
 const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Analytika – forside, studio (sketch)</title><style>${css}</style></head><body>${logoDefs}${logoWordDef}
-<figure class="frame" data-veil="lett" data-lines="tre"><div class="shot"><div class="glow" aria-hidden="true"></div>
-<div class="screen"><div class="photo" role="presentation"></div><div class="veil" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div>
+<figure class="frame" data-veil="lett" data-lines="tre" data-light="blatt"><div class="shot"><div class="glow" aria-hidden="true"></div>
+<div class="screen"><div class="photo" role="presentation"></div><div class="veil" aria-hidden="true"></div>${light}<div class="shade" aria-hidden="true"></div>
 <header class="pill"><a href="forside-studio.html" aria-label="Analytika, home"><svg class="mk" aria-hidden="true"><use href="#lg-mark"/></svg></a><svg class="wd" role="img" aria-label="Analytika"><use href="#lg-word"/></svg>
 <details class="menu"><summary aria-label="Pages">${GRID}</summary><nav class="panel" aria-label="Pages">${PAGES.map(([n, h]) => `<a href="../site/${h.includes('.') ? h : h + '.html'}">${n}</a>`).join('')}</nav></details></header>
 <h1><span>Consulting.</span><span class="b">Business</span><span>Development.</span></h1>
@@ -83,11 +124,12 @@ const html = `<!doctype html>
 </div>
 <nav class="areas" aria-label="Areas">${AREAS.map((a, i) => `<a href="../site/insights.html#${IDS[i]}">${a}</a>`).join('')}</nav>
 </div></figure>
-<div class="opt" role="group" aria-label="Visning"><span>Slør</span>${['ingen', 'lett', 'sterk'].map((v) => `<button type="button" data-veil="${v}" aria-pressed="${v === 'lett'}">${v[0].toUpperCase() + v.slice(1)}</button>`).join('')}<span class="g">Overskrift</span>${[['tre', 'Tre linjer'], ['to', 'To linjer']].map(([v, l]) => `<button type="button" data-lines="${v}" aria-pressed="${v === 'tre'}">${l}</button>`).join('')}</div>
-${SKETCH('Sketch, round 9 · a recreation of a reference hero for Analytika: our office photograph, darkened, behind a thin veil; only Consulting and Business Development as the headline; the triangle of the logo where the reference has its status card; the five areas in the lower frame. Pages behind it are not designed in this style.')}
+<div class="opt" role="group" aria-label="Visning"><span>Slør</span>${['ingen', 'lett', 'sterk'].map((v) => `<button type="button" data-veil="${v}" aria-pressed="${v === 'lett'}">${v[0].toUpperCase() + v.slice(1)}</button>`).join('')}<span class="g">Lysspill</span>${[['av', 'Av'], ['blatt', 'Blått'], ['varmt', 'Varmt']].map(([v, l]) => `<button type="button" data-light="${v}" aria-pressed="${v === 'blatt'}">${l}</button>`).join('')}<span class="g">Overskrift</span>${[['tre', 'Tre linjer'], ['to', 'To linjer']].map(([v, l]) => `<button type="button" data-lines="${v}" aria-pressed="${v === 'tre'}">${l}</button>`).join('')}</div>
+${SKETCH('Sketch, round 9 · a recreation of a reference hero for Analytika: our office photograph, darkened, behind a thin veil; only Consulting and Business Development as the headline; the triangle of the logo where the reference has its status card; the five areas in the lower frame, and a play of light (long-exposure streaks) over the photograph, in blue or warm or off. Pages behind it are not designed in this style.')}
 <script>(function(){var f=document.querySelector('.frame');
 function press(sel,attr,v){[].forEach.call(document.querySelectorAll(sel),function(x){x.setAttribute('aria-pressed',x.dataset[attr]===v?'true':'false');});}
 [].forEach.call(document.querySelectorAll('.opt button[data-veil]'),function(b){b.addEventListener('click',function(){f.dataset.veil=b.dataset.veil;press('.opt button[data-veil]','veil',b.dataset.veil);});});
+[].forEach.call(document.querySelectorAll('.opt button[data-light]'),function(b){b.addEventListener('click',function(){f.dataset.light=b.dataset.light;press('.opt button[data-light]','light',b.dataset.light);});});
 [].forEach.call(document.querySelectorAll('.opt button[data-lines]'),function(b){b.addEventListener('click',function(){f.dataset.lines=b.dataset.lines;press('.opt button[data-lines]','lines',b.dataset.lines);});});
 document.addEventListener('click',function(e){var m=document.querySelector('.menu');if(m&&m.open&&!m.contains(e.target))m.open=false;});
 addEventListener('keydown',function(e){var m=document.querySelector('.menu');if(e.key==='Escape'&&m&&m.open)m.open=false;});})();</script>
