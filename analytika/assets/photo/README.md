@@ -105,6 +105,16 @@ In sharp focus in the lower left foreground: the open laptop with stickers, the 
 No people, no text, no logos, no border, no vignette. Output a wide 16:9 image, highest quality, as large as you can.
 ```
 
+### H. Hallen til korridorsiden: ekte rendering i stedet for den tegnede (foreslått)
+
+`concepts/explore/forside-korridor.html` er en vektortegning (SVG) som viser oppsettet; Impeccable-detektoren kaller den «formsammensatt illustrasjon» og sier at et hero-stort bilde bør være ekte kunst eller et fotografi. Bildet under er det som skal erstatte den (selve hallen uten skjerm, tekst og logo, 16:10, så den passer inn i skjermen; logoen og teksten legges på i HTML). Be om tre paletter ved å bytte fargeavsnittet.
+
+```
+A cinematic, softly lit 3D render of a long, minimal architectural hall in one-point perspective, wide 16:10, highest quality. Tall plain pilasters step inward on both sides, each pair a little narrower, matte plaster surfaces. The room is almost black; the only light is a bright, soft pool on a smooth, slightly glossy floor in the foreground, spilling up the lower halves of the nearest pilasters, with two fainter strips of light further back. At the far end there is a completely black, empty, rectangular opening: keep it pure black with no detail, no light and no objects, because a logo will be placed there. Light colour: pale cool blue with a hint of lilac, like dusk (highlights around #D8DCEF, mid-tones around #5A648F, shadows near black), not warm, not copper. Fine film grain, very soft edges, no harsh lines.
+
+On the lit floor stand eight to ten tiny human figures, a small group of colleagues, each about 3% of the image height, in dark clothes, a few close together and two or three slightly further back, seen as clean dark silhouettes with faint reflections in the floor. No faces, no text, no logo, no screen, no device frame, no border.
+```
+
 ### D. Nøytral gråtone (ble gjort lokalt i stedet)
 
 Hvis det skal gjøres i ChatGPT:

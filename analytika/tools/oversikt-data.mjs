@@ -19,6 +19,7 @@ export const SECTIONS = [
 
 /* sub-headings, in the order they appear; `page` adds an "open the whole page" button */
 export const SUBS = {
+  r7: { title: 'Runde 7: korridoren (etter en referanse)', note: 'En gjenskapning for Analytika av en hero-skisse du sendte: den mørke skjermen i en lys hall. Gruppe i stedet for én mann, logoen i det svarte rommet, tre kjølige paletter (knappene under skjermen).' },
   r6: { title: 'Runde 6: forsiden med de nye skillene, og tittelen', note: 'Samme side seks ganger, bare ordet «Analytika» er satt ulikt. GSAP (timeline, ScrollTrigger), transitions.dev (texts reveal, tooltip, bevegelsestokens) og reglene fra make-interfaces-feel-better. Knappen «Spill av» i visningen viser åpningen på nytt.' },
   r5: { title: 'Runde 5: utsnittsanalysen', note: 'Fire utsnitt valgt ut av analysen (concepts/utsnitt/README.md), med simulert dybdeskarphet. Knappene i visningen endrer zoom og uskarphet. Pek på en tavle, så kommer den i fokus.' },
   r4: { title: 'Runde 4: det levende kontoret', note: 'Nytt bilde fra ChatGPT (rotete, uten malerier) og fire måter å sette tittelen på. Zoom-knappene i visningen flytter bildet nærmere tavlene.' },
@@ -47,6 +48,7 @@ const S = (name, extra = {}) => ({ group: 'site', file: `concepts/site/${name}.h
 
 export const ITEMS = [
   /* ---------------------------------------------------------------- forsider, nyeste først */
+  { section: 'forsider', sub: 'r7', status: 'alternativ', title: 'Korridoren: gruppen i hallen', text: 'Samme oppsett som referansen: skjerm i en lys hall, menylinje, overskrift. Her er overskriften bare «Analytika», logoen står hvit og stor i det svarte rommet, en gruppe mennesker står i lyset, og de fem områdene ligger nederst. Tre paletter: varm blå, blågrå, lilla.', round: 'Runde 7', ...E('forside-korridor') },
   { section: 'forsider', sub: 'r6', status: 'alternativ', zoom: true, blur: true, replay: true, title: 'A: Logotypen over hele bredden, nederst', text: 'Firmaets egen logotype (ANALYTIKA) i hvitt fra kant til kant nederst, med en myk skygge under. Stiger opp fra nedre kant. Kontrast 4,8:1 mot det som ligger under.', round: 'Runde 6', ...E('forside-tittel-logotype') },
   { section: 'forsider', sub: 'r6', status: 'alternativ', zoom: true, blur: true, replay: true, title: 'B: Serif over hele bredden, nederst', text: 'Cormorant Garamond fra kant til kant nederst. Mykere og mer eksklusivt enn logotypen, men dekker mer av arbeidsbordet.', round: 'Runde 6', ...E('forside-tittel-serif') },
   { section: 'forsider', sub: 'r6', status: 'alternativ', zoom: true, blur: true, replay: true, title: 'C: Bare logoen, liten, øverst til venstre', text: 'Logo med ordmerke, hvit, 150–190 px. Ingenting annet på bildet. Det stille alternativet.', round: 'Runde 6', ...E('forside-tittel-logo') },
