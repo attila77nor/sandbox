@@ -9,10 +9,10 @@ import { readFileSync } from 'node:fs';
 import { write, logoDefs, SKETCH } from './explore-shared.mjs';
 
 const FONT = (f) => 'data:font/woff2;base64,' + readFileSync(new URL('../assets/vendor/fonts/' + f, import.meta.url)).toString('base64');
-const AREAS = ['Actuary', 'Pricing', 'Data platforms', 'Consulting', 'Business development'];
-/* P = a pixel letter, R = a regular letter. The pixel part shifts from line to line, as on the reference. */
-const MODES = ['PPPPPRR', 'PRPPRRR', 'PPPPRRRRRRRRRR', 'RPPPPRRRRR', 'PPPPPPPPRRRRRRRRRRRR'];
-const NAV = ['People', 'Insights', 'Products', 'About us', 'Contact'];
+const AREAS = ['Actuary', 'Pricing', 'Data platforms', 'Consulting', 'Business development'];   // they sit in the dark pill at the bottom right
+/* the thin lines under the bold word: only these two. P = a pixel letter, R = a regular one; the pixel part shifts from line to line, as on the reference */
+const LINES = [['CONSULTING', 'PPPPPRRRRR'], ['BUSINESS DEVELOPMENT', 'PPPPPPPPRRRRRRRRRRR']];
+const IDS = ['actuary', 'pricing', 'data-platforms', 'consulting', 'business-development'];
 
 /* a 5 x 7 bitmap font, capitals only */
 const BITS = {
@@ -41,10 +41,10 @@ const BLUE = '#1B92D0', DEEP = '#036194', MARINE = '#1E3363', LIGHT = '#7DC6EC',
 const cellsOf = {
   /* the area ABOVE a survival curve, stepping down from the top left to the bottom right; a band in a light tint of the blue along the edge, censoring ticks in white */
   overlevelse() {
-    const s = [13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 12, 11, 10, 10, 8, 7, 5, 3, 1, 0]; // grey cells counted from the bottom
+    const s = [13, 13, 13, 13, 13, 13, 13, 13, 13, 12, 12, 11, 10, 9, 9, 8, 7, 6, 4, 3, 2, 1, 0]; // grey cells counted from the bottom
     const c = [];
     for (let x = 0; x < COLS; x++) for (let y = 0; y < ROWS - s[x]; y++) { const edge = ROWS - s[x] - 1 - y; c.push([x, y, edge <= 1 ? LIGHT : BLUE]); }
-    [[14, 0], [16, 0], [18, 0], [20, 0]].forEach(([x]) => { const y = ROWS - s[x] - 3; if (y >= 0) { const k = c.find((q) => q[0] === x && q[1] === y); if (k) k[2] = WHITE; } });
+    [[13, 0], [16, 0], [18, 0], [20, 0]].forEach(([x]) => { const y = ROWS - s[x] - 3; if (y >= 0) { const k = c.find((q) => q[0] === x && q[1] === y); if (k) k[2] = WHITE; } });
     return c;
   },
   /* the area UNDER a cumulative claims development curve, rising to the right; the band along the top edge in a light tint of the blue */
@@ -95,9 +95,9 @@ a{color:inherit;text-decoration:none}
 .frame[data-shape="overlevelse"] .g-overlevelse,.frame[data-shape="utvikling"] .g-utvikling,.frame[data-shape="trekant"] .g-trekant{display:inline}
 /* the type: positions are the reference's, in percent of the shot */
 .type{position:absolute;left:8%;top:17.5%;margin:0;padding:0;list-style:none;color:var(--ink)}
-.type h1{margin:0;font:700 7cqw/1 "Hanken Grotesk",sans-serif;letter-spacing:-.018em;text-transform:uppercase}
-.type ul{margin:3.4cqw 0 0;padding:0;list-style:none;font:500 4.9cqw/1 "Hanken Grotesk",sans-serif;text-transform:uppercase}
-.type li{display:flex;align-items:flex-end;margin:0 0 2.5cqw;white-space:nowrap;letter-spacing:.012em;height:.7em}
+.type h1{margin:0;font:700 8.9cqw/1 "Hanken Grotesk",sans-serif;letter-spacing:-.02em;text-transform:uppercase}
+.type ul{margin:4.8cqw 0 0;padding:0;list-style:none;font:500 5.7cqw/1 "Hanken Grotesk",sans-serif;text-transform:uppercase}
+.type li{display:flex;align-items:flex-end;margin:0 0 3.4cqw;white-space:nowrap;letter-spacing:.012em;height:.7em}
 .type li:last-child{margin-bottom:0}
 .type .r{display:block;line-height:.7em;height:.7em;overflow:visible;margin-right:.02em}
 .type .p{display:block;height:.7em;width:.5em;fill:currentColor;margin-right:.1em;shape-rendering:crispEdges}
@@ -105,7 +105,7 @@ a{color:inherit;text-decoration:none}
 .logo{position:absolute;left:5.03%;top:5.7%;width:20.5%;display:block;aspect-ratio:5.349;--lg-ink:#fff;--lg-word:#fff;--lg-blue:#fff;--lg-deep:#fff}
 .pills{position:absolute;right:4.2%;bottom:16.6%;display:flex;gap:.6cqw;align-items:center}
 .pill{display:flex;align-items:center;height:4.6cqw;border-radius:99px;background:var(--marine);box-shadow:0 0 0 1px rgba(255,255,255,.14);color:#fff;font-size:max(12px,1.02cqw);font-weight:500;letter-spacing:.03em;text-transform:uppercase}
-.pill.nav{gap:2.1cqw;padding:0 2.3cqw}
+.pill.nav{gap:1.9cqw;padding:0 2.3cqw}
 .pill.cta{padding:0 1.8cqw}
 .pill a{transition:opacity .15s ease-out}.pill a:hover{opacity:.7}
 :focus-visible{outline:2px solid #fff;outline-offset:3px}
@@ -113,19 +113,21 @@ a{color:inherit;text-decoration:none}
 .opt button{background:none;border:1px solid transparent;border-radius:4px;padding:5px 11px;font:inherit;color:inherit;cursor:pointer}
 .opt button:hover{color:var(--ink)}.opt button[aria-pressed=true]{color:var(--ink);border-color:var(--ink)}
 .sketch{margin:0;text-align:center;font-size:12px;color:#5C616C}
-@media (max-width:640px){.pills{display:none}}
+.areas-m{display:none}
+@media (max-width:700px){.pills{display:none}.areas-m{display:flex;flex-wrap:wrap;justify-content:center;gap:4px 18px;font-size:13px;font-weight:500;text-transform:uppercase;letter-spacing:.04em}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 `;
 
 const html = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Analytika – forside, pikslene (sketch)</title><style>${css}</style></head><body>${logoDefs}
-<figure class="frame" data-shape="overlevelse"><div class="shot">${shotSvg}
-<div class="type"><h1>Analytika</h1><ul aria-label="Areas">${AREAS.map((a, i) => `<li><span class="sr">${a}</span><span style="display:flex;align-items:flex-end" aria-hidden="true">${line(a.toUpperCase(), MODES[i])}</span></li>`).join('')}</ul></div>
+<figure class="frame" data-shape="utvikling"><div class="shot">${shotSvg}
+<div class="type"><h1>Analytika</h1><ul aria-label="Consulting and business development">${LINES.map(([w, m]) => `<li><span class="sr">${w[0] + w.slice(1).toLowerCase()}</span><span style="display:flex;align-items:flex-end" aria-hidden="true">${line(w, m)}</span></li>`).join('')}</ul></div>
 <svg class="logo" role="img" aria-label="Analytika"><use href="#lg-full"/></svg>
-<div class="pills"><nav class="pill nav" aria-label="Pages">${NAV.map((n) => `<a href="../site/${n.toLowerCase().replace(' ', '')}.html">${n}</a>`).join('')}</nav><a class="pill cta" href="../site/about.html#join">Join us</a></div>
+<div class="pills"><nav class="pill nav" aria-label="Areas">${AREAS.map((n, i) => `<a href="../site/insights.html#${IDS[i]}">${n}</a>`).join('')}</nav><a class="pill cta" href="../site/about.html#join">Join us</a></div>
 </div></figure>
-<div class="opt" role="group" aria-label="Graf"><span>Graf</span>${Object.entries(SHAPES).map(([k, s]) => `<button type="button" data-shape="${k}" aria-pressed="${k === 'overlevelse'}">${s.label}</button>`).join('')}</div>
-${SKETCH('Sketch, round 8 · a recreation of a reference page for Analytika: our blue, the pixel shape is an actuarial graph (three to choose from), our five areas in the thin lines, the logo in white on the blue above the card. Pages behind it are not designed in this style.')}
+<nav class="areas-m" aria-label="Areas">${AREAS.map((n, i) => `<a href="../site/insights.html#${IDS[i]}">${n}</a>`).join('')}</nav>
+<div class="opt" role="group" aria-label="Graf"><span>Graf</span>${Object.entries(SHAPES).map(([k, s]) => `<button type="button" data-shape="${k}" aria-pressed="${k === 'utvikling'}">${s.label}</button>`).join('')}</div>
+${SKETCH('Sketch, round 8 · a recreation of a reference page for Analytika: our blue, the pixel shape is an actuarial graph (three to choose from), only Consulting and Business development in the thin lines, the five areas in the dark pill at the bottom right, the logo in white on the blue above the card. Pages behind it are not designed in this style.')}
 <script>(function(){var f=document.querySelector('.frame'),b=[].slice.call(document.querySelectorAll('.opt button'));
 function set(k){f.dataset.shape=k;b.forEach(function(x){x.setAttribute('aria-pressed',x.dataset.shape===k?'true':'false');});}
 b.forEach(function(x){x.addEventListener('click',function(){set(x.dataset.shape);});});
