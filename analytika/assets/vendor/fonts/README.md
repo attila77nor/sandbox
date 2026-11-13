@@ -3,3 +3,5 @@ Fonts that are embedded in the pages, so what we test is what is shown. All are 
 - `cormorant-garamond-latin-500-normal.woff2`: Cormorant Garamond Medium. The display serif of the title variants in `tools/explore-r6-fokus.mjs`.
 
 Instrument Serif was tried first and dropped: Impeccable's detector flags it as an overused "AI" face.
+
+- `hanken-grotesk-latin-{300,400,500,700}-normal.woff2`: Hanken Grotesk (latin subset, `hanken-grotesk-OFL.txt`), the site's sans, embedded by the round 7 and 8 pages.

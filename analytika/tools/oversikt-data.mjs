@@ -19,6 +19,7 @@ export const SECTIONS = [
 
 /* sub-headings, in the order they appear; `page` adds an "open the whole page" button */
 export const SUBS = {
+  r8: { title: 'Runde 8: pikselsiden (etter en referanse)', note: 'En gjenskapning av en nettside du sendte: flat blå flate, lyst kort med en trappeformet figur, tykk tittel og tynne linjer som blir til piksler. Figuren er nå en aktuargraf, og du velger mellom tre med knappene under siden.' },
   r7: { title: 'Runde 7: korridoren (etter en referanse)', note: 'En gjenskapning for Analytika av en hero-skisse du sendte: den mørke skjermen i en lys hall. Gruppe i stedet for én mann, logoen i det svarte rommet, tre kjølige paletter (knappene under skjermen).' },
   r6: { title: 'Runde 6: forsiden med de nye skillene, og tittelen', note: 'Samme side seks ganger, bare ordet «Analytika» er satt ulikt. GSAP (timeline, ScrollTrigger), transitions.dev (texts reveal, tooltip, bevegelsestokens) og reglene fra make-interfaces-feel-better. Knappen «Spill av» i visningen viser åpningen på nytt.' },
   r5: { title: 'Runde 5: utsnittsanalysen', note: 'Fire utsnitt valgt ut av analysen (concepts/utsnitt/README.md), med simulert dybdeskarphet. Knappene i visningen endrer zoom og uskarphet. Pek på en tavle, så kommer den i fokus.' },
@@ -48,6 +49,7 @@ const S = (name, extra = {}) => ({ group: 'site', file: `concepts/site/${name}.h
 
 export const ITEMS = [
   /* ---------------------------------------------------------------- forsider, nyeste først */
+  { section: 'forsider', sub: 'r8', status: 'alternativ', title: 'Pikselsiden: aktuargraf som piksler', text: 'Vår blå som flate, marine som meny, logoen hvit på det blå. Den trappeformede figuren er en overlevelseskurve, en utviklingskurve eller en utviklingstrekant. «Analytika» i fet skrift og de fem områdene i tynne linjer som går fra pikselbokstaver til vanlige.', round: 'Runde 8', ...E('forside-pixel') },
   { section: 'forsider', sub: 'r7', status: 'alternativ', title: 'Korridoren: gruppen i hallen', text: 'Samme oppsett som referansen: skjerm i en lys hall, menylinje, overskrift. Her er overskriften bare «Analytika», logoen står hvit og stor i det svarte rommet, en gruppe mennesker står i lyset, og de fem områdene ligger nederst. Tre paletter: varm blå, blågrå, lilla.', round: 'Runde 7', ...E('forside-korridor') },
   { section: 'forsider', sub: 'r6', status: 'alternativ', zoom: true, blur: true, replay: true, title: 'A: Logotypen over hele bredden, nederst', text: 'Firmaets egen logotype (ANALYTIKA) i hvitt fra kant til kant nederst, med en myk skygge under. Stiger opp fra nedre kant. Kontrast 4,8:1 mot det som ligger under.', round: 'Runde 6', ...E('forside-tittel-logotype') },
   { section: 'forsider', sub: 'r6', status: 'alternativ', zoom: true, blur: true, replay: true, title: 'B: Serif over hele bredden, nederst', text: 'Cormorant Garamond fra kant til kant nederst. Mykere og mer eksklusivt enn logotypen, men dekker mer av arbeidsbordet.', round: 'Runde 6', ...E('forside-tittel-serif') },
