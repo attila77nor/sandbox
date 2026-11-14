@@ -1,6 +1,6 @@
 /* One scrollable file with the designs Atle picked, to share: ../forsider-samlet.html.
-   Every design is shown as its landing page, followed by the pages that were made in the same design (People, About us ...), before the next design
-   starts. The pages are the real ones (nothing is redrawn), each in its own frame, loaded when it comes into view so that the animation plays when it is seen.
+   Every design is shown as its landing page only (Atle asked for that after seeing a version with the sub-pages; `pages` of a design may hold more than one
+   page, and links, labels and the index then follow along). The pages are the real ones (nothing is redrawn), each in its own frame, loaded when it comes into view so that the animation plays when it is seen.
    - Pages that react to scrolling (ScrollTrigger, scroll listeners, long pages with fixed parts) are "driven": the frame stays in place and the file's own
      scroll is passed on to it, so the page behaves as if it were scrolled by hand. Plain pages just flow (the frame is as tall as the page).
    - Links between the pages of a design scroll to the page; a link to a page that was never made in that design shows a short note.
@@ -19,12 +19,6 @@ const FONT = (f) => 'data:font/woff2;base64,' + readFileSync(new URL('assets/ven
 /* ------------------------------------------------------------------ what is in the file (Atle's picks, in his order) */
 const F = (file, label, names = []) => ({ kind: 'file', file, label, names: [file.split('/').pop(), ...names] });
 const C = (file, i, label) => ({ kind: 'concept', file, i, label, names: [] });
-const SITE = (dir, home) => [
-  F(`${dir}/people.html`, 'People'), F(`${dir}/insights.html`, 'Insights'),
-  F(`${dir}/insights-actuary-risk.html`, 'Insights › Risk actuary'), F(`${dir}/insights-actuary-compliance.html`, 'Insights › Compliance'),
-  F(`${dir}/insights-actuary-reserving.html`, 'Insights › Reserving'), F(`${dir}/insights-actuary-life-pension.html`, 'Insights › Life and pension'),
-  F(`${dir}/products.html`, 'Products'), F(`${dir}/about.html`, 'About us'),
-];
 const DESIGNS = [
   { title: 'Kortstokken', note: 'Tre ord i tre skrifter på et kort, en liten spiller som blar gjennom de fem områdene, og to sider bak kortet.', pages: [F('concepts/explore/forside-kort.html', 'Forside')] },
   { title: 'Rutenettet', note: 'Lys side med tynt rutenett. De fem områdene er blå ruter, og to linjer står i midten.', pages: [F('concepts/explore/forside-rutenett.html', 'Forside')] },
@@ -36,19 +30,16 @@ const DESIGNS = [
   { title: 'Vinduet følger scroll', note: 'Samme vindu, men åpningen følger scrollen. Scroll videre, og bildet går over i radene.', pages: [F('concepts/explore/forside-vindu-skroll.html', 'Forside')] },
   { title: 'Det virkelige kontoret', note: 'Kontoret over hele skjermen. Scrollen tones mot hvitt, og tavlene er områdene.', pages: [F('concepts/explore/forside-ekte.html', 'Forside')] },
   { title: 'Vegg, hvit', note: 'Hvit bunn, og bildet av tavlene toner opp fra hvitt. Tavlene dimmer hverandre når du peker.', pages: [F('concepts/explore/vegg-hvit.html', 'Forside')] },
-  { title: 'Oslo-lys', note: 'Siden lyses av himmelen over Oslo akkurat nå.', pages: [F('concepts/explore/oslo.html', 'Forside'), F('concepts/explore/oslo-people.html', 'People')] },
-  { title: 'Trekanten', note: 'Galton-gitteret som firmaet: seks rader er 21 prikker, én per person. En kule faller gjennom.', pages: [F('concepts/explore/trekant.html', 'Forside'), F('concepts/explore/trekant-people.html', 'People')] },
-  { title: 'Tetthet', note: 'Svart og hvitt. Linjer ved kvantilene til en fordeling, tettere der sannsynligheten er høy.', pages: [F('concepts/explore/tetthet.html', 'Forside'), F('concepts/explore/tetthet-people.html', 'People')] },
-  { title: 'Fjellskissen', note: 'Én lang side: fjellbildet som toner til hvitt, fire ord langs en linje, og de andre sidene koblet på. Så de lyse undersidene (versjon 4).', pages: [F('concepts/landing.html', 'Forside, hele skissen'), ...SITE('concepts/historikk/4-4e99654')] },
+  { title: 'Oslo-lys', note: 'Siden lyses av himmelen over Oslo akkurat nå.', pages: [F('concepts/explore/oslo.html', 'Forside')] },
+  { title: 'Trekanten', note: 'Galton-gitteret som firmaet: seks rader er 21 prikker, én per person. En kule faller gjennom.', pages: [F('concepts/explore/trekant.html', 'Forside')] },
+  { title: 'Tetthet', note: 'Svart og hvitt. Linjer ved kvantilene til en fordeling, tettere der sannsynligheten er høy.', pages: [F('concepts/explore/tetthet.html', 'Forside')] },
+  { title: 'Fjellskissen', note: 'Fjellbildet som toner til hvitt og fire ord langs en linje. Siden er lang, og linjen tegnes mens du scroller.', pages: [F('concepts/landing.html', 'Forside')] },
   { title: 'Statements', note: 'Hver påstand får en hel flate: «No fancy jargon. No fluff.» i stort format.', pages: [C('concepts/index.html', 4, 'Forside')] },
-  { title: 'Brun, lag', note: 'Umber og terrakotta, tynn skrift, fjellbildet i brun tone. Seksjonene er fire lag oppå hverandre.', pages: [C('concepts/variants.html', 2, 'Forside og seksjoner')] },
-  { title: 'Fotoserif', note: 'Fullt mørkt foto, stor luftig serif midt på, små luftige versaler i menyen og en tynn omriss-knapp.', pages: [C('concepts/variants.html', 3, 'Forside og seksjoner')] },
-  { title: 'Fargeblokker', note: 'Grå flate, rolig serif-overskrift og flate fargeblokker i logoens farger.', pages: [C('concepts/variants.html', 4, 'Forside og seksjoner')] },
-  { title: 'Galton-brettet', note: 'Kulene faller tilfeldig, men haugen blir alltid en klokkekurve. Med alle undersidene i dette designet.', pages: [C('concepts/photo-concepts.html', 0, 'Forside'), ...SITE('concepts/site')] },
+  { title: 'Brun, lag', note: 'Umber og terrakotta, tynn skrift, fjellbildet i brun tone. Seksjonene er fire lag oppå hverandre.', pages: [C('concepts/variants.html', 2, 'Forside')] },
+  { title: 'Fotoserif', note: 'Fullt mørkt foto, stor luftig serif midt på, små luftige versaler i menyen og en tynn omriss-knapp.', pages: [C('concepts/variants.html', 3, 'Forside')] },
+  { title: 'Fargeblokker', note: 'Grå flate, rolig serif-overskrift og flate fargeblokker i logoens farger.', pages: [C('concepts/variants.html', 4, 'Forside')] },
+  { title: 'Galton-brettet', note: 'Kulene faller tilfeldig, men haugen blir alltid en klokkekurve.', pages: [C('concepts/photo-concepts.html', 0, 'Forside')] },
 ];
-/* the site's own pages call the landing page index.html; in the designs that have one, a link to it goes to the first page */
-for (const d of DESIGNS) if (d.pages.some((p) => /\/(people|about)\.html$/.test(p.file || ''))) d.pages[0].names.push('index.html');
-
 /* ------------------------------------------------------------------ page sources */
 const OWN_CLICK = /<script>document\.addEventListener\('click',function\(e\)\{var a=e\.target\.closest\('a\[href\]'\);if\(!a\|\|window\.parent===window\)[\s\S]*?<\/script>/;
 const concept = (file, i) => {
@@ -59,6 +50,7 @@ const concept = (file, i) => {
   const end = s.indexOf('</section>', starts[i]);
   let inner = s.slice(starts[i] + '<section class="concept">'.length, end);
   const cap = inner.indexOf('<div class="cap">'); if (cap >= 0) inner = inner.slice(0, cap);
+  if (inner.includes('<div class="pair">')) { const second = inner.indexOf('<div class="scroll">', inner.indexOf('<div class="scroll">') + 1); if (second > 0) inner = inner.slice(0, second) + '</div>'; } // the first screen only, not the sections sketch below it
   const css = '<style>html,body{margin:0;background:var(--page,#E8E9EC)}.scroll{overflow:visible!important;border-radius:0!important;box-shadow:none!important;display:grid;place-items:center}.pair{display:block!important}.stage{min-width:0!important;width:min(100vw,160svh)!important;margin:0 auto!important;box-shadow:none!important}</style>';
   return head.replace('</head>', css + '</head>') + '<body>' + defs + inner + '</body></html>';
 };
@@ -244,7 +236,7 @@ addEventListener('message',function(e){
     var parts=m.h.split('#'),base=parts[0].split('/').pop(),hash=parts[1]||'',d=D[PM[m.p].d],hit=null;
     if(!base){return;}
     d.pages.forEach(function(id){if(PM[id].names.indexOf(base)>-1)hit=id;});
-    if(!hit){var nm=hash==='join'?'Join us':hash==='contact'?'Contact':(NAMES[base]||base.replace(/\\.html$/,''));say('«'+nm+'» er ikke laget i dette designet ('+d.title+').');return;}
+    if(!hit){var nm=hash==='join'?'Join us':hash==='contact'?'Contact':(NAMES[base]||base.replace(/\\.html$/,''));say('«'+nm+'» er ikke med: bare forsidene er tatt med.');return;}
     var t=byId[hit];if(hash){if(t.frame)toHash(t,hash);else{t.hash=hash;t.scrollIntoView({behavior:'smooth',block:'start'});}}else t.scrollIntoView({behavior:'smooth',block:'start'});
   }
 });
@@ -256,7 +248,7 @@ const html = `<!doctype html>
 <html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Analytika – forslag til forsider</title><style>${CSS}</style></head><body>
 <header id="bar"><span class="brand">Analytika · forslag</span><div class="now" aria-live="polite"><b id="nn"></b><span class="nt" id="nt">Innhold</span><span class="np" id="np"></span></div><div class="btns"><button type="button" id="prev" aria-label="Forrige design" title="Forrige design">‹</button><button type="button" id="next" aria-label="Neste design" title="Neste design">›</button><button type="button" id="replay" class="rp" title="Last siden på nytt, så animasjonen spilles av igjen">Spill av igjen</button><button type="button" id="index" aria-expanded="false" aria-controls="idx">Oversikt</button></div></header>
 <main>
-<section class="cover" id="cover"><h1>Forslag til forsider</h1><p class="lede">${DESIGNS.length} design. Scroll nedover: hvert design vises med forsiden først og deretter sidene som er laget i samme design (People, About us og så videre), før neste design kommer. Sidene er de ekte, og animasjonen spilles av når siden kommer til syne. Lenker mellom sidene i et design scroller til siden. «Spill av igjen» øverst starter siden du står på på nytt. Noen eldre skisser henter skrifter fra Google Fonts og trenger nett for å se riktig ut.</p><ol class="lst">${list}</ol></section>
+<section class="cover" id="cover"><h1>Forslag til forsider</h1><p class="lede">${DESIGNS.length} forsider. Scroll nedover. Sidene er de ekte, og animasjonen spilles av når siden kommer til syne. «Spill av igjen» øverst starter siden du står på på nytt. Noen eldre skisser henter skrifter fra Google Fonts og trenger nett for å se riktig ut.</p><ol class="lst">${list}</ol></section>
 ${sections}
 </main>
 <nav id="idx" aria-label="Oversikt" hidden><ol class="lst">${list}</ol></nav>
