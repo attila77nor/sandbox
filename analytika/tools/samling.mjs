@@ -71,7 +71,7 @@ for (const [di, d] of DESIGNS.entries()) {
     p.scrolly = p.kind === 'concept' || SCROLLY.test(scripts);
     p.fixed = /position:\s*fixed/.test(s);
     const id = pid++;
-    const click = `<script>(function(){var P=${id},T={'people':'people.html','meet the people':'people.html','insights':'insights.html','products':'products.html','about us':'about.html','join us':'about.html#join','contact':'about.html#contact'};function key(a){return (a.textContent||'').replace(/\\s+/g,' ').trim().toLowerCase();}[].forEach.call(document.querySelectorAll('a,.btn'),function(a){var h=a.tagName==='A'?a.getAttribute('href'):null;if((h===null||h==='#')&&T[key(a)])a.style.cursor='pointer';});document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a,.btn');if(!a)return;var h=a.tagName==='A'?a.getAttribute('href'):null;if(a.tagName==='A')e.preventDefault();if(h===null||h===''||h==='#'){var k=key(a);if(T[k]){e.preventDefault();parent.postMessage({s:'go',p:P,h:T[k]},'*');}return;}if(/^(https?:|mailto:)/.test(h)){parent.postMessage({s:'ext',h:h},'*');return;}if(h.charAt(0)==='#'){var t=document.getElementById(h.slice(1));if(t)parent.postMessage({s:'y',p:P,y:t.getBoundingClientRect().top+window.scrollY},'*');return;}parent.postMessage({s:'go',p:P,h:h},'*');},true);})();</script>`;
+    const click = `<script>(function(){var P=${id},T={'people':'people.html','meet the people':'people.html','insights':'insights.html','products':'products.html','about us':'about.html','join us':'about.html#join','contact':'about.html#contact'};function key(a){return (a.textContent||'').replace(/\\s+/g,' ').trim().toLowerCase();}[].forEach.call(document.querySelectorAll('a,.btn'),function(a){var h=a.tagName==='A'?a.getAttribute('href'):null;if((h===null||h==='#')&&T[key(a)])a.style.cursor='pointer';});document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a,.btn');if(!a)return;var h=a.tagName==='A'?a.getAttribute('href'):null;if(a.tagName==='A')e.preventDefault();if(h===null||h===''||h==='#'){var k=key(a);if(T[k]){e.preventDefault();parent.postMessage({s:'go',p:P,h:T[k]},'*');}return;}if(/^(https?:|mailto:)/.test(h)){parent.postMessage({s:'ext',p:P,h:h},'*');return;}if(h.charAt(0)==='#'){var t=document.getElementById(h.slice(1));if(t)parent.postMessage({s:'y',p:P,y:t.getBoundingClientRect().top+window.scrollY},'*');return;}parent.postMessage({s:'go',p:P,h:h},'*');},true);})();</script>`;
     s = /<\/body>/i.test(s) ? s.replace(/<\/body>/i, click + '</body>') : s + click;
     pages.push({ id, d: di, label: p.label, names: p.names, full: s, scrolly: p.scrolly, fixed: p.fixed });
   }
@@ -108,7 +108,7 @@ const meta = DESIGNS.map((d, i) => ({ n: pad(i), title: d.title, note: d.note, p
 const pageMeta = pages.map((p) => ({ id: p.id, d: p.d, label: p.label, names: p.names, mode: p.mode, bg: p.bg, r: p.ratio }));
 const json = (o) => JSON.stringify(o).replace(/</g, '\\u003c');
 
-const sections = DESIGNS.map((d, di) => `<article class="design" data-d="${di}" id="d${di}">${pages.filter((p) => p.d === di).map((p) => `<section class="pg" data-p="${p.id}" data-mode="${p.mode}" style="--bg:${p.bg};--r:${p.ratio}" aria-label="${esc(d.title + ': ' + p.label)}"><div class="pin"></div></section>`).join('')}</article>`).join('\n');
+const sections = DESIGNS.map((d, di) => `<article class="design" data-d="${di}" id="d${di}" tabindex="-1" aria-label="${esc(d.title)}">${pages.filter((p) => p.d === di).map((p) => `<section class="pg" data-p="${p.id}" data-mode="${p.mode}" style="--bg:${p.bg};--r:${p.ratio}" aria-label="${esc(d.title + ': ' + p.label)}"><div class="pin"></div></section>`).join('')}</article>`).join('\n');
 const list = meta.map((m, i) => `<li><a href="#d${i}" data-go="${i}"><b>${m.n}</b><span class="lt">${esc(m.title)}</span><span class="ln">${esc(m.note)}</span>${m.pages.length > 1 ? `<span class="lp">${m.pages.length} sider: ${esc(pageMeta.filter((p) => p.d === i).map((p) => p.label.replace('Insights › ', '')).filter((l, k, a) => a.indexOf(l) === k).join(', '))}</span>` : ''}</a></li>`).join('');
 
 const CSS = `
@@ -147,11 +147,25 @@ a{color:inherit}
 .pg iframe{display:block;width:100%;height:100%;border:0;background:var(--bg,#fff)}
 .pg.ld::after{content:"";position:absolute;left:50%;top:calc(var(--bar) + var(--vh)/2);width:18px;height:18px;margin:-9px;border-radius:50%;border:2px solid rgba(128,128,128,.35);border-top-color:rgba(128,128,128,.9);animation:sp .8s linear infinite;pointer-events:none}
 @keyframes sp{to{transform:rotate(360deg)}}
-#idx{position:fixed;z-index:30;top:var(--bar);right:0;bottom:0;width:min(100%,420px);overflow:auto;background:#fff;border-left:1px solid var(--rule);box-shadow:-12px 0 32px rgba(20,22,27,.08);padding:8px clamp(14px,2vw,22px) 28px;transform:translateX(0);transition:transform .25s cubic-bezier(.22,1,.36,1),opacity .2s ease-out}
-#idx[hidden]{display:block!important;transform:translateX(24px);opacity:0;pointer-events:none;visibility:hidden}
-#idx .lst{display:block;margin:6px 0 0}
-#toast{position:fixed;z-index:40;left:50%;bottom:20px;max-width:min(92vw,460px);padding:9px 14px;border-radius:8px;background:var(--ink);color:#fff;font-size:12.5px;transform:translate(-50%,8px);opacity:0;pointer-events:none;transition:opacity .2s ease-out,transform .2s ease-out}
-#toast.on{opacity:1;transform:translate(-50%,0)}
+dialog#idx{inset:0 0 0 auto;margin:0;padding:0;width:min(100%,420px);max-width:none;height:100svh;max-height:100svh;border:0;border-left:1px solid var(--rule);background:#fff;color:var(--ink);box-shadow:-12px 0 32px rgba(20,22,27,.08);overflow:auto;overscroll-behavior:contain;opacity:0;translate:24px 0;transition:translate .25s cubic-bezier(.22,1,.36,1),opacity .2s ease-out,overlay .25s,display .25s;transition-behavior:allow-discrete}
+dialog#idx[open]{opacity:1;translate:0 0}
+@starting-style{dialog#idx[open]{opacity:0;translate:24px 0}}
+dialog#idx::backdrop{background:rgba(20,22,27,0);transition:background-color .25s ease-out,overlay .25s,display .25s;transition-behavior:allow-discrete}
+dialog#idx[open]::backdrop{background:rgba(20,22,27,.16)}
+@starting-style{dialog#idx[open]::backdrop{background:rgba(20,22,27,0)}}
+.idx-h{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;height:var(--bar);padding:0 clamp(14px,2vw,22px);background:#fff;border-bottom:1px solid var(--rule);font-weight:600}
+.idx-h button{height:28px;padding:0 10px;border-radius:6px;font-weight:400}.idx-h button:hover{background:#EEF0F3}
+#idx nav{padding:0 clamp(14px,2vw,22px) 28px}
+#idx .lst{display:block;margin:0}
+.lst a:is(:target-current,.target-current) .lt{text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:.3em}
+.lst a:is(:target-current,.target-current) b::after{content:" ●";font-size:8px;vertical-align:2px}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+#toast{margin:0;border:0;inset:auto auto 20px 50%;translate:-50% 0;max-width:min(92vw,460px);padding:6px 6px 6px 14px;border-radius:8px;background:var(--ink);color:#fff;font:inherit;font-size:12.5px;display:none;align-items:center;gap:10px;opacity:0;transform:translateY(8px);transition:opacity .2s ease-out,transform .2s ease-out,overlay .2s,display .2s;transition-behavior:allow-discrete}
+#toast:popover-open,#toast.fb.on{display:flex;opacity:1;transform:none}
+@starting-style{#toast:popover-open{opacity:0;transform:translateY(8px)}}
+#toast.fb{position:fixed;z-index:40}
+#toast button{flex:none;width:28px;height:28px;border-radius:6px;color:#fff;font-size:17px;line-height:1}
+#toast button:hover{background:rgba(255,255,255,.16)}
 @media (max-width:640px){#bar .brand{display:none}#bar .btns .rp{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-snap-type:none}}
 `;
@@ -162,8 +176,19 @@ var D=${json(meta)},PM=${json(pageMeta)},A=${json(assets)},H=${json(Object.fromE
 var BAR=function(){return document.getElementById('bar').offsetHeight;};
 var els=[].slice.call(document.querySelectorAll('.pg')),byId={};
 els.forEach(function(e){var id=+e.dataset.p;byId[id]=e;e.pin=e.firstChild;e.pm=PM[id];e.lastY=-1;});
-var toastT,toast=document.getElementById('toast');
-function say(t){toast.textContent=t;toast.classList.add('on');clearTimeout(toastT);toastT=setTimeout(function(){toast.classList.remove('on');},3200);}
+var toast=document.getElementById('toast'),toastTxt=document.getElementById('toast-t'),live=document.getElementById('live'),toastT,POP='popover' in HTMLElement.prototype;
+if(!POP)toast.classList.add('fb');
+function toastShow(){if(POP){if(!toast.matches(':popover-open'))toast.showPopover();}else toast.classList.add('on');}
+function toastHide(){clearTimeout(toastT);if(POP){if(toast.matches(':popover-open'))toast.hidePopover();}else toast.classList.remove('on');}
+function toastArm(){clearTimeout(toastT);toastT=setTimeout(toastHide,6500);}
+function say(t){
+  if(document.getElementById('idx').open)return;
+  toastTxt.textContent=t;toastShow();toastArm();
+  if(document.ariaNotify)document.ariaNotify(t);else{live.textContent='';setTimeout(function(){live.textContent=t;},60);}
+}
+toast.addEventListener('focusin',function(){clearTimeout(toastT);});toast.addEventListener('focusout',toastArm);
+toast.addEventListener('mouseenter',function(){clearTimeout(toastT);});toast.addEventListener('mouseleave',toastArm);
+toast.querySelector('button').addEventListener('click',function(){if(!POP)toastHide();});
 function fill(id){return H[id].replace(/__A:([0-9a-f]{12})__/g,function(m,k){return A[k]||'';});}
 function load(pg){
   if(pg.frame)return;pg.classList.add('ld');
@@ -202,25 +227,31 @@ var nn=document.getElementById('nn'),nt=document.getElementById('nt'),np=documen
 function current(){
   var mid=BAR()+(innerHeight-BAR())*.4,best=null;
   els.forEach(function(pg){var r=pg.getBoundingClientRect();if(r.top<=mid&&r.bottom>mid)best=pg;});
-  if(!best){var c=document.getElementById('cover').getBoundingClientRect();if(c.bottom>mid){cur=null;nn.textContent='';nt.textContent='Innhold';np.textContent='';}return;}
+  if(!best){var c=document.getElementById('cover').getBoundingClientRect();if(c.bottom>mid){cur=null;nn.textContent='';nt.textContent='Innhold';np.textContent='';mark(-1);}return;}
   if(best===cur)return;cur=best;var m=PM[best.pm.id],d=D[m.d],sib=d.pages.length;
   nn.textContent=d.n;nt.textContent=d.title;np.textContent=sib>1?(d.pages.indexOf(m.id)+1)+' av '+sib+' · '+m.label:'';
+  mark(m.d);
 }
+/* the list marks the design you are in (:target-current is not used: the label above and the mark must name the same design) */
+function mark(di){[].forEach.call(document.querySelectorAll('.lst a[data-go]'),function(a){var on=+a.dataset.go===di;a.classList.toggle('target-current',on);if(on)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current');});}
 var tick=false;function onScroll(){if(tick)return;tick=true;requestAnimationFrame(function(){tick=false;sync();current();});}
 addEventListener('scroll',onScroll,{passive:true});
 addEventListener('resize',function(){els.forEach(function(pg){if(pg.frame)measure(pg);});onScroll();});
 /* moving around */
 function top(el){return el.getBoundingClientRect().top+scrollY-BAR();}
-function goDesign(i){i=Math.max(0,Math.min(D.length-1,i));byId[D[i].pages[0]].scrollIntoView({behavior:'smooth',block:'start'});}
+function goDesign(i){i=Math.max(0,Math.min(D.length-1,i));var a=document.getElementById('d'+i);byId[D[i].pages[0]].scrollIntoView({behavior:'smooth',block:'start'});if(a)a.focus({preventScroll:true});}
 function designNow(){return cur?PM[cur.pm.id].d:-1;}
 document.getElementById('next').onclick=function(){goDesign(designNow()+1);};
 document.getElementById('prev').onclick=function(){var d=designNow();if(d<=0){scrollTo({top:0,behavior:'smooth'});}else goDesign(d-1);};
 document.getElementById('replay').onclick=function(){var pg=cur;if(!pg)return;scrollTo(0,top(pg));unload(pg);load(pg);};
 var idx=document.getElementById('idx'),ib=document.getElementById('index');
-function toggle(on){idx.hidden=on===undefined?!idx.hidden:!on;ib.setAttribute('aria-expanded',String(!idx.hidden));}
-ib.onclick=function(){toggle();};
-document.addEventListener('keydown',function(e){if(e.key==='Escape')toggle(false);});
-document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-go]');if(a){e.preventDefault();toggle(false);goDesign(+a.dataset.go);return;}if(!idx.hidden&&!e.target.closest('#idx,#index'))toggle(false);});
+function openIdx(){if(!idx.open)idx.showModal();ib.setAttribute('aria-expanded','true');}
+function closeIdx(){if(idx.open)idx.close();}
+idx.addEventListener('close',function(){ib.setAttribute('aria-expanded','false');});
+ib.onclick=function(){if(idx.open)closeIdx();else openIdx();};
+document.getElementById('idx-x').onclick=closeIdx;
+idx.addEventListener('click',function(e){var r=idx.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeIdx();});
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-go]');if(a){e.preventDefault();closeIdx();goDesign(+a.dataset.go);}});
 /* what the pages say: a link inside a page, a link to an anchor, an outside link */
 var NAMES={'people.html':'People','insights.html':'Insights','products.html':'Products','about.html':'About us'};
 function toHash(pg,id){
@@ -228,11 +259,12 @@ function toHash(pg,id){
   pg.scrollIntoView({behavior:'smooth',block:'start'});
 }
 addEventListener('message',function(e){
-  var m=e.data;if(!m||!m.s)return;
-  if(m.s==='ext'){window.open(m.h,'_blank','noopener');return;}
-  var pg=byId[m.p];if(!pg)return;
-  if(m.s==='y'){scrollTo({top:top(pg)+m.y,behavior:'smooth'});return;}
-  if(m.s==='go'){
+  /* only our own frames are listened to: the frames are srcdoc documents (origin "null" from a file), so the origin cannot tell them apart; the sender window can */
+  var m=e.data;if(!m||typeof m!=='object'||typeof m.s!=='string')return;
+  var pg=byId[m.p];if(!pg||!pg.frame||e.source!==pg.frame.contentWindow)return;
+  if(m.s==='ext'){try{var u=new URL(String(m.h));if(/^(https?|mailto):$/.test(u.protocol))window.open(u.href,'_blank','noopener');}catch(x){}return;}
+  if(m.s==='y'){if(isFinite(m.y))scrollTo({top:top(pg)+m.y,behavior:'smooth'});return;}
+  if(m.s==='go'&&typeof m.h==='string'){
     var parts=m.h.split('#'),base=parts[0].split('/').pop(),hash=parts[1]||'',d=D[PM[m.p].d],hit=null;
     if(!base){return;}
     d.pages.forEach(function(id){if(PM[id].names.indexOf(base)>-1)hit=id;});
@@ -246,13 +278,14 @@ onScroll();
 
 const html = `<!doctype html>
 <html lang="no"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Analytika – forslag til forsider</title><style>${CSS}</style></head><body>
-<header id="bar"><span class="brand">Analytika · forslag</span><div class="now" aria-live="polite"><b id="nn"></b><span class="nt" id="nt">Innhold</span><span class="np" id="np"></span></div><div class="btns"><button type="button" id="prev" aria-label="Forrige design" title="Forrige design">‹</button><button type="button" id="next" aria-label="Neste design" title="Neste design">›</button><button type="button" id="replay" class="rp" title="Last siden på nytt, så animasjonen spilles av igjen">Spill av igjen</button><button type="button" id="index" aria-expanded="false" aria-controls="idx">Oversikt</button></div></header>
+<header id="bar"><span class="brand">Analytika · forslag</span><div class="now"><b id="nn"></b><span class="nt" id="nt">Innhold</span><span class="np" id="np"></span></div><div class="btns"><button type="button" id="prev" aria-label="Forrige design" title="Forrige design">‹</button><button type="button" id="next" aria-label="Neste design" title="Neste design">›</button><button type="button" id="replay" class="rp" title="Last siden på nytt, så animasjonen spilles av igjen">Spill av igjen</button><button type="button" id="index" aria-expanded="false" aria-controls="idx">Oversikt</button></div></header>
 <main>
 <section class="cover" id="cover"><h1>Forslag til forsider</h1><p class="lede">${DESIGNS.length} forsider. Scroll nedover. Sidene er de ekte, og animasjonen spilles av når siden kommer til syne. «Spill av igjen» øverst starter siden du står på på nytt. Noen eldre skisser henter skrifter fra Google Fonts og trenger nett for å se riktig ut.</p><ol class="lst">${list}</ol></section>
 ${sections}
 </main>
-<nav id="idx" aria-label="Oversikt" hidden><ol class="lst">${list}</ol></nav>
-<div id="toast" role="status"></div>
+<dialog id="idx" aria-label="Oversikt"><div class="idx-h"><span>Oversikt</span><button type="button" id="idx-x" autofocus aria-label="Lukk oversikten">Lukk</button></div><nav aria-label="Designene"><ol class="lst">${list}</ol></nav></dialog>
+<div role="region" aria-label="Meldinger"><div id="toast" popover="manual"><span id="toast-t"></span><button type="button" popovertarget="toast" popovertargetaction="hide" aria-label="Lukk melding">×</button></div></div>
+<div id="live" class="sr" aria-live="polite"></div>
 <script>${JS}</script>
 </body></html>`;
 
