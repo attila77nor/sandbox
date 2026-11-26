@@ -1,8 +1,8 @@
 {
   "product": "Ethic Pandemonium V2 Sparkesykkel Deck",
   "url": "https://www.skatepro.no/243-50650.htm",
-  "checked_utc": "2026-11-26T18:25:22Z",
-  "checked_oslo": "2026-11-26 19:25",
+  "checked_utc": "2026-11-26T19:22:16Z",
+  "checked_oslo": "2026-11-26 20:22",
   "ok": true,
   "error": "",
   "variants": [
@@ -18,10 +18,10 @@
     {
       "code": "ETHDEC-PA/V2/500/CHB",
       "variant": "500mm - Chrome Blue",
-      "status": "Ikke tilgjengelig!",
-      "level": "gray",
+      "status": "Forventes på lager 4. des",
+      "level": "yellow",
       "amount": "",
-      "schema": "",
+      "schema": "PreOrder",
       "buyable": false
     }
   ],
