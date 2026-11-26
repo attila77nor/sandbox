@@ -1,0 +1,53 @@
+# Lagersjekk SkatePro: henter lagerstatus for Ethic Pandemonium V2 deck
+# (Chrome Blue, 460 og 500 mm) og lagrer den på grenen lagersjekk-status.
+# En planlagt oppgave i Claude leser status.json derfra og varsler Atle.
+name: Lagersjekk SkatePro
+
+on:
+  schedule:
+    # Hver time fra 06:17 til 22:17 norsk vintertid (GitHub bruker UTC).
+    - cron: "17 5-21 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "lagersjekk/**"
+      - ".github/workflows/lagersjekk.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: lagersjekk
+  cancel-in-progress: false
+
+jobs:
+  sjekk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Hent lagerstatus
+        run: python3 lagersjekk/sjekk.py "$RUNNER_TEMP/out"
+
+      - name: Lagre status på grenen lagersjekk-status
+        env:
+          TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          dir="$RUNNER_TEMP/status"
+          rm -rf "$dir" && mkdir -p "$dir" && cd "$dir"
+          git init -q
+          git remote add origin "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if git fetch -q --depth 1 origin lagersjekk-status 2>/dev/null; then
+            git checkout -q -b lagersjekk-status FETCH_HEAD
+          else
+            git symbolic-ref HEAD refs/heads/lagersjekk-status
+          fi
+          cp "$RUNNER_TEMP/out/status.txt" "$RUNNER_TEMP/out/status.json" .
+          git add status.txt status.json
+          git -c user.name="github-actions[bot]" \
+              -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+              commit -q -m "Lagerstatus $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push -q origin lagersjekk-status
